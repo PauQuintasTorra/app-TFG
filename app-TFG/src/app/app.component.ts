@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
   template: `
     <button (click)="getData()">Get Data</button>
     <div>{{ message }}</div>
+    <app-image-loader> </app-image-loader>
   `,
 })
 export class AppComponent {
