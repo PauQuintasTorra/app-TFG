@@ -1,10 +1,21 @@
 import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  template: `
+    <button (click)="getData()">Get Data</button>
+    <div>{{ message }}</div>
+  `,
 })
 export class AppComponent {
-  title = 'app-TFG';
+  message: string | undefined;
+
+  constructor(private http: HttpClient) {}
+
+  getData() {
+    this.http.get('/api/data').subscribe((data: any) => {
+      this.message = data.message;
+    });
+  }
 }
