@@ -16,7 +16,7 @@ export class AppComponent {
 
   getData() {
     this.http.get('/api/data').subscribe((data: any) => {
-      this.message = data.message;
+      this.message = data;
     });
   }
 }
