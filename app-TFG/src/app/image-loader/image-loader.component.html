@@ -1,3 +1,6 @@
-<p>image-loader works!</p>
+<form (submit)="sendToBack()">     
+    <label> Introdueix la teva imatge </label> <br>
+    <input type="file" name='image' (change)="sendImage($event)"/> <br>
+    <button type="submit" [disabled]="!isUploaded" > Enviar al back </button>
+</form>
 
-<img [src]="imagePath" alt="Image">
