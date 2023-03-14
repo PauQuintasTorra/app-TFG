@@ -10,6 +10,7 @@ export class ImageLoaderComponent {
 
   selectedImage: File = {} as File;
   isUploaded: boolean = false;
+  public imageSrc: string = "";
 
   constructor(private http: HttpClient) { }
 
@@ -23,8 +24,8 @@ export class ImageLoaderComponent {
     const formData = new FormData();
     formData.append('image', this.selectedImage, this.selectedImage.name);
     console.log(formData);
-    this.http.post('/api/uploadImage', formData).subscribe(data => {
-      console.log(data);
+    this.http.post('/api/uploadImage', formData).subscribe((data: any) => {
+      this.imageSrc = 'data:image/jpg;base64,' + data.image;
     })
   }
 }

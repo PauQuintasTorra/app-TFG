@@ -1,6 +1,9 @@
   
-    <label> Introdueix la teva imatge </label> <br>
-    <input type="file" name='image' (change)="sendImage($event)"/> <br>
-    <button type="submit" [disabled]="!isUploaded" (click)="sendToBack()" > Enviar al back </button>
+<label> Introdueix la teva imatge </label> <br>
+<input type="file" name='image' (change)="sendImage($event)"/> <br>
+<button type="submit" [disabled]="!isUploaded" (click)="sendToBack()" > Enviar al back </button>
+
+<br><br><br>
+<img [src]="imageSrc" alt="Image">
 
 
