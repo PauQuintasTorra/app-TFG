@@ -13,9 +13,12 @@ export class ImageLoaderComponent {
   public imageSrc: string = "";
   nameImage: string = "";
   isSent: boolean = false;
-
+  selectedFormat: string = 'jpg';
   constructor(private http: HttpClient) { }
 
+  imprimir(){
+    console.log(this.selectedFormat);
+  }
   sendImage(event: any) {
     this.selectedImage = <File>event.target.files[0];
     this.isUploaded = true;
@@ -24,7 +27,10 @@ export class ImageLoaderComponent {
 
   sendToBack() {
     const formData = new FormData();
+    const formatChoose: string = 'jpg';
     formData.append('image', this.selectedImage, this.selectedImage.name);
+    formData.append('format', this.selectedFormat);
+
     this.http.post('/api/uploadImage', formData).subscribe((data: any) => {
       this.imageSrc = 'data:image/jpg;base64,' + data.image;
     })

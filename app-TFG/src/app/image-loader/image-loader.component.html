@@ -1,10 +1,21 @@
   
 <label> Introdueix la teva imatge </label> <br>
 <input type="file" name='image' (change)="sendImage($event)"/> <br>
-<button type="submit" [disabled]="!isUploaded" (click)="sendToBack()" > Enviar al back </button>
-
+<button type="submit" [disabled]="!isUploaded || selectedFormat === undefined" (click)="sendToBack()" > Enviar al back </button>
+<span> Pots introduir imatges PNG, JPG, WebP, BMP, TIFF, SVG AND GIF</span> <br>
+<h4> Escull el format en el que ho vols descarregar</h4>
+<select id="formatChoise" name="formatChoise" [(ngModel)]="selectedFormat">
+    <option value="jpg"> JPG </option>
+    <option value="png"> PNG </option>
+    <option value="webp"> WebP </option>
+    <option value="bmp"> BMP </option>
+    <option value="tiff"> TIFF </option>
+    <option value="svg"> SVG </option>
+    <option value="gif"> GIF </option>
+</select> <br>
+<button (click)="imprimir()"> Veure elecció </button>
 <br><br><br>
-<img [src]="imageSrc" alt="Image">
+<img [src]="imageSrc" alt="Image"> 
 <br>
 <button [disabled]="!isUploaded || !isSent" (click)="downloadImage()" > Download your image</button>
 
