@@ -5,5 +5,7 @@
 
 <br><br><br>
 <img [src]="imageSrc" alt="Image">
+<br>
+<button [disabled]="!isUploaded || !isSent" (click)="downloadImage()" > Download your image</button>
 
 
