@@ -27,12 +27,11 @@ export class ImageLoaderComponent {
 
   sendToBack() {
     const formData = new FormData();
-    const formatChoose: string = 'jpg';
     formData.append('image', this.selectedImage, this.selectedImage.name);
-    formData.append('format', this.selectedFormat);
+    formData.append('formatSelected', this.selectedFormat);
 
     this.http.post('/api/uploadImage', formData).subscribe((data: any) => {
-      this.imageSrc = 'data:image/jpg;base64,' + data.image;
+      this.imageSrc = `data:image/${this.selectedFormat};base64,` + data.image;
     })
     this.isSent = true;
   }
@@ -43,7 +42,7 @@ export class ImageLoaderComponent {
       const blobUrl = URL.createObjectURL(response);
       const downloadLink = document.createElement('a');
       downloadLink.href = blobUrl;
-      downloadLink.download = this.nameImage; // Change the filename and extension as needed
+      downloadLink.download = 'example.png'; //this.nameImage; // Change the filename and extension as needed
       downloadLink.click();
     })
   }
