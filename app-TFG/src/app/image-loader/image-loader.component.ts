@@ -22,7 +22,7 @@ export class ImageLoaderComponent {
   sendImage(event: any) {
     this.selectedImage = <File>event.target.files[0];
     this.isUploaded = true;
-    this.nameImage = this.selectedImage.name;
+    this.nameImage = this.selectedImage.name.split('.')[0];
   }
 
   sendToBack() {
@@ -42,7 +42,7 @@ export class ImageLoaderComponent {
       const blobUrl = URL.createObjectURL(response);
       const downloadLink = document.createElement('a');
       downloadLink.href = blobUrl;
-      downloadLink.download = 'example.png'; //this.nameImage; // Change the filename and extension as needed
+      downloadLink.download = `${this.nameImage}.${this.selectedFormat}`; 
       downloadLink.click();
     })
   }
