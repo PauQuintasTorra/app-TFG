@@ -39,17 +39,15 @@ export class ImageLoaderComponent {
     this.http.post('/api/uploadImage', formData).subscribe((data: any) => {
       this.imageSrc = `data:image/${this.selectedFormat};base64,` + data.image;
     })
+    console.log(this.selectedFormat);
     this.isSent = true;
     this.isFormatChange = true;
   }
 
   downloadImage() {
-    const format = this.selectedFormat;
-    this.http.post('/api/downloadImageURL', {format})
-    .subscribe((response: any)=>{
-      console.log(format);
-      const blob = new Blob([response], { type: `image/${format}` });
-      const blobUrl = URL.createObjectURL(blob);
+    this.http.get('/api/downloadImageURL',{ responseType: 'blob'})
+    .subscribe((response)=>{
+      const blobUrl = URL.createObjectURL(response);
       const downloadLink = document.createElement('a');
       downloadLink.href = blobUrl;
       if (this.nameSettedImage === "") {
@@ -60,4 +58,22 @@ export class ImageLoaderComponent {
       downloadLink.click();
     })
   }
+
+  // downloadImage() {
+  //   const format = this.selectedFormat;
+  //   this.http.post('/api/downloadImageURL', {format})
+  //   .subscribe((response: any)=>{
+  //     console.log(format);
+  //     const blob = new Blob([response], { type: `image/${format}` });
+  //     const blobUrl = URL.createObjectURL(blob);
+  //     const downloadLink = document.createElement('a');
+  //     downloadLink.href = blobUrl;
+  //     if (this.nameSettedImage === "") {
+  //       downloadLink.download = `${this.nameImage}.${this.selectedFormat}`;
+  //     } else {
+  //       downloadLink.download = `${this.nameSettedImage}.${this.selectedFormat}`;
+  //     }
+  //     downloadLink.click();
+  //   })
+  // }
 }
