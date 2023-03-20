@@ -39,17 +39,17 @@ export class ImageLoaderComponent {
     this.http.post('/api/uploadImage', formData).subscribe((data: any) => {
       this.imageSrc = `data:image/${this.selectedFormat};base64,` + data.image;
     })
-    console.log(this.selectedFormat);
     this.isSent = true;
     this.isFormatChange = true;
   }
 
   downloadImage() {
-    this.http.get('/api/downloadImageURL',{ responseType: 'blob'})
-    .subscribe((response)=>{
-      const blobUrl = URL.createObjectURL(response);
+    this.http.get(`/api/downloadImageURL?format=${this.selectedFormat}`,{ responseType: 'blob'})
+    .subscribe((response: Blob)=>{
+      const blob = new Blob([response], {type: 'image/' + this.selectedFormat});
+      const url = window.URL.createObjectURL(blob);
       const downloadLink = document.createElement('a');
-      downloadLink.href = blobUrl;
+      downloadLink.href = url;
       if (this.nameSettedImage === "") {
         downloadLink.download = `${this.nameImage}.${this.selectedFormat}`;
       } else {
