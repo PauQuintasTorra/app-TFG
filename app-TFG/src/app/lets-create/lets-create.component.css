@@ -1,0 +1,54 @@
+/* .box {
+    position: absolute;
+    top: 100px;
+    left: 100px;
+    width: 200px;
+    height: 200px;
+    cursor: move;
+    background-color: #ccc;
+}
+
+.arrow line {
+    stroke: #f00;
+    stroke-width: 2;
+} */
+.box-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .box {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 200px;
+    height: 200px;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+  }
+  
+  .box button {
+    display: block;
+    margin: 0 auto;
+    padding: 10px;
+    background-color: #ccc;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .box select {
+    display: block;
+    margin: 10px auto;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
