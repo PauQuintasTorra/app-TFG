@@ -1,109 +1,76 @@
-import {
-  Component,
-  ViewChild,
-  ElementRef,
-  HostListener,
-  AfterViewInit,
-} from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Wavelet } from '../types';
 
 @Component({
   selector: 'app-lets-create',
   templateUrl: './lets-create.component.html',
   styleUrls: ['./lets-create.component.css'],
 })
-export class LetsCreateComponent implements AfterViewInit {
+export class LetsCreateComponent {
   constructor(private elementRef: ElementRef) {}
-  ngAfterViewInit(): void {
-    console.log(this.boxContainer.nativeElement);
-  }
 
-  @ViewChild('boxContainer', { static: false }) boxContainer: ElementRef;
+  @ViewChild('boxContainer') boxContainer!: ElementRef;
 
-  showDropdown: boolean = false;
-  boxes: any = [];
+  selectedOption = 'wavelet';
+  numBoxes = 0;
+  boxes = {};
+  operatorBox: any;
 
-  addNewBox(operator: string) {
-    const newBox = {
-      id: this.boxes.length + 1,
-      operator,
-    };
-    this.boxes.push(newBox);
-
-    if (this.boxes.length > 1) {
-      const prevBox = this.boxes[this.boxes.length - 2];
-      const newBoxIndex = this.boxes.length - 1;
-      const arrowElement = document.createElement('div');
-      arrowElement.classList.add('arrow');
-      arrowElement.style.left = `${prevBox.id * 220}px`;
-      arrowElement.style.top = `210px`;
-      this.boxContainer.nativeElement.appendChild(arrowElement);
-      const arrowLineElement = document.createElement('div');
-      arrowLineElement.classList.add('arrow-line');
-      arrowLineElement.style.width = `${(newBox.id - prevBox.id) * 220}px`;
-      arrowLineElement.style.left = `${(prevBox.id + 1) * 220}px`;
-      arrowElement.appendChild(arrowLineElement);
+  executeSelectedOption() {
+    switch (this.selectedOption) {
+      case 'wavelet':
+        this.operatorBox = new Wavelet();
+        this.createBox('green');
+        break;
+      case 'arithmeticOperation':
+        this.createBox('blue');
+        break;
+      case 'quantizer':
+        this.createBox('red');
+        break;
+      default:
+        break;
     }
   }
 
-  // constructor() {
-  //   this.startX = 0;
-  //   this.startY = 0;
-  //   this.initialLeft = 0;
-  //   this.initialTop = 0;
-  // }
-  // public boxType: string = '';
-  // public isBoxVisible = false;
-  // private isDragging = false;
-  // private startX: number;
-  // private startY: number;
-  // private initialLeft: number;
-  // private initialTop: number;
-  // public arrowStartX = 0;
-  // public arrowStartY = 0;
-  // public arrowEndX = 0;
-  // public arrowEndY = 0;
+  createBox(color: string) {
+    if (this.numBoxes < 4) {
+      const newBox = document.createElement('div');
+      newBox.classList.add('dashed-box');
+      newBox.style.width = '200px';
+      newBox.style.height = '100px';
+      newBox.style.position = 'fixed';
+      newBox.style.border = '2px dashed ' + color;
+      newBox.style.top = '35%';
+      newBox.style.left = 250 + this.numBoxes * 250 + 'px';
+      newBox.style.transform = 'translateX(-50%)';
+      this.elementRef.nativeElement.appendChild(newBox);
+    } else {
+      alert("You can't create more than 4 boxes");
+    }
+    this.numBoxes++;
+    if (this.numBoxes == 4) {
+      this.drawArrow();
+    }
+  }
 
-  // showBox() {
-  //   this.isBoxVisible = true;
-  // }
+  drawArrow() {
+    const arrow = document.createElement('div');
+    arrow.classList.add('arrow');
 
-  // startDrag(event: MouseEvent) {
-  //   this.isDragging = true;
-  //   this.startX = event.clientX;
-  //   this.startY = event.clientY;
-  //   const box = document.querySelector('.box') as HTMLElement;
-  //   const styles = window.getComputedStyle(box);
-  //   this.initialLeft = parseInt(styles.left, 10) || 0;
-  //   this.initialTop = parseInt(styles.top, 10) || 0;
-  // }
+    const startX = 300;
+    const startY = 100;
+    const endX = 300;
+    const endY = 150;
 
-  // stopDrag(event: MouseEvent) {
-  //   this.isDragging = false;
-  //   this.updateArrow();
-  // }
+    const angle = (Math.atan2(endY - startY, endX - startX) * 180) / Math.PI;
+    arrow.style.width =
+      Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2)) + 'px';
+    arrow.style.transform = 'rotate(' + angle + 'deg)';
+    arrow.style.left = startX + 'px';
+    arrow.style.top = startY + 'px';
+    arrow.style.border = '2px solid black';
 
-  // @HostListener('document:mousemove', ['$event'])
-  // onMouseMove(event: MouseEvent) {
-  //   if (!this.isDragging) {
-  //     return;
-  //   }
-  //   const x = event.clientX - this.startX + this.initialLeft;
-  //   const y = event.clientY - this.startY + this.initialTop;
-  //   const box = document.querySelector('.box') as HTMLElement;
-  //   box.style.left = `${x}px`;
-  //   box.style.top = `${y}px`;
-  //   this.updateArrow();
-  // }
-
-  // updateArrow() {
-  //   const box = document.querySelector('.box') as HTMLElement;
-  //   const boxRect = box.getBoundingClientRect();
-  //   const square = document.querySelector('.square') as HTMLElement;
-  //   const squareRect = square.getBoundingClientRect();
-  //   this.arrowStartX = boxRect.left + boxRect.width / 2;
-  //   this.arrowStartY = boxRect.top + boxRect.height / 2;
-  //   this.arrowEndX = squareRect.left + squareRect.width / 2;
-  //   this.arrowEndY = squareRect.top + squareRect.height / 2;
-  // }
+    this.elementRef.nativeElement.appendChild(arrow);
+  }
 }

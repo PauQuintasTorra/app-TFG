@@ -1,33 +1,8 @@
-<!-- <button (click)="showBox()">New Operator</button>
-<svg *ngIf="isBoxVisible" class="arrow">
-  <line
-    [attr.x1]="arrowStartX"
-    [attr.y1]="arrowStartY"
-    [attr.x2]="arrowEndX"
-    [attr.y2]="arrowEndY"
-  />
-</svg>
-
-<div
-  *ngIf="isBoxVisible"
-  class="box"
-  (mousedown)="startDrag($event)"
-  (mouseup)="stopDrag($event)"
->
-  <label>Type:</label>
-  <input [(ngModel)]="boxType" type="text" />
-  <label>Input number </label>
-</div> -->
-<div class="box-container" #boxContainer>
-  <div class="box">
-    <button (click)="showDropdown = true">New Operator</button>
-    <div *ngIf="showDropdown">
-      <select (change)="addNewBox($event.target.value)">
-        <option value="add">Addition</option>
-        <option value="subtract">Subtraction</option>
-        <option value="multiply">Multiplication</option>
-        <option value="divide">Division</option>
-      </select>
-    </div>
-  </div>
-</div>
+<button class="newOperator" (click)="executeSelectedOption()">
+  New Operator
+</button>
+<select [(ngModel)]="selectedOption">
+  <option value="wavelet">Wavelet</option>
+  <option value="arithmeticOperation">Operación Aritmética</option>
+  <option value="quantizer">Quantizador</option>
+</select>
