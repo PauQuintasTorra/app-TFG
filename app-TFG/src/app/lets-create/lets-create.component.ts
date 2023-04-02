@@ -13,7 +13,7 @@ export class LetsCreateComponent {
 
   selectedOption = 'wavelet';
   numBoxes = 0;
-  boxes = {};
+  boxes: any[] = [];
   operatorBox: any;
 
   executeSelectedOption() {
@@ -42,35 +42,47 @@ export class LetsCreateComponent {
       newBox.style.position = 'fixed';
       newBox.style.border = '2px dashed ' + color;
       newBox.style.top = '35%';
-      newBox.style.left = 250 + this.numBoxes * 250 + 'px';
+      newBox.style.left = 200 + this.numBoxes * 250 + 'px';
       newBox.style.transform = 'translateX(-50%)';
       this.elementRef.nativeElement.appendChild(newBox);
+      this.boxes.push(newBox);
+      if (this.numBoxes < 3) {
+        const newIcon = document.createElement('i');
+        newIcon.classList.add('fas', 'fa-plus');
+        // establece las propiedades del icono
+        newIcon.style.position = 'absolute';
+        newIcon.style.top = '50%';
+        newIcon.style.left = `${parseInt(newBox.style.width) + 20}px`;
+        newIcon.style.transform = 'translateY(-50%)';
+
+        newBox.appendChild(newIcon);
+      } else {
+        const newIcon = document.createElement('i');
+        newIcon.classList.add(
+          'fa-solid',
+          'fa-arrow-right',
+          'fa-beat',
+          'fa-2xl'
+        );
+        // establece las propiedades del icono
+        newIcon.style.position = 'absolute';
+        newIcon.style.top = '50%';
+        newIcon.style.left = `${parseInt(newBox.style.width) + 20}px`;
+        newIcon.style.transform = 'translateY(-50%)';
+
+        newBox.appendChild(newIcon);
+      }
     } else {
       alert("You can't create more than 4 boxes");
     }
     this.numBoxes++;
-    if (this.numBoxes == 4) {
-      this.drawArrow();
-    }
   }
 
-  drawArrow() {
-    const arrow = document.createElement('div');
-    arrow.classList.add('arrow');
+  // drawArrow(newBox: any) {
+  //   const arrow = document.createElement('i');
+  //   arrow.className = 'fa-solid fa-arrow-right fa-beat fa-2xl';
+  //   console.log(newBox);
 
-    const startX = 300;
-    const startY = 100;
-    const endX = 300;
-    const endY = 150;
-
-    const angle = (Math.atan2(endY - startY, endX - startX) * 180) / Math.PI;
-    arrow.style.width =
-      Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2)) + 'px';
-    arrow.style.transform = 'rotate(' + angle + 'deg)';
-    arrow.style.left = startX + 'px';
-    arrow.style.top = startY + 'px';
-    arrow.style.border = '2px solid black';
-
-    this.elementRef.nativeElement.appendChild(arrow);
-  }
+  //   this.elementRef.nativeElement.appendChild(arrow);
+  // }
 }

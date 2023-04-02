@@ -4,12 +4,12 @@ import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-root',
   template: `
-    <button (click)="getData()">Get Data</button> 
+    <button (click)="getData()">Get Data</button>
     <button (click)="cleanData()">Clean Data</button>
     <div>{{ message }}</div>
-    <button (click)="changeComponent()"> Canviar component </button>
-    <br>
-    <br><br><br>
+    <button (click)="changeComponent()">Canviar component</button>
+    <br />
+    <br /><br /><br />
     <app-image-loader *ngIf="!isLetsCreate"> </app-image-loader>
     <app-lets-create *ngIf="isLetsCreate"> </app-lets-create>
   `,
@@ -27,7 +27,7 @@ export class AppComponent {
     });
   }
 
-  changeComponent(){
+  changeComponent() {
     this.isLetsCreate = !this.isLetsCreate;
   }
 
