@@ -69,7 +69,7 @@ export class LetsCreateComponent {
         newIcon.style.top = '50%';
         newIcon.style.left = `${parseInt(newBox.style.width) + 20}px`;
         newIcon.style.transform = 'translateY(-50%)';
-
+        console.log(this.boxes);
         newBox.appendChild(newIcon);
       }
     } else {
