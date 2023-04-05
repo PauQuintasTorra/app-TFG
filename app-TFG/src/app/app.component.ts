@@ -10,8 +10,8 @@ import { HttpClient } from '@angular/common/http';
     <button (click)="changeComponent()">Canviar component</button>
     <br />
     <br /><br /><br />
-    <app-image-loader *ngIf="!isLetsCreate"> </app-image-loader>
-    <app-lets-create *ngIf="isLetsCreate"> </app-lets-create>
+    <app-image-loader *ngIf="isLetsCreate"> </app-image-loader>
+    <app-lets-create *ngIf="!isLetsCreate"> </app-lets-create>
   `,
 })
 export class AppComponent {

@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Wavelet } from '../types';
+import { HttpClient, HttpRequest } from '@angular/common/http';
 
 @Component({
   selector: 'app-lets-create',
@@ -7,7 +8,16 @@ import { Wavelet } from '../types';
   styleUrls: ['./lets-create.component.css'],
 })
 export class LetsCreateComponent {
-  constructor(private elementRef: ElementRef) {}
+
+  public selectedImage: File = {} as File;
+  public isUploaded: boolean = false;
+  public isFormatChange: boolean = false;
+  public isSent: boolean = false;
+  public nameImage: string = '';
+  public imageSrc: string = "";
+  public originalFormat: string = '';
+
+  constructor(private elementRef: ElementRef, private http: HttpClient) {}
 
   @ViewChild('boxContainer') boxContainer!: ElementRef;
 
@@ -15,6 +25,28 @@ export class LetsCreateComponent {
   numBoxes = 0;
   boxes: any[] = [];
   operatorBox: any;
+
+
+  selectImage(event: any) {
+    this.selectedImage = <File>event.target.files[0];
+    this.isUploaded = true;
+    let name = this.selectedImage.name.split('')
+    this.nameImage = name[0];
+    this.originalFormat = name[name.length - 1];
+  }
+  
+  seePhoto() {
+    const formData = new FormData();
+    formData.append('image', this.selectedImage, this.selectedImage.name);
+    formData.append('originalFormat', this.originalFormat);
+    formData.append('operation', this.operatorBox);
+
+    this.http.post('/api/seeImage', formData).subscribe((data: any) => {
+      this.imageSrc = `data:image/${this.originalFormat};base64,` + data.image;
+    })
+    this.isSent = true;
+    this.isFormatChange = true;
+  }
 
   executeSelectedOption() {
     switch (this.selectedOption) {
