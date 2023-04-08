@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Wavelet } from '../types';
+import { Box, Boxes, Wavelet } from '../types';
 import { HttpClient, HttpRequest } from '@angular/common/http';
 
 @Component({
@@ -65,9 +65,18 @@ export class LetsCreateComponent {
     }
   }
 
+  // FUNCTION TO REMOVE
+  // const elementToRemove = document.getElementById('my-element');
+  // elementToRemove.remove();
+  
+
   createBox(color: string) {
+    var box = new Box();
+    box.numberBox = this.numBoxes;
+    box.nameClass = this.selectedOption;
     if (this.numBoxes < 4) {
       const newBox = document.createElement('div');
+      newBox.id = `${this.numBoxes}`;
       newBox.classList.add('dashed-box');
       newBox.style.width = '200px';
       newBox.style.height = '100px';
@@ -78,6 +87,9 @@ export class LetsCreateComponent {
       newBox.style.transform = 'translateX(-50%)';
       this.elementRef.nativeElement.appendChild(newBox);
       this.boxes.push(newBox);
+      box.dashedBox = newBox;
+      console.log(box);
+
       if (this.numBoxes < 3) {
         const newIcon = document.createElement('i');
         newIcon.classList.add('fas', 'fa-plus');
