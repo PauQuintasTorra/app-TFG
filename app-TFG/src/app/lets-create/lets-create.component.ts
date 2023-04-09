@@ -25,6 +25,7 @@ export class LetsCreateComponent {
   numBoxes = 0;
   boxes: any[] = [];
   operatorBox: any;
+  deletedNum: number[] = [];
 
 
   selectImage(event: any) {
@@ -68,60 +69,158 @@ export class LetsCreateComponent {
   // FUNCTION TO REMOVE
   // const elementToRemove = document.getElementById('my-element');
   // elementToRemove.remove();
-  
-
-  createBox(color: string) {
+  createNormalBox(color: string){
     var box = new Box();
     box.numberBox = this.numBoxes;
     box.nameClass = this.selectedOption;
+    const newBox = document.createElement('div');
+    newBox.id = `${this.numBoxes}`;
+    newBox.classList.add('dashed-box');
+    newBox.style.width = '200px';
+    newBox.style.height = '100px';
+    newBox.style.position = 'fixed';
+    newBox.style.border = '2px dashed ' + color;
+    newBox.style.top = '35%';
+    newBox.style.left = 200 + this.numBoxes * 250 + 'px';
+    newBox.style.transform = 'translateX(-50%)';
+    this.elementRef.nativeElement.appendChild(newBox);
+    this.boxes.push(newBox);
+    box.dashedBox = newBox;
+    console.log(box);
+
+    const newDelete = document.createElement('button');
+    // establece las propiedades del icono
+    newDelete.textContent = 'DELETE';
+    newDelete.id = `delete_${this.numBoxes}`;
+    newDelete.addEventListener('click', () =>{
+      const parent = newDelete.parentElement;
+      parent?.remove();
+      this.deleteBox(parent?.id);
+    })
+
+    newDelete.style.position = 'absolute';
+    newDelete.style.top = `${parseInt(newBox.style.height) + 20}px`;
+    newDelete.style.left = '35%';
+
+    newBox.appendChild(newDelete);
+
+    if (this.numBoxes < 3) {
+      const newIcon = document.createElement('i');
+      newIcon.classList.add('fas', 'fa-plus');
+      // establece las propiedades del icono
+      newIcon.id = `icon_${this.numBoxes}`;
+      newIcon.style.position = 'absolute';
+      newIcon.style.top = '50%';
+      newIcon.style.left = `${parseInt(newBox.style.width) + 20}px`;
+      newIcon.style.transform = 'translateY(-50%)';
+
+      newBox.appendChild(newIcon);
+    } else {
+      const newIcon = document.createElement('i');
+      newIcon.classList.add(
+        'fa-solid',
+        'fa-arrow-right',
+        'fa-beat',
+        'fa-2xl'
+      );
+      // establece las propiedades del icono
+      newIcon.style.position = 'absolute';
+      newIcon.style.top = '50%';
+      newIcon.style.left = `${parseInt(newBox.style.width) + 20}px`;
+      newIcon.style.transform = 'translateY(-50%)';
+      console.log(this.boxes);
+      newBox.appendChild(newIcon);
+    }
+  }
+
+  createBox(color: string) {
     if (this.numBoxes < 4) {
-      const newBox = document.createElement('div');
-      newBox.id = `${this.numBoxes}`;
-      newBox.classList.add('dashed-box');
-      newBox.style.width = '200px';
-      newBox.style.height = '100px';
-      newBox.style.position = 'fixed';
-      newBox.style.border = '2px dashed ' + color;
-      newBox.style.top = '35%';
-      newBox.style.left = 200 + this.numBoxes * 250 + 'px';
-      newBox.style.transform = 'translateX(-50%)';
-      this.elementRef.nativeElement.appendChild(newBox);
-      this.boxes.push(newBox);
-      box.dashedBox = newBox;
-      console.log(box);
-
-      if (this.numBoxes < 3) {
-        const newIcon = document.createElement('i');
-        newIcon.classList.add('fas', 'fa-plus');
-        // establece las propiedades del icono
-        newIcon.style.position = 'absolute';
-        newIcon.style.top = '50%';
-        newIcon.style.left = `${parseInt(newBox.style.width) + 20}px`;
-        newIcon.style.transform = 'translateY(-50%)';
-
-        newBox.appendChild(newIcon);
+      if(this.deletedNum.length == 0){
+        this.createNormalBox(color);
       } else {
-        const newIcon = document.createElement('i');
-        newIcon.classList.add(
-          'fa-solid',
-          'fa-arrow-right',
-          'fa-beat',
-          'fa-2xl'
-        );
-        // establece las propiedades del icono
-        newIcon.style.position = 'absolute';
-        newIcon.style.top = '50%';
-        newIcon.style.left = `${parseInt(newBox.style.width) + 20}px`;
-        newIcon.style.transform = 'translateY(-50%)';
-        console.log(this.boxes);
-        newBox.appendChild(newIcon);
-      }
+        this.createSpaceBox(this.deletedNum.pop() as number, color);
+      } 
     } else {
       alert("You can't create more than 4 boxes");
     }
     this.numBoxes++;
+
+    
   }
 
+  createSpaceBox(numBox: number, color: string){
+    console.log(numBox);
+    var box = new Box();
+    box.numberBox = numBox;
+    box.nameClass = this.selectedOption;
+    const newBox = document.createElement('div');
+    newBox.id = `${numBox}`;
+    newBox.classList.add('dashed-box');
+    newBox.style.width = '200px';
+    newBox.style.height = '100px';
+    newBox.style.position = 'fixed';
+    newBox.style.border = '2px dashed ' + color;
+    newBox.style.top = '35%';
+    newBox.style.left = 200 + numBox * 250 + 'px';
+    newBox.style.transform = 'translateX(-50%)';
+    this.elementRef.nativeElement.appendChild(newBox);
+    this.boxes.splice(numBox, 0, newBox);
+    box.dashedBox = newBox;
+    console.log(box);
+
+    const newDelete = document.createElement('button');
+    // establece las propiedades del icono
+    newDelete.textContent = 'DELETE';
+    newDelete.id = `delete_${numBox}`;
+    newDelete.addEventListener('click', () =>{
+      const parent = newDelete.parentElement;
+      parent?.remove();
+      this.deleteBox(parent?.id);
+    })
+
+    newDelete.style.position = 'absolute';
+    newDelete.style.top = `${parseInt(newBox.style.height) + 20}px`;
+    newDelete.style.left = '35%';
+
+    newBox.appendChild(newDelete);
+
+    if (this.numBoxes < 3) {
+      const newIcon = document.createElement('i');
+      newIcon.classList.add('fas', 'fa-plus');
+      // establece las propiedades del icono
+      newIcon.id = `icon_${numBox}`;
+      newIcon.style.position = 'absolute';
+      newIcon.style.top = '50%';
+      newIcon.style.left = `${parseInt(newBox.style.width) + 20}px`;
+      newIcon.style.transform = 'translateY(-50%)';
+
+      newBox.appendChild(newIcon);
+    } else {
+      const newIcon = document.createElement('i');
+      newIcon.classList.add(
+        'fa-solid',
+        'fa-arrow-right',
+        'fa-beat',
+        'fa-2xl'
+      );
+      // establece las propiedades del icono
+      newIcon.style.position = 'absolute';
+      newIcon.style.top = '50%';
+      newIcon.style.left = `${parseInt(newBox.style.width) + 20}px`;
+      newIcon.style.transform = 'translateY(-50%)';
+      console.log(this.boxes);
+      newBox.appendChild(newIcon);
+    }
+
+  }
+
+  deleteBox(id: any){
+    this.numBoxes -= 1;
+    this.boxes.splice(id, 1);
+    this.deletedNum.push(id);
+    console.log(parseInt(id));
+    console.log(this.boxes);
+  }
   // drawArrow(newBox: any) {
   //   const arrow = document.createElement('i');
   //   arrow.className = 'fa-solid fa-arrow-right fa-beat fa-2xl';
