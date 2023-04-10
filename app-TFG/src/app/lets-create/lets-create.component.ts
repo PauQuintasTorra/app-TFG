@@ -39,13 +39,14 @@ export class LetsCreateComponent {
   }
   
   seePhoto() {
+    console.log(this.boxes)
     const formData = new FormData();
     formData.append('image', this.selectedImage, this.selectedImage.name);
     formData.append('originalFormat', this.originalFormat);
-    formData.append('operation', this.operatorBox);
+    formData.append('boxes', JSON.stringify(this.boxes.box));
 
     this.http.post('/api/seeImage', formData).subscribe((data: any) => {
-      this.imageSrc = `data:image/${this.originalFormat};base64,` + data.image;
+      // this.imageSrc = `data:image/${this.originalFormat};base64,` + data.image;
     })
     this.isSent = true;
     this.isFormatChange = true;
