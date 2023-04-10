@@ -57,5 +57,4 @@ export class Boxes{
     // recorrer array de box i eliminar el que tingui el numberBox == id
   }
 
-  
 }

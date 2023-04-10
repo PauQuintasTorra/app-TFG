@@ -17,13 +17,15 @@ export class LetsCreateComponent {
   public imageSrc: string = "";
   public originalFormat: string = '';
 
-  constructor(private elementRef: ElementRef, private http: HttpClient) {}
+  constructor(private elementRef: ElementRef, private http: HttpClient) {
+    this.boxes = new Boxes;
+  }
 
   @ViewChild('boxContainer') boxContainer!: ElementRef;
 
   selectedOption = 'wavelet';
   numBoxes = 0;
-  boxes: any[] = [];
+  boxes!: Boxes;
   operatorBox: any;
   deletedNum: number[] = [];
 
@@ -69,6 +71,7 @@ export class LetsCreateComponent {
   // FUNCTION TO REMOVE
   // const elementToRemove = document.getElementById('my-element');
   // elementToRemove.remove();
+
   createNormalBox(color: string){
     var box = new Box();
     box.numberBox = this.numBoxes;
@@ -84,9 +87,8 @@ export class LetsCreateComponent {
     newBox.style.left = 200 + this.numBoxes * 250 + 'px';
     newBox.style.transform = 'translateX(-50%)';
     this.elementRef.nativeElement.appendChild(newBox);
-    this.boxes.push(newBox);
     box.dashedBox = newBox;
-    console.log(box);
+    this.boxes?.box.push(box);
 
     const newDelete = document.createElement('button');
     // establece las propiedades del icono
@@ -128,7 +130,6 @@ export class LetsCreateComponent {
       newIcon.style.top = '50%';
       newIcon.style.left = `${parseInt(newBox.style.width) + 20}px`;
       newIcon.style.transform = 'translateY(-50%)';
-      console.log(this.boxes);
       newBox.appendChild(newIcon);
     }
   }
@@ -140,16 +141,16 @@ export class LetsCreateComponent {
       } else {
         this.createSpaceBox(this.deletedNum.pop() as number, color);
       } 
+      this.numBoxes++;
     } else {
       alert("You can't create more than 4 boxes");
     }
-    this.numBoxes++;
+
 
     
   }
 
   createSpaceBox(numBox: number, color: string){
-    console.log(numBox);
     var box = new Box();
     box.numberBox = numBox;
     box.nameClass = this.selectedOption;
@@ -164,9 +165,8 @@ export class LetsCreateComponent {
     newBox.style.left = 200 + numBox * 250 + 'px';
     newBox.style.transform = 'translateX(-50%)';
     this.elementRef.nativeElement.appendChild(newBox);
-    this.boxes.splice(numBox, 0, newBox);
     box.dashedBox = newBox;
-    console.log(box);
+    this.boxes?.box.splice(numBox, 0, box);
 
     const newDelete = document.createElement('button');
     // establece las propiedades del icono
@@ -184,7 +184,7 @@ export class LetsCreateComponent {
 
     newBox.appendChild(newDelete);
 
-    if (this.numBoxes < 3) {
+    if (numBox != 3) {
       const newIcon = document.createElement('i');
       newIcon.classList.add('fas', 'fa-plus');
       // establece las propiedades del icono
@@ -203,12 +203,11 @@ export class LetsCreateComponent {
         'fa-beat',
         'fa-2xl'
       );
-      // establece las propiedades del icono
+
       newIcon.style.position = 'absolute';
       newIcon.style.top = '50%';
       newIcon.style.left = `${parseInt(newBox.style.width) + 20}px`;
       newIcon.style.transform = 'translateY(-50%)';
-      console.log(this.boxes);
       newBox.appendChild(newIcon);
     }
 
@@ -216,16 +215,19 @@ export class LetsCreateComponent {
 
   deleteBox(id: any){
     this.numBoxes -= 1;
-    this.boxes.splice(id, 1);
-    this.deletedNum.push(id);
-    console.log(parseInt(id));
-    console.log(this.boxes);
+    this.boxes?.box.splice(id, 1);
+    this.deletedNum.push(parseInt(id));
   }
-  // drawArrow(newBox: any) {
-  //   const arrow = document.createElement('i');
-  //   arrow.className = 'fa-solid fa-arrow-right fa-beat fa-2xl';
-  //   console.log(newBox);
 
-  //   this.elementRef.nativeElement.appendChild(arrow);
-  // }
+  deleteAll(){
+    console.log(this.boxes)
+    for (let i = 0; i < this.numBoxes; i++){
+      const elementToRemove = document.getElementById(`${i}`);
+      elementToRemove?.remove();
+    }
+    this.numBoxes = 0;
+    this.boxes.deleteBoxes();
+    console.log(this.boxes)
+  }
+
 }
