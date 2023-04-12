@@ -13,8 +13,9 @@ export class Quantizer {
 
 export class Box{
   dashedBox: any;
-  nameClass: string = '';
+  class: any = {};
   numberBox: number = 0;
+  
 
   // getNumberBox(): number{
   //   return this.numberBox;

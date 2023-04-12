@@ -1,6 +1,8 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Box, Boxes, Wavelet } from '../types';
-import { HttpClient, HttpRequest } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
+import { MatDialog } from '@angular/material/dialog';
+import { BoxTypeDialogComponent } from '../box-type-dialog/box-type-dialog.component';
 
 @Component({
   selector: 'app-lets-create',
@@ -17,7 +19,7 @@ export class LetsCreateComponent {
   public imageSrc: string = "";
   public originalFormat: string = '';
 
-  constructor(private elementRef: ElementRef, private http: HttpClient) {
+  constructor(private elementRef: ElementRef, private http: HttpClient, private dialog: MatDialog) {
     this.boxes = new Boxes;
   }
 
@@ -52,17 +54,33 @@ export class LetsCreateComponent {
     this.isFormatChange = true;
   }
 
-  executeSelectedOption() {
+  openBoxTypeDialog(): void {
+    const dialogRef = this.dialog.open(BoxTypeDialogComponent, {
+      width: '400px',
+      height: '300px',
+    });
+  
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        console.log(result);
+        this.selectedOption = result.type;
+        
+        this.executeSelectedOption(result);
+      }
+    });
+  }
+  
+  executeSelectedOption(resultClass: any) {
     switch (this.selectedOption) {
       case 'wavelet':
         this.operatorBox = new Wavelet();
-        this.createBox('green');
+        this.createBox('green', resultClass);
         break;
       case 'arithmeticOperation':
-        this.createBox('blue');
+        this.createBox('blue', resultClass);
         break;
       case 'quantizer':
-        this.createBox('red');
+        this.createBox('red', resultClass);
         break;
       default:
         break;
@@ -73,10 +91,10 @@ export class LetsCreateComponent {
   // const elementToRemove = document.getElementById('my-element');
   // elementToRemove.remove();
 
-  createNormalBox(color: string){
+  createNormalBox(color: string, resultClass: any){
     var box = new Box();
     box.numberBox = this.numBoxes;
-    box.nameClass = this.selectedOption;
+    box.class = resultClass;
     const newBox = document.createElement('div');
     newBox.id = `${this.numBoxes}`;
     newBox.classList.add('dashed-box');
@@ -135,12 +153,12 @@ export class LetsCreateComponent {
     }
   }
 
-  createBox(color: string) {
+  createBox(color: string, resultClass: any) {
     if (this.numBoxes < 4) {
       if(this.deletedNum.length == 0){
-        this.createNormalBox(color);
+        this.createNormalBox(color, resultClass);
       } else {
-        this.createSpaceBox(this.deletedNum.pop() as number, color);
+        this.createSpaceBox(this.deletedNum.pop() as number, color, resultClass );
       } 
       this.numBoxes++;
     } else {
@@ -151,10 +169,10 @@ export class LetsCreateComponent {
     
   }
 
-  createSpaceBox(numBox: number, color: string){
+  createSpaceBox(numBox: number, color: string, resultClass: any){
     var box = new Box();
     box.numberBox = numBox;
-    box.nameClass = this.selectedOption;
+    box.class = resultClass;
     const newBox = document.createElement('div');
     newBox.id = `${numBox}`;
     newBox.classList.add('dashed-box');
