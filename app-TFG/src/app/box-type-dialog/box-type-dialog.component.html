@@ -1,40 +1,40 @@
-<h2 mat-dialog-title>Add Box Type</h2>
+<h2 mat-dialog-title>Configure your Box</h2>
 <div mat-dialog-content>
   <form #form="ngForm">
     <mat-form-field>
-        <mat-label>Box Type</mat-label>
+        <mat-label>Tipus de Box</mat-label>
         <mat-select name="type" [(ngModel)]="selectedBoxType" required >
-            <mat-option value="wavelet">Wavelet</mat-option>
-            <mat-option value="arithmeticOperation">Arithmetic Operation</mat-option>
-            <mat-option value="quantizer">Quantizer</mat-option>
+            <mat-option value="Wavelet">Wavelet</mat-option>
+            <mat-option value="ArithmeticOperation">Arithmetic Operation</mat-option>
+            <mat-option value="Quantizer">Quantizer</mat-option>
         </mat-select>
     </mat-form-field>
     
 
-    <div *ngIf="(selectedBoxType == 'arithmeticOperation')">
+    <div *ngIf="(selectedBoxType == 'ArithmeticOperation')">
         <label> Valor:  </label>
         <input type="number" name="OperationNumber" [(ngModel)]="operationNumber" min="0" max="255" required> <br>
         <label> Operació:  </label>
         <select name="OperationType" [(ngModel)]="operationType" required>
-            <option value="add">Sumar</option>
-            <option value="sub">Restar</option>
-            <option value="mul">Multiplicar</option>
-            <option value="div">Dividir</option>    
+            <option value="Add">Add</option>
+            <option value="Sub">Substract</option>
+            <option value="Mult">Multiply</option>
+            <option value="Div">Divide</option>    
         </select>   
     </div>
 
-    <div *ngIf="(selectedBoxType == 'wavelet')">
+    <div *ngIf="(selectedBoxType == 'Wavelet')">
         <label> Nivells:  </label>
         <input type="number" name="WaveletLevel" [(ngModel)]="waveletLevel" min="0" max="7" required> <br>
         <label> Tipus de Wavelet:  </label>
         <select name="WaveletType" [(ngModel)]="waveletType" required>
-            <option value="haar">Haar</option>
+            <option value="Haar">Haar</option>
             <option value="5:3">5:3</option>
             <option value="9:7">9:7</option>   
         </select>  
     </div>
 
-    <div *ngIf="(selectedBoxType == 'quantizer')">
+    <div *ngIf="(selectedBoxType == 'Quantizer')">
         <label> Pas de Quantització:  </label>
         <input type="number" name="Q_step" [(ngModel)]="q_step" min="0" max="255" required>
     </div>

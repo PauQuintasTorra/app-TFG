@@ -1,10 +1,10 @@
 export class Wavelet {
-  type?: 'haar' | '5:3' | '9:7';
+  type?: 'Haar' | '5:3' | '9:7';
   levels?: number;
 }
 export class ArithmeticOperation {
   value?: number;
-  type?: 'add' | 'sub' | 'mul' | 'div';
+  type?: 'Add' | 'Sub' | 'Mult' | 'Div';
 }
 
 export class Quantizer {

@@ -1,13 +1,8 @@
 <input type="file" name="image" (change)="selectImage($event)" /> <br />
 
-<button class="newOperator" (click)="openBoxTypeDialog()">
-  New Operator
+<button class="newBox" (click)="openBoxTypeDialog()">
+  New Box
 </button>
-<select [(ngModel)]="selectedOption">
-  <option value="wavelet">Wavelet</option>
-  <option value="arithmeticOperation">Operación Aritmética</option>
-  <option value="quantizer">Quantizador</option>
-</select>
 
 <button class="sendImage" [disabled]="!isUploaded" (click)="seePhoto()"> VEURE </button> 
 <button class="deleteAll" (click)="deleteAll()"> BORRAR TOT </button>

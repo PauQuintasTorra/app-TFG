@@ -11,15 +11,13 @@ import { MAT_DIALOG_DATA, MatDialogRef  } from '@angular/material/dialog';
 })
 export class BoxTypeDialogComponent {
 
-  boxType = ['wavelet', 'arithmeticOperation', 'quantizer', 'other'];
-
-  selectedBoxType: string = 'wavelet';
+  selectedBoxType: string = 'Wavelet';
   inputValue: string = '';
   operationNumber: number = 0;
   waveletLevel: number = 0;
   q_step: number = 0;
-  operationType: string = 'add';
-  waveletType: string = 'haar';
+  operationType: string = 'Add';
+  waveletType: string = 'Haar';
   returner: any = {type: ''};
 
 
@@ -35,17 +33,17 @@ export class BoxTypeDialogComponent {
   onSaveClick(): void {
     this.returner.type = this.selectedBoxType;
     switch (this.selectedBoxType) {
-      case 'wavelet':
+      case 'Wavelet':
         this.returner.waveletType = this.waveletType;
         this.returner.waveletLevel = this.waveletLevel;
         break;
 
-      case 'arithmeticOperation':
+      case 'ArithmeticOperation':
         this.returner.operationType = this.operationType;
         this.returner.operationNumber = this.operationNumber;
         break;
 
-      case 'quantizer':
+      case 'Quantizer':
         this.returner.q_step = this.q_step;
         break;
     

@@ -25,7 +25,7 @@ export class LetsCreateComponent {
 
   @ViewChild('boxContainer') boxContainer!: ElementRef;
 
-  selectedOption = 'wavelet';
+  selectedOption = 'Wavelet';
   numBoxes = 0;
   boxes!: Boxes;
   operatorBox: any;
@@ -72,14 +72,14 @@ export class LetsCreateComponent {
   
   executeSelectedOption(resultClass: any) {
     switch (this.selectedOption) {
-      case 'wavelet':
+      case 'Wavelet':
         this.operatorBox = new Wavelet();
         this.createBox('green', resultClass);
         break;
-      case 'arithmeticOperation':
+      case 'ArithmeticOperation':
         this.createBox('blue', resultClass);
         break;
-      case 'quantizer':
+      case 'Quantizer':
         this.createBox('red', resultClass);
         break;
       default:
@@ -124,6 +124,26 @@ export class LetsCreateComponent {
     newDelete.style.left = '35%';
 
     newBox.appendChild(newDelete);
+
+    const span = document.createElement('span');
+    span.classList.add('text');
+    span.style.display = 'inline-block';
+    span.style.textAlign = 'center';
+    span.style.left = `${parseInt(newBox.style.width)/2}px`;
+    span.textContent = `${resultClass.type}`;
+    newBox.appendChild(span);
+    
+    // switch (resultClass.type) {
+    //   case 'wavelet':
+    //     span.textContent = `
+    //       Tipus: Wavelet
+    //       ${resultClass.wavelet}
+    //     `;
+    //     break;
+    
+    //   default:
+    //     break;
+    // }
 
     if (this.numBoxes < 3) {
       const newIcon = document.createElement('i');
