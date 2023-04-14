@@ -105,6 +105,11 @@ export class LetsCreateComponent {
     newBox.style.top = '35%';
     newBox.style.left = 200 + this.numBoxes * 250 + 'px';
     newBox.style.transform = 'translateX(-50%)';
+    newBox.style.alignItems = 'center';
+    newBox.style.justifyContent = 'center';
+    newBox.style.display = 'flex';
+    newBox.style.flexDirection ='column';
+    
     this.elementRef.nativeElement.appendChild(newBox);
     box.dashedBox = newBox;
     this.boxes?.box.push(box);
@@ -127,23 +132,48 @@ export class LetsCreateComponent {
 
     const span = document.createElement('span');
     span.classList.add('text');
-    span.style.display = 'inline-block';
-    span.style.textAlign = 'center';
-    span.style.left = `${parseInt(newBox.style.width)/2}px`;
-    span.textContent = `${resultClass.type}`;
+    span.textContent = `${resultClass.type} `;
+    span.style.fontWeight = 'bold';
+    span.style.color = color;
     newBox.appendChild(span);
     
-    // switch (resultClass.type) {
-    //   case 'wavelet':
-    //     span.textContent = `
-    //       Tipus: Wavelet
-    //       ${resultClass.wavelet}
-    //     `;
-    //     break;
+    switch (resultClass.type) {
+      case 'Wavelet':
+        const span1w = document.createElement('span');
+        span1w.classList.add('text');
+        span1w.textContent = `Nivells: ${resultClass.waveletLevel}`;
+        span1w.style.fontWeight = 'bold';
+        newBox.appendChild(span1w);
+        const span2w = document.createElement('span');
+        span2w.classList.add('text');
+        span2w.textContent = `Tipus: ${resultClass.waveletType}`;
+        span2w.style.fontWeight = 'bold';
+        newBox.appendChild(span2w);
+        break;
+
+      case 'ArithmeticOperation':
+        const span1a = document.createElement('span');
+        span1a.classList.add('text');
+        span1a.textContent = `Valor: ${resultClass.operationNumber}`;
+        span1a.style.fontWeight = 'bold';
+        newBox.appendChild(span1a);
+        const span2a = document.createElement('span');
+        span2a.classList.add('text');
+        span2a.textContent = `Tipus: ${resultClass.operationType}`;
+        span2a.style.fontWeight = 'bold';
+        newBox.appendChild(span2a);
+        break;
+      case 'Quantizer': 
+        const span1q = document.createElement('span');
+        span1q.classList.add('text');
+        span1q.textContent = `Pas de Quantització: ${resultClass.q_step}`;
+        span1q.style.fontWeight = 'bold';
+        newBox.appendChild(span1q);
+        break;
     
-    //   default:
-    //     break;
-    // }
+      default:
+        break;
+    }
 
     if (this.numBoxes < 3) {
       const newIcon = document.createElement('i');
