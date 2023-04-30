@@ -36,7 +36,7 @@ export class LetsCreateComponent {
   selectImage(event: any) {
     this.selectedImage = <File>event.target.files[0];
     this.isUploaded = true;
-    let name = this.selectedImage.name.split('');
+    let name = this.selectedImage.name.split('.');
     this.nameImage = name[0];
     this.originalFormat = name[name.length - 1];
   }
@@ -68,7 +68,7 @@ export class LetsCreateComponent {
     formData.append('boxes', JSON.stringify(this.boxes.box));
 
     this.http.post('/api/seeImage', formData).subscribe((data: any) => {
-      // this.imageSrc = `data:image/${this.originalFormat};base64,` + data.image;
+      this.imageSrc = `data:image/${this.originalFormat};base64,` + data.image;
     });
     this.isSent = true;
     this.isFormatChange = true;
@@ -376,6 +376,7 @@ export class LetsCreateComponent {
   }
 
   deleteAll() {
+    this.imageSrc = "";
     console.log(this.boxes);
     for (let i = 0; i < this.numBoxes; i++) {
       const elementToRemove = document.getElementById(`${i}`);

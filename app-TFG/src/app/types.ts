@@ -17,14 +17,6 @@ export class Box{
   numberBox: number = 0;
   
 
-  // getNumberBox(): number{
-  //   return this.numberBox;
-  // }
-
-  // setNumberBox(numberBox: number): void{
-  //   this.numberBox = numberBox;
-  // }
-
   getLeft(): number{
     return this.dashedBox.offsetLeft;
   }
@@ -37,14 +29,6 @@ export class Box{
     return this.dashedBox.offsetHeight
   }
 
-  // getNameClass(): string{
-  //   return this.nameClass;
-  // }
-
-  // setNameClass(name: string): void{
-  //   this.nameClass = name;
-  // }
-
 }
 
 export class Boxes{
@@ -54,8 +38,5 @@ export class Boxes{
     this.box = [];
   }
 
-  deleteBoxById(id: number){
-    // recorrer array de box i eliminar el que tingui el numberBox == id
-  }
 
 }

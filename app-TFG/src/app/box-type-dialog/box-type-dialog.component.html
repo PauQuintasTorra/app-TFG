@@ -13,7 +13,7 @@
 
     <div *ngIf="(selectedBoxType == 'ArithmeticOperation')">
         <label> Valor:  </label>
-        <input type="number" name="OperationNumber" [(ngModel)]="operationNumber" min="0" max="255" required> <br>
+        <input type="number" name="OperationNumber" [(ngModel)]="operationNumber" min="1" max="255" required> <br>
         <label> Operació:  </label>
         <select name="OperationType" [(ngModel)]="operationType" required>
             <option value="Add">Add</option>
@@ -36,7 +36,7 @@
 
     <div *ngIf="(selectedBoxType == 'Quantizer')">
         <label> Pas de Quantització:  </label>
-        <input type="number" name="Q_step" [(ngModel)]="q_step" min="0" max="255" required>
+        <input type="number" name="Q_step" [(ngModel)]="q_step" min="1" max="255" required>
     </div>
 
   </form>
