@@ -72,7 +72,7 @@ export class LetsCreateComponent {
       console.log(data)
       this.imageSrc = `data:image/${this.originalFormat};base64,` + data.image.image;
       this.invisible()
-      console.log(data.data);
+      console.log(JSON.parse(data.data));
     });
     this.isSent = true;
     this.isFormatChange = true;
