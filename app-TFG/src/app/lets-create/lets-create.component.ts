@@ -22,6 +22,7 @@ export class LetsCreateComponent {
   public boxes!: Boxes;
   public deletedNum: number[] = [];
   public isArrowDraw: boolean = false;
+  public container: any;
 
   constructor(
     private elementRef: ElementRef,
@@ -70,10 +71,25 @@ export class LetsCreateComponent {
     this.http.post('/api/seeImage', formData).subscribe((data: any) => {
       console.log(data)
       this.imageSrc = `data:image/${this.originalFormat};base64,` + data.image.image;
+      this.invisible()
       console.log(data.data);
     });
     this.isSent = true;
     this.isFormatChange = true;
+  }
+
+  invisible() {
+    for (let i = 0; i < this.numBoxes; i++) {
+      const elementToHide = document.getElementById(`${i}`);
+      if (elementToHide?.style.display){elementToHide.style.display = 'none';}
+    }
+  }
+
+  proces(){
+    for (let i = 0; i < this.numBoxes; i++) {
+      const elementToHide = document.getElementById(`${i}`);
+      if (elementToHide?.style.display){elementToHide.style.display = 'flex';}
+    }
   }
 
   openBoxTypeDialog(): void {
