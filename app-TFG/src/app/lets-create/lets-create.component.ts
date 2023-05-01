@@ -68,7 +68,9 @@ export class LetsCreateComponent {
     formData.append('boxes', JSON.stringify(this.boxes.box));
 
     this.http.post('/api/seeImage', formData).subscribe((data: any) => {
-      this.imageSrc = `data:image/${this.originalFormat};base64,` + data.image;
+      console.log(data)
+      this.imageSrc = `data:image/${this.originalFormat};base64,` + data.image.image;
+      console.log(data.data);
     });
     this.isSent = true;
     this.isFormatChange = true;
