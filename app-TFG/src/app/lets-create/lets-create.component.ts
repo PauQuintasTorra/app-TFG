@@ -23,6 +23,7 @@ export class LetsCreateComponent {
   public deletedNum: number[] = [];
   public isArrowDraw: boolean = false;
   public container: any;
+  public processLogger: any = {};
 
   constructor(
     private elementRef: ElementRef,
@@ -69,28 +70,50 @@ export class LetsCreateComponent {
     formData.append('boxes', JSON.stringify(this.boxes.box));
 
     this.http.post('/api/seeImage', formData).subscribe((data: any) => {
-      console.log(data)
-      this.imageSrc = `data:image/${this.originalFormat};base64,` + data.image.image;
-      this.invisible()
-      console.log(JSON.parse(data.data));
+      console.log(data);
+      this.processLogger = data;
+      var te = new Blob([JSON.stringify(data)], {type: 'text/plain'});
+      const url= window.URL.createObjectURL(te);
+      window.open(url);
     });
     this.isSent = true;
     this.isFormatChange = true;
   }
 
-  invisible() {
-    for (let i = 0; i < this.numBoxes; i++) {
-      const elementToHide = document.getElementById(`${i}`);
-      if (elementToHide?.style.display){elementToHide.style.display = 'none';}
-    }
+  showImageNewWindow(){
+    this.http.post('/api/getFinalImage',this.originalFormat).subscribe((data: any) => {
+      // this.imageSrc = `data:image/${this.originalFormat};base64,` + data.image;
+      const imagen = new Image();
+      const imgElement = new Image();
+      imagen.src = 'data:image/' + this.originalFormat + ';base64,' + data.image;
+      imagen.onload = function() {
+        const canvas = document.createElement('canvas');
+        canvas.width = imagen.naturalWidth;
+        canvas.height = imagen.naturalHeight;
+        const ctx = canvas.getContext('2d');
+        ctx?.drawImage(imagen, 0, 0);
+        const imagenUrl = canvas.toDataURL();
+        imgElement.src = imagenUrl;
+        const newWindow = window.open('', '_blank', 'width=${screen.availWidth},height=${screen.availHeight}');
+        newWindow?.document.write('<html><body></body></html>');
+        newWindow?.document.body.appendChild(imgElement);
+      }
+    });
   }
 
-  proces(){
-    for (let i = 0; i < this.numBoxes; i++) {
-      const elementToHide = document.getElementById(`${i}`);
-      if (elementToHide?.style.display){elementToHide.style.display = 'flex';}
-    }
-  }
+  // invisible() {
+  //   for (let i = 0; i < this.numBoxes; i++) {
+  //     const elementToHide = document.getElementById(`${i}`);
+  //     if (elementToHide?.style.display){elementToHide.style.display = 'none';}
+  //   }
+  // }
+
+  // proces(){
+  //   for (let i = 0; i < this.numBoxes; i++) {
+  //     const elementToHide = document.getElementById(`${i}`);
+  //     if (elementToHide?.style.display){elementToHide.style.display = 'flex';}
+  //   }
+  // }
 
   openBoxTypeDialog(): void {
     const dialogRef = this.dialog.open(BoxTypeDialogComponent, {
@@ -391,9 +414,14 @@ export class LetsCreateComponent {
     this.numBoxes -= 1;
     this.boxes?.box.splice(id, 1);
     this.deletedNum.push(parseInt(id));
+    if (this.numBoxes === 0) {
+      this.deletedNum = [];
+    }
+
   }
 
   deleteAll() {
+    this.deletedNum = [];
     this.imageSrc = "";
     console.log(this.boxes);
     for (let i = 0; i < this.numBoxes; i++) {
