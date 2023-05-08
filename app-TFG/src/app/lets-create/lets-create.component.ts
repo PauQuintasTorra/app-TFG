@@ -3,6 +3,7 @@ import { Box, Boxes, Wavelet } from '../types';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { BoxTypeDialogComponent } from '../box-type-dialog/box-type-dialog.component';
+import { ReverseBoxTypeDialogComponent } from '../reverse-box-type-dialog/reverse-box-type-dialog.component';
 
 @Component({
   selector: 'app-lets-create',
@@ -21,6 +22,9 @@ export class LetsCreateComponent {
   public numBoxes = 0;
   public boxes!: Boxes;
   public deletedNum: number[] = [];
+  public numBoxesReverse = 0;
+  public boxesReverse!: Boxes;
+  public deletedNumReverse: number[] = [];
   public isArrowDraw: boolean = false;
   public container: any;
   public processLogger: any = {};
@@ -43,7 +47,7 @@ export class LetsCreateComponent {
     this.originalFormat = name[name.length - 1];
   }
 
-  seePhoto() {
+  executeProcess() {
     if (!this.isArrowDraw) {
       const lastBox = document.getElementById(
         `${this.boxes.box[this.boxes.box.length - 1].numberBox}`
@@ -115,6 +119,22 @@ export class LetsCreateComponent {
   //   }
   // }
 
+  openBoxTypeDialogReverse(): void {
+    const dialogRef = this.dialog.open(ReverseBoxTypeDialogComponent, {
+      width: '400px',
+      height: '300px',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        console.log(result);
+        this.selectedOption = result.type;
+
+        this.executeSelectedOptionReverse(result);
+      }
+    });
+  }
+
   openBoxTypeDialog(): void {
     const dialogRef = this.dialog.open(BoxTypeDialogComponent, {
       width: '400px',
@@ -131,6 +151,282 @@ export class LetsCreateComponent {
     });
   }
 
+  executeSelectedOptionReverse(resultClass: any) {
+    switch (this.selectedOption) {
+      case 'Reverse_Wavelet':
+        this.createBoxReverse('green', resultClass);
+        break;
+      case 'ArithmeticOperation':
+        this.createBoxReverse('blue', resultClass);
+        break;
+      case 'Dequantizer':
+        this.createBoxReverse('red', resultClass);
+        break;
+      default:
+        break;
+    }
+  }
+
+  createNormalBoxReverse(color: string, resultClass: any) {
+    var box = new Box();
+    box.numberBox = this.numBoxesReverse;
+    box.class = resultClass;
+    const newBox = document.createElement('div');
+    newBox.id = `R_${this.numBoxesReverse}`;
+    newBox.classList.add('dashed-box');
+    newBox.style.width = '200px';
+    newBox.style.height = '100px';
+    newBox.style.position = 'fixed';
+    newBox.style.border = '2px dashed ' + color;
+    newBox.style.top = '70%';
+    newBox.style.left = 200 + this.numBoxesReverse * 250 + 'px';
+    newBox.style.transform = 'translateX(-50%)';
+    newBox.style.alignItems = 'center';
+    newBox.style.justifyContent = 'center';
+    newBox.style.display = 'flex';
+    newBox.style.flexDirection = 'column';
+
+    this.elementRef.nativeElement.appendChild(newBox);
+    box.dashedBox = newBox;
+    this.boxesReverse?.box.push(box);
+
+    const newDelete = document.createElement('button');
+    newDelete.textContent = 'DELETE';
+    newDelete.id = `R_delete_${this.numBoxesReverse}`;
+    newDelete.addEventListener('click', () => {
+      const parent = newDelete.parentElement;
+      parent?.remove();
+      this.deleteBoxReverse(parent?.id);
+    });
+
+    newDelete.style.position = 'absolute';
+    newDelete.style.top = `${parseInt(newBox.style.height) + 20}px`;
+    newDelete.style.left = '35%';
+
+    newBox.appendChild(newDelete);
+
+    const span = document.createElement('span');
+    span.classList.add('text');
+    span.textContent = `${resultClass.type} `;
+    span.style.fontWeight = 'bold';
+    span.style.color = color;
+    newBox.appendChild(span);
+
+    switch (resultClass.type) {
+      case 'Reverse_Wavelet':
+        const span1w = document.createElement('span');
+        span1w.classList.add('text');
+        span1w.textContent = `Nivells: ${resultClass.waveletLevel}`;
+        span1w.style.fontWeight = 'bold';
+        newBox.appendChild(span1w);
+        const span2w = document.createElement('span');
+        span2w.classList.add('text');
+        span2w.textContent = `Tipus: ${resultClass.waveletType}`;
+        span2w.style.fontWeight = 'bold';
+        newBox.appendChild(span2w);
+        break;
+
+      case 'ArithmeticOperation':
+        const span1a = document.createElement('span');
+        span1a.classList.add('text');
+        span1a.textContent = `Valor: ${resultClass.operationNumber}`;
+        span1a.style.fontWeight = 'bold';
+        newBox.appendChild(span1a);
+        const span2a = document.createElement('span');
+        span2a.classList.add('text');
+        span2a.textContent = `Tipus: ${resultClass.operationType}`;
+        span2a.style.fontWeight = 'bold';
+        newBox.appendChild(span2a);
+        break;
+      case 'Dequantizer':
+        const span1q = document.createElement('span');
+        span1q.classList.add('text');
+        span1q.textContent = `Pas de Quantització: ${resultClass.q_step}`;
+        span1q.style.fontWeight = 'bold';
+        newBox.appendChild(span1q);
+        break;
+
+      default:
+        break;
+    }
+
+    if (this.numBoxesReverse < 3 && this.numBoxesReverse != 0) {
+      const newIcon = document.createElement('i');
+      newIcon.classList.add('fas', 'fa-plus');
+      newIcon.id = `R_icon_${this.numBoxesReverse}`;
+      newIcon.style.position = 'absolute';
+      newIcon.style.top = '50%';
+      newIcon.style.right = `${parseInt(newBox.style.width) + 20}px`;
+      newIcon.style.transform = 'translateY(-50%)';
+      newBox.appendChild(newIcon);
+    } else {
+      if (this.numBoxesReverse == 3) {
+        this.isArrowDraw = true;
+        const newIconI = document.createElement('i');
+        newIconI.classList.add('fas', 'fa-plus');
+        newIconI.id = `R_icon_${this.numBoxesReverse}`;
+        newIconI.style.position = 'absolute';
+        newIconI.style.top = '50%';
+        newIconI.style.right = `${parseInt(newBox.style.width) + 20}px`;
+        newIconI.style.transform = 'translateY(-50%)';
+        newBox.appendChild(newIconI);
+        const newIcon = document.createElement('i');
+        newIcon.classList.add(
+          'fa-solid',
+          'fa-arrow-right',
+          'fa-beat',
+          'fa-2xl'
+        );
+        newIcon.style.position = 'absolute';
+        newIcon.style.top = '50%';
+        newIcon.style.left = `${parseInt(newBox.style.width) + 20}px`;
+        newIcon.style.transform = 'translateY(-50%)';
+        newBox.appendChild(newIcon);
+      }
+    }
+  }
+
+  createBoxReverse(color: string, resultClass: any) {
+    if (this.numBoxesReverse < 4) {
+      if (this.deletedNumReverse.length == 0) {
+        this.createNormalBox(color, resultClass);
+      } else {
+        this.createSpaceBox(
+          this.deletedNumReverse.pop() as number,
+          color,
+          resultClass
+        );
+      }
+      this.numBoxesReverse++;
+    } else {
+      alert("You can't create more than 4 boxes");
+    }
+  }
+
+  createSpaceBoxReverse(numBox: number, color: string, resultClass: any) {
+    var box = new Box();
+    box.numberBox = numBox;
+    box.class = resultClass;
+    const newBox = document.createElement('div');
+    newBox.id = `r_${numBox}`;
+    newBox.classList.add('dashed-box');
+    newBox.style.width = '200px';
+    newBox.style.height = '100px';
+    newBox.style.position = 'fixed';
+    newBox.style.border = '2px dashed ' + color;
+    newBox.style.top = '70%';
+    newBox.style.left = 200 + numBox * 250 + 'px';
+    newBox.style.transform = 'translateX(-50%)';
+    newBox.style.alignItems = 'center';
+    newBox.style.justifyContent = 'center';
+    newBox.style.display = 'flex';
+    newBox.style.flexDirection = 'column';
+
+    this.elementRef.nativeElement.appendChild(newBox);
+    box.dashedBox = newBox;
+    this.boxesReverse?.box.splice(numBox, 0, box);
+
+    const newDelete = document.createElement('button');
+    newDelete.textContent = 'DELETE';
+    newDelete.id = `R_delete_${numBox}`;
+    newDelete.addEventListener('click', () => {
+      const parent = newDelete.parentElement;
+      parent?.remove();
+      this.deleteBoxReverse(parent?.id);
+    });
+
+    newDelete.style.position = 'absolute';
+    newDelete.style.top = `${parseInt(newBox.style.height) + 20}px`;
+    newDelete.style.left = '35%';
+
+    newBox.appendChild(newDelete);
+
+    const span = document.createElement('span');
+    span.classList.add('text');
+    span.textContent = `${resultClass.type} `;
+    span.style.fontWeight = 'bold';
+    span.style.color = color;
+    newBox.appendChild(span);
+
+    switch (resultClass.type) {
+      case 'Reverse_Wavelet':
+        const span1w = document.createElement('span');
+        span1w.classList.add('text');
+        span1w.textContent = `Nivells: ${resultClass.waveletLevel}`;
+        span1w.style.fontWeight = 'bold';
+        newBox.appendChild(span1w);
+        const span2w = document.createElement('span');
+        span2w.classList.add('text');
+        span2w.textContent = `Tipus: ${resultClass.waveletType}`;
+        span2w.style.fontWeight = 'bold';
+        newBox.appendChild(span2w);
+        break;
+
+      case 'ArithmeticOperation':
+        const span1a = document.createElement('span');
+        span1a.classList.add('text');
+        span1a.textContent = `Valor: ${resultClass.operationNumber}`;
+        span1a.style.fontWeight = 'bold';
+        newBox.appendChild(span1a);
+        const span2a = document.createElement('span');
+        span2a.classList.add('text');
+        span2a.textContent = `Tipus: ${resultClass.operationType}`;
+        span2a.style.fontWeight = 'bold';
+        newBox.appendChild(span2a);
+        break;
+      case 'Dequantizer':
+        const span1q = document.createElement('span');
+        span1q.classList.add('text');
+        span1q.textContent = `Pas de Quantització: ${resultClass.q_step}`;
+        span1q.style.fontWeight = 'bold';
+        newBox.appendChild(span1q);
+        break;
+
+      default:
+        break;
+    }
+
+    if (numBox < 3 && numBox != 0) {
+      const newIcon = document.createElement('i');
+      newIcon.classList.add('fas', 'fa-plus');
+      newIcon.id = `R_icon_${numBox}`;
+      newIcon.style.position = 'absolute';
+      newIcon.style.top = '50%';
+      newIcon.style.right = `${parseInt(newBox.style.width) + 20}px`;
+      newIcon.style.transform = 'translateY(-50%)';
+
+      newBox.appendChild(newIcon);
+    } else {
+      if (this.numBoxesReverse == 3) {
+        this.isArrowDraw = true;
+        const newIconI = document.createElement('i');
+        newIconI.classList.add('fas', 'fa-plus');
+        newIconI.id = `R_icon_${this.numBoxesReverse}`;
+        newIconI.style.position = 'absolute';
+        newIconI.style.top = '50%';
+        newIconI.style.right = `${parseInt(newBox.style.width) + 20}px`;
+        newIconI.style.transform = 'translateY(-50%)';
+        newBox.appendChild(newIconI);
+        const newIcon = document.createElement('i');
+        newIcon.classList.add(
+          'fa-solid',
+          'fa-arrow-right',
+          'fa-beat',
+          'fa-2xl'
+        );
+        newIcon.style.position = 'absolute';
+        newIcon.style.top = '50%';
+        newIcon.style.left = `${parseInt(newBox.style.width) + 20}px`;
+        newIcon.style.transform = 'translateY(-50%)';
+        newBox.appendChild(newIcon);
+      }
+    }
+  }
+
+  // FUNCTION TO REMOVE
+  // const elementToRemove = document.getElementById('my-element');
+  // elementToRemove.remove();
+
   executeSelectedOption(resultClass: any) {
     switch (this.selectedOption) {
       case 'Wavelet':
@@ -146,10 +442,6 @@ export class LetsCreateComponent {
         break;
     }
   }
-
-  // FUNCTION TO REMOVE
-  // const elementToRemove = document.getElementById('my-element');
-  // elementToRemove.remove();
 
   createNormalBox(color: string, resultClass: any) {
     var box = new Box();
@@ -406,6 +698,19 @@ export class LetsCreateComponent {
       }
     }
   }
+
+  deleteBoxReverse(id: any){
+    if (id == 3) {
+      this.isArrowDraw = false;
+    }
+    this.numBoxesReverse -= 1;
+    this.boxesReverse?.box.splice(id, 1);
+    this.deletedNumReverse.push(parseInt(id));
+    if (this.numBoxesReverse === 0) {
+      this.deletedNumReverse = [];
+    }
+  }
+
 
   deleteBox(id: any) {
     if (id == 3) {

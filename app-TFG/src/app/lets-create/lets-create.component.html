@@ -3,8 +3,11 @@
 <button class="newBox" (click)="openBoxTypeDialog()">
   New Box
 </button>
+<button class="contrariBox" (click)="openBoxTypeDialogReverse()">
+  New Contra Box
+</button>
 
-<button class="sendImage" [disabled]="!isUploaded" (click)="seePhoto()"> VEURE </button> 
+<button class="sendImage" [disabled]="!isUploaded" (click)="executeProcess()"> VEURE </button>
 <button class="deleteAll" (click)="deleteAll()"> BORRAR TOT </button>
 <!-- <button class="proces" (click)="proces()"> proces </button> -->
 <button class="imatge" (click)="showImageNewWindow()"> imatge </button>
