@@ -35,9 +35,22 @@ export class LetsCreateComponent {
     private dialog: MatDialog
   ) {
     this.boxes = new Boxes();
+    this.boxesReverse = new Boxes();
   }
 
   @ViewChild('boxContainer') boxContainer!: ElementRef;
+
+  validate(){
+    console.log(this.boxesReverse)
+    const lengthComp = this.boxes.box.length;
+    const lengthDesc = this.boxesReverse.box.length;
+    if (lengthDesc === lengthComp){
+      console.log(true);
+    } else {
+      console.log(false);
+    }
+  }
+
 
   selectImage(event: any) {
     this.selectedImage = <File>event.target.files[0];
@@ -178,7 +191,7 @@ export class LetsCreateComponent {
     newBox.style.height = '100px';
     newBox.style.position = 'fixed';
     newBox.style.border = '2px dashed ' + color;
-    newBox.style.top = '70%';
+    newBox.style.top = '65%';
     newBox.style.left = 200 + this.numBoxesReverse * 250 + 'px';
     newBox.style.transform = 'translateX(-50%)';
     newBox.style.alignItems = 'center';
@@ -250,7 +263,7 @@ export class LetsCreateComponent {
         break;
     }
 
-    if (this.numBoxesReverse < 3 && this.numBoxesReverse != 0) {
+    if (this.numBoxesReverse <= 3 && this.numBoxesReverse != 0) {
       const newIcon = document.createElement('i');
       newIcon.classList.add('fas', 'fa-plus');
       newIcon.id = `R_icon_${this.numBoxesReverse}`;
@@ -260,16 +273,8 @@ export class LetsCreateComponent {
       newIcon.style.transform = 'translateY(-50%)';
       newBox.appendChild(newIcon);
     } else {
-      if (this.numBoxesReverse == 3) {
+      if (this.numBoxesReverse == 0) {
         this.isArrowDraw = true;
-        const newIconI = document.createElement('i');
-        newIconI.classList.add('fas', 'fa-plus');
-        newIconI.id = `R_icon_${this.numBoxesReverse}`;
-        newIconI.style.position = 'absolute';
-        newIconI.style.top = '50%';
-        newIconI.style.right = `${parseInt(newBox.style.width) + 20}px`;
-        newIconI.style.transform = 'translateY(-50%)';
-        newBox.appendChild(newIconI);
         const newIcon = document.createElement('i');
         newIcon.classList.add(
           'fa-solid',
@@ -279,7 +284,7 @@ export class LetsCreateComponent {
         );
         newIcon.style.position = 'absolute';
         newIcon.style.top = '50%';
-        newIcon.style.left = `${parseInt(newBox.style.width) + 20}px`;
+        newIcon.style.right = `${parseInt(newBox.style.width) + 20}px`;
         newIcon.style.transform = 'translateY(-50%)';
         newBox.appendChild(newIcon);
       }
@@ -288,10 +293,10 @@ export class LetsCreateComponent {
 
   createBoxReverse(color: string, resultClass: any) {
     if (this.numBoxesReverse < 4) {
-      if (this.deletedNumReverse.length == 0) {
-        this.createNormalBox(color, resultClass);
+      if (this.deletedNumReverse.length === 0) {
+        this.createNormalBoxReverse(color, resultClass);
       } else {
-        this.createSpaceBox(
+        this.createSpaceBoxReverse(
           this.deletedNumReverse.pop() as number,
           color,
           resultClass
@@ -314,7 +319,7 @@ export class LetsCreateComponent {
     newBox.style.height = '100px';
     newBox.style.position = 'fixed';
     newBox.style.border = '2px dashed ' + color;
-    newBox.style.top = '70%';
+    newBox.style.top = '65%';
     newBox.style.left = 200 + numBox * 250 + 'px';
     newBox.style.transform = 'translateX(-50%)';
     newBox.style.alignItems = 'center';
@@ -386,7 +391,7 @@ export class LetsCreateComponent {
         break;
     }
 
-    if (numBox < 3 && numBox != 0) {
+    if (numBox <= 3 && numBox != 0) {
       const newIcon = document.createElement('i');
       newIcon.classList.add('fas', 'fa-plus');
       newIcon.id = `R_icon_${numBox}`;
@@ -397,16 +402,8 @@ export class LetsCreateComponent {
 
       newBox.appendChild(newIcon);
     } else {
-      if (this.numBoxesReverse == 3) {
+      if (numBox == 0) {
         this.isArrowDraw = true;
-        const newIconI = document.createElement('i');
-        newIconI.classList.add('fas', 'fa-plus');
-        newIconI.id = `R_icon_${this.numBoxesReverse}`;
-        newIconI.style.position = 'absolute';
-        newIconI.style.top = '50%';
-        newIconI.style.right = `${parseInt(newBox.style.width) + 20}px`;
-        newIconI.style.transform = 'translateY(-50%)';
-        newBox.appendChild(newIconI);
         const newIcon = document.createElement('i');
         newIcon.classList.add(
           'fa-solid',
@@ -416,7 +413,7 @@ export class LetsCreateComponent {
         );
         newIcon.style.position = 'absolute';
         newIcon.style.top = '50%';
-        newIcon.style.left = `${parseInt(newBox.style.width) + 20}px`;
+        newIcon.style.right = `${parseInt(newBox.style.width) + 20}px`;
         newIcon.style.transform = 'translateY(-50%)';
         newBox.appendChild(newIcon);
       }
@@ -700,12 +697,13 @@ export class LetsCreateComponent {
   }
 
   deleteBoxReverse(id: any){
-    if (id == 3) {
+    const id_split = id.split('_')[1];
+    if (id_split == 3) {
       this.isArrowDraw = false;
     }
     this.numBoxesReverse -= 1;
-    this.boxesReverse?.box.splice(id, 1);
-    this.deletedNumReverse.push(parseInt(id));
+    this.boxesReverse?.box.splice(id_split, 1);
+    this.deletedNumReverse.push(parseInt(id_split));
     if (this.numBoxesReverse === 0) {
       this.deletedNumReverse = [];
     }
@@ -727,15 +725,21 @@ export class LetsCreateComponent {
 
   deleteAll() {
     this.deletedNum = [];
+    this.deletedNumReverse = [];
     this.imageSrc = "";
     console.log(this.boxes);
     for (let i = 0; i < this.numBoxes; i++) {
       const elementToRemove = document.getElementById(`${i}`);
       elementToRemove?.remove();
     }
+    for (let i = 0; i < this.numBoxesReverse; i++) {
+      const elementToRemove = document.getElementById(`R_${i}`);
+      elementToRemove?.remove();
+    }
     this.isArrowDraw = false;
     this.numBoxes = 0;
     this.boxes.deleteBoxes();
+    this.boxesReverse.deleteBoxes();
     console.log(this.boxes);
   }
 }
