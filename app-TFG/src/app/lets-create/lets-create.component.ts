@@ -41,11 +41,40 @@ export class LetsCreateComponent {
   @ViewChild('boxContainer') boxContainer!: ElementRef;
 
   validate(){
-    console.log(this.boxesReverse)
+    console.log(this.boxes)
     const lengthComp = this.boxes.box.length;
     const lengthDesc = this.boxesReverse.box.length;
     if (lengthDesc === lengthComp){
-      console.log(true);
+      for(let i = 0; i < lengthComp; i++){
+        const typeComp = this.boxes.box[i].class['type'];
+        const typeDesc = this.boxesReverse.box[lengthComp - i - 1].class['type'];
+        
+        switch (typeComp) {
+          case 'Wavelet':
+            if(typeDesc === 'Reverse_Wavelet'){
+              console.log(true);
+            } else{
+              console.log(false);
+            }           
+            break;
+          case 'Quantizer':
+            if(typeDesc === 'Dequantizer'){
+              console.log(true);
+            } else{
+              console.log(false);
+            }
+            break;
+          case 'ArithmeticOperation':
+            if(typeDesc === 'ArithmeticOperation'){
+              console.log(true);
+            } else{
+              console.log(false);
+            }
+            break;
+        }
+        
+        
+      }
     } else {
       console.log(false);
     }
@@ -313,7 +342,7 @@ export class LetsCreateComponent {
     box.numberBox = numBox;
     box.class = resultClass;
     const newBox = document.createElement('div');
-    newBox.id = `r_${numBox}`;
+    newBox.id = `R_${numBox}`;
     newBox.classList.add('dashed-box');
     newBox.style.width = '200px';
     newBox.style.height = '100px';
@@ -698,7 +727,7 @@ export class LetsCreateComponent {
 
   deleteBoxReverse(id: any){
     const id_split = id.split('_')[1];
-    if (id_split == 3) {
+    if (id_split === 0) {
       this.isArrowDraw = false;
     }
     this.numBoxesReverse -= 1;
@@ -720,14 +749,13 @@ export class LetsCreateComponent {
     if (this.numBoxes === 0) {
       this.deletedNum = [];
     }
-
+    console.log(this.boxes)
   }
 
   deleteAll() {
     this.deletedNum = [];
     this.deletedNumReverse = [];
     this.imageSrc = "";
-    console.log(this.boxes);
     for (let i = 0; i < this.numBoxes; i++) {
       const elementToRemove = document.getElementById(`${i}`);
       elementToRemove?.remove();
@@ -740,6 +768,5 @@ export class LetsCreateComponent {
     this.numBoxes = 0;
     this.boxes.deleteBoxes();
     this.boxesReverse.deleteBoxes();
-    console.log(this.boxes);
   }
 }
