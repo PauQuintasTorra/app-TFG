@@ -41,6 +41,7 @@ export class LetsCreateComponent {
   @ViewChild('boxContainer') boxContainer!: ElementRef;
 
   validate(){
+    let message = ''
     console.log(this.boxes)
     const lengthComp = this.boxes.box.length;
     const lengthDesc = this.boxesReverse.box.length;
@@ -52,6 +53,12 @@ export class LetsCreateComponent {
         switch (typeComp) {
           case 'Wavelet':
             if(typeDesc === 'Reverse_Wavelet'){
+              const levelComp = this.boxes.box[i].class['waveletLevel'];
+              const levelDesc = this.boxesReverse.box[lengthComp - i - 1].class['waveletLevel'];
+              // const 
+              if(levelDesc === levelComp){
+                console.log(true);
+              }
               console.log(true);
             } else{
               console.log(false);
@@ -76,8 +83,11 @@ export class LetsCreateComponent {
         
       }
     } else {
+      message = ''
       console.log(false);
     }
+
+    return message;
   }
 
 
@@ -490,7 +500,9 @@ export class LetsCreateComponent {
 
     this.elementRef.nativeElement.appendChild(newBox);
     box.dashedBox = newBox;
-    this.boxes?.box.push(box);
+    if (this.boxes.box){
+      this.boxes.box.push(box);
+    }
 
     const newDelete = document.createElement('button');
     newDelete.textContent = 'DELETE';
@@ -731,7 +743,15 @@ export class LetsCreateComponent {
       this.isArrowDraw = false;
     }
     this.numBoxesReverse -= 1;
-    this.boxesReverse?.box.splice(id_split, 1);
+    let position = -1;
+    for(let i = 0; i < this.boxesReverse.box.length; i++){
+      if(this.boxesReverse.box[i].numberBox == id_split){
+        position = i;
+      }
+    }
+    if(position != -1){
+      this.boxesReverse?.box.splice(position, 1);
+    }
     this.deletedNumReverse.push(parseInt(id_split));
     if (this.numBoxesReverse === 0) {
       this.deletedNumReverse = [];
@@ -744,23 +764,30 @@ export class LetsCreateComponent {
       this.isArrowDraw = false;
     }
     this.numBoxes -= 1;
-    this.boxes?.box.splice(id, 1);
+    let position = -1;
+    for(let i = 0; i < this.boxes.box.length; i++){
+      if(this.boxes.box[i].numberBox == id){
+        position = i;
+      }
+    }
+    if(position != -1){
+      this.boxes?.box.splice(position, 1);
+    }
     this.deletedNum.push(parseInt(id));
     if (this.numBoxes === 0) {
       this.deletedNum = [];
     }
-    console.log(this.boxes)
   }
 
   deleteAll() {
     this.deletedNum = [];
     this.deletedNumReverse = [];
     this.imageSrc = "";
-    for (let i = 0; i < this.numBoxes; i++) {
+    for (let i = 0; i < 4; i++) {
       const elementToRemove = document.getElementById(`${i}`);
       elementToRemove?.remove();
     }
-    for (let i = 0; i < this.numBoxesReverse; i++) {
+    for (let i = 0; i < 4; i++) {
       const elementToRemove = document.getElementById(`R_${i}`);
       elementToRemove?.remove();
     }

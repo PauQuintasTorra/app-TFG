@@ -14,7 +14,7 @@ export class Quantizer {
 export class Box{
   dashedBox: any;
   class: any = {};
-  numberBox: number = 0;
+  numberBox: number = -1;
   
 
   getLeft(): number{
@@ -37,6 +37,5 @@ export class Boxes{
   deleteBoxes(): void{
     this.box = [];
   }
-
 
 }
