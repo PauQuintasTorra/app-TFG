@@ -1,16 +1,14 @@
 import { Component, Inject } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 
-import { MAT_DIALOG_DATA, MatDialogRef  } from '@angular/material/dialog';
-
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-box-type-dialog',
   templateUrl: './box-type-dialog.component.html',
-  styleUrls: ['./box-type-dialog.component.css']
+  styleUrls: ['./box-type-dialog.component.css'],
 })
 export class BoxTypeDialogComponent {
-
   selectedBoxType: string = 'Wavelet';
   inputValue: string = '';
   operationNumber: number = 1;
@@ -18,8 +16,9 @@ export class BoxTypeDialogComponent {
   q_step: number = 1;
   operationType: string = 'Add';
   waveletType: string = 'Haar';
-  returner: any = {type: ''};
-
+  encoderType: string = 'Zip';
+  predictorType: string = '1';
+  returner: any = { type: '' };
 
   constructor(
     public dialogRef: MatDialogRef<BoxTypeDialogComponent>,
@@ -46,7 +45,15 @@ export class BoxTypeDialogComponent {
       case 'Quantizer':
         this.returner.q_step = this.q_step;
         break;
-    
+
+      case 'EntropyEncoder':
+        this.returner.encoderType = this.encoderType;
+        break;
+
+      case 'Predictor':
+        this.returner.predictorType = this.predictorType;
+        break;
+
       default:
         break;
     }

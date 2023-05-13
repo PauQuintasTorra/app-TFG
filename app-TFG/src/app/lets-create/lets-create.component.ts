@@ -40,56 +40,55 @@ export class LetsCreateComponent {
 
   @ViewChild('boxContainer') boxContainer!: ElementRef;
 
-  validate(){
-    let message = ''
-    console.log(this.boxes)
+  validate() {
+    let message = '';
+    console.log(this.boxes);
     const lengthComp = this.boxes.box.length;
     const lengthDesc = this.boxesReverse.box.length;
-    if (lengthDesc === lengthComp){
-      for(let i = 0; i < lengthComp; i++){
+    if (lengthDesc === lengthComp) {
+      for (let i = 0; i < lengthComp; i++) {
         const typeComp = this.boxes.box[i].class['type'];
-        const typeDesc = this.boxesReverse.box[lengthComp - i - 1].class['type'];
-        
+        const typeDesc =
+          this.boxesReverse.box[lengthComp - i - 1].class['type'];
+
         switch (typeComp) {
           case 'Wavelet':
-            if(typeDesc === 'Reverse_Wavelet'){
+            if (typeDesc === 'Reverse_Wavelet') {
               const levelComp = this.boxes.box[i].class['waveletLevel'];
-              const levelDesc = this.boxesReverse.box[lengthComp - i - 1].class['waveletLevel'];
-              // const 
-              if(levelDesc === levelComp){
+              const levelDesc =
+                this.boxesReverse.box[lengthComp - i - 1].class['waveletLevel'];
+              // const
+              if (levelDesc === levelComp) {
                 console.log(true);
               }
               console.log(true);
-            } else{
+            } else {
               console.log(false);
-            }           
+            }
             break;
           case 'Quantizer':
-            if(typeDesc === 'Dequantizer'){
+            if (typeDesc === 'Dequantizer') {
               console.log(true);
-            } else{
+            } else {
               console.log(false);
             }
             break;
           case 'ArithmeticOperation':
-            if(typeDesc === 'ArithmeticOperation'){
+            if (typeDesc === 'ArithmeticOperation') {
               console.log(true);
-            } else{
+            } else {
               console.log(false);
             }
             break;
         }
-        
-        
       }
     } else {
-      message = ''
+      message = '';
       console.log(false);
     }
 
     return message;
   }
-
 
   selectImage(event: any) {
     this.selectedImage = <File>event.target.files[0];
@@ -128,33 +127,40 @@ export class LetsCreateComponent {
     this.http.post('/api/seeImage', formData).subscribe((data: any) => {
       console.log(data);
       this.processLogger = data;
-      var te = new Blob([JSON.stringify(data)], {type: 'text/plain'});
-      const url= window.URL.createObjectURL(te);
+      var te = new Blob([JSON.stringify(data)], { type: 'text/plain' });
+      const url = window.URL.createObjectURL(te);
       window.open(url);
     });
     this.isSent = true;
     this.isFormatChange = true;
   }
 
-  showImageNewWindow(){
-    this.http.post('/api/getFinalImage',this.originalFormat).subscribe((data: any) => {
-      // this.imageSrc = `data:image/${this.originalFormat};base64,` + data.image;
-      const imagen = new Image();
-      const imgElement = new Image();
-      imagen.src = 'data:image/' + this.originalFormat + ';base64,' + data.image;
-      imagen.onload = function() {
-        const canvas = document.createElement('canvas');
-        canvas.width = imagen.naturalWidth;
-        canvas.height = imagen.naturalHeight;
-        const ctx = canvas.getContext('2d');
-        ctx?.drawImage(imagen, 0, 0);
-        const imagenUrl = canvas.toDataURL();
-        imgElement.src = imagenUrl;
-        const newWindow = window.open('', '_blank', 'width=${screen.availWidth},height=${screen.availHeight}');
-        newWindow?.document.write('<html><body></body></html>');
-        newWindow?.document.body.appendChild(imgElement);
-      }
-    });
+  showImageNewWindow() {
+    this.http
+      .post('/api/getFinalImage', this.originalFormat)
+      .subscribe((data: any) => {
+        // this.imageSrc = `data:image/${this.originalFormat};base64,` + data.image;
+        const imagen = new Image();
+        const imgElement = new Image();
+        imagen.src =
+          'data:image/' + this.originalFormat + ';base64,' + data.image;
+        imagen.onload = function () {
+          const canvas = document.createElement('canvas');
+          canvas.width = imagen.naturalWidth;
+          canvas.height = imagen.naturalHeight;
+          const ctx = canvas.getContext('2d');
+          ctx?.drawImage(imagen, 0, 0);
+          const imagenUrl = canvas.toDataURL();
+          imgElement.src = imagenUrl;
+          const newWindow = window.open(
+            '',
+            '_blank',
+            'width=${screen.availWidth},height=${screen.availHeight}'
+          );
+          newWindow?.document.write('<html><body></body></html>');
+          newWindow?.document.body.appendChild(imgElement);
+        };
+      });
   }
 
   // invisible() {
@@ -213,6 +219,12 @@ export class LetsCreateComponent {
         break;
       case 'Dequantizer':
         this.createBoxReverse('red', resultClass);
+        break;
+      case 'EntropyDecoder':
+        this.createBoxReverse('purple', resultClass);
+        break;
+      case 'Reverse_Prediction':
+        this.createBoxReverse('brown', resultClass);
         break;
       default:
         break;
@@ -290,12 +302,29 @@ export class LetsCreateComponent {
         span2a.style.fontWeight = 'bold';
         newBox.appendChild(span2a);
         break;
+
       case 'Dequantizer':
         const span1q = document.createElement('span');
         span1q.classList.add('text');
         span1q.textContent = `Pas de Quantització: ${resultClass.q_step}`;
         span1q.style.fontWeight = 'bold';
         newBox.appendChild(span1q);
+        break;
+
+      case 'EntropyDecoder':
+        const span1e = document.createElement('span');
+        span1e.classList.add('text');
+        span1e.textContent = `Tipus: ${resultClass.decoderType}`;
+        span1e.style.fontWeight = 'bold';
+        newBox.appendChild(span1e);
+        break;
+
+      case 'Reverse_Prediction':
+        const span1p = document.createElement('span');
+        span1p.classList.add('text');
+        span1p.textContent = `Tipus: ${resultClass.predictorType}`;
+        span1p.style.fontWeight = 'bold';
+        newBox.appendChild(span1p);
         break;
 
       default:
@@ -418,12 +447,29 @@ export class LetsCreateComponent {
         span2a.style.fontWeight = 'bold';
         newBox.appendChild(span2a);
         break;
+
       case 'Dequantizer':
         const span1q = document.createElement('span');
         span1q.classList.add('text');
         span1q.textContent = `Pas de Quantització: ${resultClass.q_step}`;
         span1q.style.fontWeight = 'bold';
         newBox.appendChild(span1q);
+        break;
+
+      case 'EntropyDecoder':
+        const span1e = document.createElement('span');
+        span1e.classList.add('text');
+        span1e.textContent = `Tipus: ${resultClass.decoderType}`;
+        span1e.style.fontWeight = 'bold';
+        newBox.appendChild(span1e);
+        break;
+
+      case 'Reverse_Prediction':
+        const span1p = document.createElement('span');
+        span1p.classList.add('text');
+        span1p.textContent = `Tipus: ${resultClass.predictorType}`;
+        span1p.style.fontWeight = 'bold';
+        newBox.appendChild(span1p);
         break;
 
       default:
@@ -474,6 +520,13 @@ export class LetsCreateComponent {
       case 'Quantizer':
         this.createBox('red', resultClass);
         break;
+      case 'EntropyEncoder':
+        this.createBox('purple', resultClass);
+        break;
+      case 'Predictor':
+        this.createBox('brown', resultClass);
+        break;
+
       default:
         break;
     }
@@ -500,7 +553,7 @@ export class LetsCreateComponent {
 
     this.elementRef.nativeElement.appendChild(newBox);
     box.dashedBox = newBox;
-    if (this.boxes.box){
+    if (this.boxes.box) {
       this.boxes.box.push(box);
     }
 
@@ -552,12 +605,29 @@ export class LetsCreateComponent {
         span2a.style.fontWeight = 'bold';
         newBox.appendChild(span2a);
         break;
+
       case 'Quantizer':
         const span1q = document.createElement('span');
         span1q.classList.add('text');
         span1q.textContent = `Pas de Quantització: ${resultClass.q_step}`;
         span1q.style.fontWeight = 'bold';
         newBox.appendChild(span1q);
+        break;
+
+      case 'EntropyEncoder':
+        const span1e = document.createElement('span');
+        span1e.classList.add('text');
+        span1e.textContent = `Tipus: ${resultClass.encoderType}`;
+        span1e.style.fontWeight = 'bold';
+        newBox.appendChild(span1e);
+        break;
+
+      case 'Predictor':
+        const span1p = document.createElement('span');
+        span1p.classList.add('text');
+        span1p.textContent = `Tipus: ${resultClass.predictorType}`;
+        span1p.style.fontWeight = 'bold';
+        newBox.appendChild(span1p);
         break;
 
       default:
@@ -688,12 +758,29 @@ export class LetsCreateComponent {
         span2a.style.fontWeight = 'bold';
         newBox.appendChild(span2a);
         break;
+
       case 'Quantizer':
         const span1q = document.createElement('span');
         span1q.classList.add('text');
         span1q.textContent = `Pas de Quantització: ${resultClass.q_step}`;
         span1q.style.fontWeight = 'bold';
         newBox.appendChild(span1q);
+        break;
+
+      case 'EntropyEncoder':
+        const span1e = document.createElement('span');
+        span1e.classList.add('text');
+        span1e.textContent = `Tipus: ${resultClass.encoderType}`;
+        span1e.style.fontWeight = 'bold';
+        newBox.appendChild(span1e);
+        break;
+
+      case 'Predictor':
+        const span1p = document.createElement('span');
+        span1p.classList.add('text');
+        span1p.textContent = `Tipus: ${resultClass.predictorType}`;
+        span1p.style.fontWeight = 'bold';
+        newBox.appendChild(span1p);
         break;
 
       default:
@@ -737,19 +824,19 @@ export class LetsCreateComponent {
     }
   }
 
-  deleteBoxReverse(id: any){
+  deleteBoxReverse(id: any) {
     const id_split = id.split('_')[1];
     if (id_split === 0) {
       this.isArrowDraw = false;
     }
     this.numBoxesReverse -= 1;
     let position = -1;
-    for(let i = 0; i < this.boxesReverse.box.length; i++){
-      if(this.boxesReverse.box[i].numberBox == id_split){
+    for (let i = 0; i < this.boxesReverse.box.length; i++) {
+      if (this.boxesReverse.box[i].numberBox == id_split) {
         position = i;
       }
     }
-    if(position != -1){
+    if (position != -1) {
       this.boxesReverse?.box.splice(position, 1);
     }
     this.deletedNumReverse.push(parseInt(id_split));
@@ -758,19 +845,18 @@ export class LetsCreateComponent {
     }
   }
 
-
   deleteBox(id: any) {
     if (id == 3) {
       this.isArrowDraw = false;
     }
     this.numBoxes -= 1;
     let position = -1;
-    for(let i = 0; i < this.boxes.box.length; i++){
-      if(this.boxes.box[i].numberBox == id){
+    for (let i = 0; i < this.boxes.box.length; i++) {
+      if (this.boxes.box[i].numberBox == id) {
         position = i;
       }
     }
-    if(position != -1){
+    if (position != -1) {
       this.boxes?.box.splice(position, 1);
     }
     this.deletedNum.push(parseInt(id));
@@ -782,7 +868,7 @@ export class LetsCreateComponent {
   deleteAll() {
     this.deletedNum = [];
     this.deletedNumReverse = [];
-    this.imageSrc = "";
+    this.imageSrc = '';
     for (let i = 0; i < 4; i++) {
       const elementToRemove = document.getElementById(`${i}`);
       elementToRemove?.remove();
@@ -793,6 +879,7 @@ export class LetsCreateComponent {
     }
     this.isArrowDraw = false;
     this.numBoxes = 0;
+    this.numBoxesReverse = 0;
     this.boxes.deleteBoxes();
     this.boxesReverse.deleteBoxes();
   }

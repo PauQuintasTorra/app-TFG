@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-reverse-box-type-dialog',
   templateUrl: './reverse-box-type-dialog.component.html',
-  styleUrls: ['./reverse-box-type-dialog.component.css']
+  styleUrls: ['./reverse-box-type-dialog.component.css'],
 })
 export class ReverseBoxTypeDialogComponent {
   selectedBoxType: string = 'Reverse_Wavelet';
@@ -14,8 +14,9 @@ export class ReverseBoxTypeDialogComponent {
   q_step: number = 1;
   operationType: string = 'Add';
   waveletType: string = 'Haar';
-  returner: any = {type: ''};
-
+  decoderType: string = 'Zip';
+  predictorType: string = '1';
+  returner: any = { type: '' };
 
   constructor(
     public dialogRef: MatDialogRef<ReverseBoxTypeDialogComponent>,
@@ -42,7 +43,14 @@ export class ReverseBoxTypeDialogComponent {
       case 'Dequantizer':
         this.returner.q_step = this.q_step;
         break;
-    
+
+      case 'EntropyDecoder':
+        this.returner.decoderType = this.decoderType;
+        break;
+
+      case 'Reverse_Prediction':
+        this.returner.predictorType = this.predictorType;
+        break;
       default:
         break;
     }
