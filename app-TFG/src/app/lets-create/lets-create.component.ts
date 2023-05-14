@@ -41,47 +41,43 @@ export class LetsCreateComponent {
 
   @ViewChild('boxContainer') boxContainer!: ElementRef;
 
-  validate() {
-    let message = '';
-    console.log(this.boxes);
+  validateP() {
+    let message = 'FUNCIONA';
+    // console.log(this.boxes);
     const lengthComp = this.boxes.box.length;
     const lengthDesc = this.boxesReverse.box.length;
     if (lengthDesc === lengthComp) {
       for (let i = 0; i < lengthComp; i++) {
         const typeComp = this.boxes.box[i].class['type'];
-        const typeDesc =
-          this.boxesReverse.box[lengthComp - i - 1].class['type'];
+        const typeDesc = this.boxesReverse.box[i].class['type'];
 
         switch (typeComp) {
           case 'Wavelet':
             if (typeDesc === 'Reverse_Wavelet') {
               const levelComp = this.boxes.box[i].class['waveletLevel'];
-              const levelDesc =
-                this.boxesReverse.box[lengthComp - i - 1].class['waveletLevel'];
+              const levelDesc = this.boxesReverse.box[i].class['waveletLevel'];
               const w_typeComp = this.boxes.box[i].class['waveletType'];
-              const w_typeDesc =
-                this.boxesReverse.box[lengthComp - i - 1].class['waveletType'];
+              const w_typeDesc = this.boxesReverse.box[i].class['waveletType'];
               if (levelDesc === levelComp) {
                 if (w_typeComp !== w_typeDesc) {
-                  message = 'Wavelet type is not the same';
+                  return (message = 'Wavelet type is not the same');
                 }
               } else {
-                message = 'Wavelet level is not the same';
+                return (message = 'Wavelet level is not the same');
               }
             } else {
-              message = 'Inverse module is not a Reverse_Wavelet';
+              return (message = 'Inverse module is not a Reverse_Wavelet');
             }
             break;
           case 'Quantizer':
             if (typeDesc === 'Dequantizer') {
               const q_stepComp = this.boxes.box[i].class['q_step'];
-              const q_stepDesc =
-                this.boxesReverse.box[lengthComp - i - 1].class['q_step'];
+              const q_stepDesc = this.boxesReverse.box[i].class['q_step'];
               if (q_stepComp !== q_stepDesc) {
-                message = 'Quantizer q_step is not the same';
+                return (message = 'Quantizer q_step is not the same');
               }
             } else {
-              message = 'Inverse module is not a Dequantizer';
+              return (message = 'Inverse module is not a Dequantizer');
             }
             break;
           case 'ArithmeticOperation':
@@ -89,46 +85,48 @@ export class LetsCreateComponent {
               const operationTypeComp =
                 this.boxes.box[i].class['operationType'];
               const operationTypeDesc =
-                this.boxesReverse.box[lengthComp - i - 1].class[
-                  'operationType'
-                ];
+                this.boxesReverse.box[i].class['operationType'];
               const operationNumberComp =
                 this.boxes.box[i].class['operationNumber'];
               const operationNumberDesc =
-                this.boxesReverse.box[lengthComp - i - 1].class[
-                  'operationNumber'
-                ];
+                this.boxesReverse.box[i].class['operationNumber'];
               if (operationTypeComp === operationTypeDesc) {
                 if (operationNumberComp !== operationNumberDesc) {
-                  message = 'ArithmeticOperation number is not the same';
+                  return (message =
+                    'ArithmeticOperation number is not the same');
                 }
               } else {
-                message = 'ArithmeticOperation type is not the same';
+                return (message = 'ArithmeticOperation type is not the same');
               }
             } else {
-              message = 'Inverse module is not a ArithmeticOperation';
+              return (message = 'Inverse module is not a ArithmeticOperation');
             }
             break;
           case 'EntropyEncoder':
             if (typeDesc === 'EntropyDecoder') {
               const entropyTypeComp = this.boxes.box[i].class['encoderType'];
-              const entropyTypeDesc = this.boxes.box[i].class['decoderType'];
+              const entropyTypeDesc =
+                this.boxesReverse.box[i].class['decoderType'];
               if (entropyTypeComp !== entropyTypeDesc) {
-                message = 'EntropyEncoder type is not the same';
+                return (message = 'EntropyEncoder type is not the same');
               }
             } else {
-              message = 'Inverse module is not a EntropyDecoder';
+              return (message = 'Inverse module is not a EntropyDecoder');
             }
         }
       }
     } else {
-      message =
-        'The reverse boxes have to have the same length as the normal boxes';
+      return (message =
+        'The reverse boxes have to be the same length as the normal boxes');
     }
 
+    console.log(message);
     return message;
   }
 
+  validate() {
+    console.log(this.validateP());
+  }
   selectImage(event: any) {
     this.selectedImage = <File>event.target.files[0];
     this.isUploaded = true;
