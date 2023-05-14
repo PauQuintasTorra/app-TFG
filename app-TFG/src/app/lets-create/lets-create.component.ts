@@ -29,6 +29,12 @@ export class LetsCreateComponent {
   public isArrowDraw: boolean = false;
   public container: any;
   public processLogger: any = {};
+  public NewBoxToolTip: string =
+    'Crea una nova box per introduir un nou pas a la teva tècnica de compressió';
+  public NewReverseBoxToolTip: string =
+    'Crea una nova reverse box per introduir un nou pas en la teva tècnica de descompressió';
+  public deleteAllToolTip: string = 'Elimina totes les box';
+  public deleteToolTip: string = 'Elimina aquesta box';
 
   constructor(
     private elementRef: ElementRef,

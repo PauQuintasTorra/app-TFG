@@ -14,6 +14,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { ReverseBoxTypeDialogComponent } from './reverse-box-type-dialog/reverse-box-type-dialog.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -33,8 +34,9 @@ import { ReverseBoxTypeDialogComponent } from './reverse-box-type-dialog/reverse
     MatFormFieldModule,
     MatSelectModule,
     MatButtonModule,
+    MatTooltipModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
