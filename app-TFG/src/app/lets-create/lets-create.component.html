@@ -1,17 +1,19 @@
 <input type="file" name="image" (change)="selectImage($event)" /> <br />
 
-<button class="newBox" (click)="openBoxTypeDialog()">
-  New Box
-</button>
+<button class="newBox" (click)="openBoxTypeDialog()">New Box</button>
 <button class="contrariBox" (click)="openBoxTypeDialogReverse()">
   New Contra Box
 </button>
 
-<button class="sendImage" [disabled]="!isUploaded" (click)="executeProcess()"> VEURE </button>
-<button class="deleteAll" (click)="deleteAll()"> BORRAR TOT </button>
+<button class="sendImage" [disabled]="!isUploaded" (click)="executeProcess()">
+  VEURE
+</button>
+<button class="deleteAll" (click)="deleteAll()">BORRAR TOT</button>
 <!-- <button class="proces" (click)="proces()"> proces </button> -->
-<button class="imatge" (click)="showImageNewWindow()"> imatge </button>
-<button class="comprovacio" (click)="validate()"> SA POT? </button>
+<button class="imatge" [disabled]="!isImage" (click)="showImageNewWindow()">
+  imatge
+</button>
+<button class="comprovacio" (click)="validate()">SA POT?</button>
 <!-- <div class="image-container">
   <img [src]="imageSrc" alt="descripció-de-la-imatge">
 </div> -->

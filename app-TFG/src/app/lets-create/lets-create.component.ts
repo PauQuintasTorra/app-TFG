@@ -15,6 +15,7 @@ export class LetsCreateComponent {
   public isUploaded: boolean = false;
   public isFormatChange: boolean = false;
   public isSent: boolean = false;
+  public isImage: boolean = false;
   public nameImage: string = '';
   public imageSrc: string = '';
   public originalFormat: string = '';
@@ -126,6 +127,7 @@ export class LetsCreateComponent {
 
     this.http.post('/api/seeImage', formData).subscribe((data: any) => {
       console.log(data);
+      this.isImage = true;
       this.processLogger = data;
       var te = new Blob([JSON.stringify(data)], { type: 'text/plain' });
       const url = window.URL.createObjectURL(te);

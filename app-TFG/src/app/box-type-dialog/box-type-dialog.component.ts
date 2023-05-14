@@ -12,7 +12,7 @@ export class BoxTypeDialogComponent {
   selectedBoxType: string = 'Wavelet';
   inputValue: string = '';
   operationNumber: number = 1;
-  waveletLevel: number = 0;
+  waveletLevel: number = 1;
   q_step: number = 1;
   operationType: string = 'Add';
   waveletType: string = 'Haar';
