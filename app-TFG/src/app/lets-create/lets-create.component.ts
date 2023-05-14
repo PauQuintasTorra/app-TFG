@@ -58,34 +58,72 @@ export class LetsCreateComponent {
               const levelComp = this.boxes.box[i].class['waveletLevel'];
               const levelDesc =
                 this.boxesReverse.box[lengthComp - i - 1].class['waveletLevel'];
-              // const
+              const w_typeComp = this.boxes.box[i].class['waveletType'];
+              const w_typeDesc =
+                this.boxesReverse.box[lengthComp - i - 1].class['waveletType'];
               if (levelDesc === levelComp) {
-                console.log(true);
+                if (w_typeComp !== w_typeDesc) {
+                  message = 'Wavelet type is not the same';
+                }
+              } else {
+                message = 'Wavelet level is not the same';
               }
-              console.log(true);
             } else {
-              console.log(false);
+              message = 'Inverse module is not a Reverse_Wavelet';
             }
             break;
           case 'Quantizer':
             if (typeDesc === 'Dequantizer') {
-              console.log(true);
+              const q_stepComp = this.boxes.box[i].class['q_step'];
+              const q_stepDesc =
+                this.boxesReverse.box[lengthComp - i - 1].class['q_step'];
+              if (q_stepComp !== q_stepDesc) {
+                message = 'Quantizer q_step is not the same';
+              }
             } else {
-              console.log(false);
+              message = 'Inverse module is not a Dequantizer';
             }
             break;
           case 'ArithmeticOperation':
             if (typeDesc === 'ArithmeticOperation') {
-              console.log(true);
+              const operationTypeComp =
+                this.boxes.box[i].class['operationType'];
+              const operationTypeDesc =
+                this.boxesReverse.box[lengthComp - i - 1].class[
+                  'operationType'
+                ];
+              const operationNumberComp =
+                this.boxes.box[i].class['operationNumber'];
+              const operationNumberDesc =
+                this.boxesReverse.box[lengthComp - i - 1].class[
+                  'operationNumber'
+                ];
+              if (operationTypeComp === operationTypeDesc) {
+                if (operationNumberComp !== operationNumberDesc) {
+                  message = 'ArithmeticOperation number is not the same';
+                }
+              } else {
+                message = 'ArithmeticOperation type is not the same';
+              }
             } else {
-              console.log(false);
+              message = 'Inverse module is not a ArithmeticOperation';
             }
             break;
+          case 'EntropyEncoder':
+            if (typeDesc === 'EntropyDecoder') {
+              const entropyTypeComp = this.boxes.box[i].class['encoderType'];
+              const entropyTypeDesc = this.boxes.box[i].class['decoderType'];
+              if (entropyTypeComp !== entropyTypeDesc) {
+                message = 'EntropyEncoder type is not the same';
+              }
+            } else {
+              message = 'Inverse module is not a EntropyDecoder';
+            }
         }
       }
     } else {
-      message = '';
-      console.log(false);
+      message =
+        'The reverse boxes have to have the same length as the normal boxes';
     }
 
     return message;
