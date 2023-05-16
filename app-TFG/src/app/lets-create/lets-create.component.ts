@@ -16,6 +16,7 @@ export class LetsCreateComponent {
   public isFormatChange: boolean = false;
   public isSent: boolean = false;
   public isImage: boolean = false;
+  public isValid: boolean = false;
   public nameImage: string = '';
   public imageSrc: string = '';
   public originalFormat: string = '';
@@ -48,7 +49,18 @@ export class LetsCreateComponent {
   @ViewChild('boxContainer') boxContainer!: ElementRef;
 
   validateP() {
-    let message = 'FUNCIONA';
+    let message: string = 'FUNCIONA';
+    let theresWavelet: boolean = false;
+    let theresQuantizer: boolean = false;
+    let theresArithmeticOperation: boolean = false;
+    let theresPredictor: boolean = false;
+    let theresEntropyEncoder: boolean = false;
+    let positionQuantizer: number = -1;
+    let positionWavelet: number = -1;
+    let positionEntropyEncoder: number = -1;
+    let positionPredictor: number = -1;
+    let positionArithmeticOperation: number = -1;
+
     // console.log(this.boxes);
     const lengthComp = this.boxes.box.length;
     const lengthDesc = this.boxesReverse.box.length;
@@ -59,66 +71,94 @@ export class LetsCreateComponent {
 
         switch (typeComp) {
           case 'Wavelet':
-            if (typeDesc === 'Reverse_Wavelet') {
-              const levelComp = this.boxes.box[i].class['waveletLevel'];
-              const levelDesc = this.boxesReverse.box[i].class['waveletLevel'];
-              const w_typeComp = this.boxes.box[i].class['waveletType'];
-              const w_typeDesc = this.boxesReverse.box[i].class['waveletType'];
-              if (levelDesc === levelComp) {
-                if (w_typeComp !== w_typeDesc) {
-                  return (message = 'Wavelet type is not the same');
+            if (theresWavelet) {
+              message = 'Can not be more than 1 Wavelet modules';
+            } else {
+              theresWavelet = true;
+              positionWavelet = i;
+              if (typeDesc === 'Reverse_Wavelet') {
+                const levelComp = this.boxes.box[i].class['waveletLevel'];
+                const levelDesc =
+                  this.boxesReverse.box[i].class['waveletLevel'];
+                const w_typeComp = this.boxes.box[i].class['waveletType'];
+                const w_typeDesc =
+                  this.boxesReverse.box[i].class['waveletType'];
+                if (levelDesc === levelComp) {
+                  if (w_typeComp !== w_typeDesc) {
+                    return (message = 'Wavelet type is not the same');
+                  }
+                } else {
+                  return (message = 'Wavelet level is not the same');
                 }
               } else {
-                return (message = 'Wavelet level is not the same');
+                return (message = 'Inverse module is not a Reverse_Wavelet');
               }
-            } else {
-              return (message = 'Inverse module is not a Reverse_Wavelet');
             }
             break;
           case 'Quantizer':
-            if (typeDesc === 'Dequantizer') {
-              const q_stepComp = this.boxes.box[i].class['q_step'];
-              const q_stepDesc = this.boxesReverse.box[i].class['q_step'];
-              if (q_stepComp !== q_stepDesc) {
-                return (message = 'Quantizer q_step is not the same');
-              }
+            if (theresQuantizer) {
+              message = 'Can not be more than 1 Quantizer modules';
             } else {
-              return (message = 'Inverse module is not a Dequantizer');
+              theresQuantizer = true;
+              positionQuantizer = i;
+              if (typeDesc === 'Dequantizer') {
+                const q_stepComp = this.boxes.box[i].class['q_step'];
+                const q_stepDesc = this.boxesReverse.box[i].class['q_step'];
+                if (q_stepComp !== q_stepDesc) {
+                  return (message = 'Quantizer q_step is not the same');
+                }
+              } else {
+                return (message = 'Inverse module is not a Dequantizer');
+              }
             }
             break;
           case 'ArithmeticOperation':
-            if (typeDesc === 'ArithmeticOperation') {
-              const operationTypeComp =
-                this.boxes.box[i].class['operationType'];
-              const operationTypeDesc =
-                this.boxesReverse.box[i].class['operationType'];
-              const operationNumberComp =
-                this.boxes.box[i].class['operationNumber'];
-              const operationNumberDesc =
-                this.boxesReverse.box[i].class['operationNumber'];
-              if (operationTypeComp === operationTypeDesc) {
-                if (operationNumberComp !== operationNumberDesc) {
-                  return (message =
-                    'ArithmeticOperation number is not the same');
+            if (theresArithmeticOperation) {
+              message = 'Can not be more than 1 ArithmeticOperation modules';
+            } else {
+              theresArithmeticOperation = true;
+              positionArithmeticOperation = i;
+              if (typeDesc === 'ArithmeticOperation') {
+                const operationTypeComp =
+                  this.boxes.box[i].class['operationType'];
+                const operationTypeDesc =
+                  this.boxesReverse.box[i].class['operationType'];
+                const operationNumberComp =
+                  this.boxes.box[i].class['operationNumber'];
+                const operationNumberDesc =
+                  this.boxesReverse.box[i].class['operationNumber'];
+                if (operationTypeComp === operationTypeDesc) {
+                  if (operationNumberComp !== operationNumberDesc) {
+                    return (message =
+                      'ArithmeticOperation number is not the same');
+                  }
+                } else {
+                  return (message = 'ArithmeticOperation type is not the same');
                 }
               } else {
-                return (message = 'ArithmeticOperation type is not the same');
+                return (message =
+                  'Inverse module is not a ArithmeticOperation');
               }
-            } else {
-              return (message = 'Inverse module is not a ArithmeticOperation');
             }
             break;
           case 'EntropyEncoder':
-            if (typeDesc === 'EntropyDecoder') {
-              const entropyTypeComp = this.boxes.box[i].class['encoderType'];
-              const entropyTypeDesc =
-                this.boxesReverse.box[i].class['decoderType'];
-              if (entropyTypeComp !== entropyTypeDesc) {
-                return (message = 'EntropyEncoder type is not the same');
-              }
+            if (theresEntropyEncoder) {
+              message = 'Can not be more than 1 EntropyEncoder modules';
             } else {
-              return (message = 'Inverse module is not a EntropyDecoder');
+              theresEntropyEncoder = true;
+              positionEntropyEncoder = i;
+              if (typeDesc === 'EntropyDecoder') {
+                const entropyTypeComp = this.boxes.box[i].class['encoderType'];
+                const entropyTypeDesc =
+                  this.boxesReverse.box[i].class['decoderType'];
+                if (entropyTypeComp !== entropyTypeDesc) {
+                  return (message = 'EntropyEncoder type is not the same');
+                }
+              } else {
+                return (message = 'Inverse module is not a EntropyDecoder');
+              }
             }
+            break;
         }
       }
     } else {
@@ -126,12 +166,28 @@ export class LetsCreateComponent {
         'The reverse boxes have to be the same length as the normal boxes');
     }
 
-    console.log(message);
+    if (message === 'FUNCIONA') {
+      if (theresEntropyEncoder) {
+        if (this.boxes.box[this.boxes.box.length - 1].class['type'] !== '') {
+          message = 'The EntropyEncoder must be the last box';
+        }
+      }
+      if (theresWavelet && theresQuantizer) {
+        if (positionWavelet > positionQuantizer) {
+          message = 'WARNING: The Wavelet normally goes before Quantizer';
+        }
+      }
+    }
+
     return message;
   }
 
   validate() {
-    console.log(this.validateP());
+    const valid = this.validateP();
+    console.log(valid);
+    if (valid === 'FUNCIONA') {
+      this.isValid = true;
+    }
   }
   selectImage(event: any) {
     this.selectedImage = <File>event.target.files[0];

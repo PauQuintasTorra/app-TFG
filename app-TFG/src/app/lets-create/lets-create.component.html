@@ -15,8 +15,12 @@
   New Reverse Box
 </button>
 
-<button class="sendImage" [disabled]="!isUploaded" (click)="executeProcess()">
-  VEURE
+<button
+  class="sendImage"
+  [disabled]="!isValid && !isUploaded"
+  (click)="executeProcess()"
+>
+  EXECUTAR
 </button>
 <button class="deleteAll" (click)="deleteAll()" [matTooltip]="deleteAllToolTip">
   BORRAR TOT
