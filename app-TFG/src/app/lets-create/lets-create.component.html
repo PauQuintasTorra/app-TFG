@@ -17,7 +17,7 @@
 
 <button
   class="sendImage"
-  [disabled]="!isValid && !isUploaded"
+  [disabled]="!(isValid && isUploaded)"
   (click)="executeProcess()"
 >
   EXECUTAR
