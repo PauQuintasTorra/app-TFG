@@ -168,15 +168,15 @@ export class LetsCreateComponent {
 
     if (message === 'FUNCIONA') {
       if (theresEntropyEncoder) {
-        if (this.boxes.box[this.boxes.box.length - 1].class['type'] !== '') {
+        if (this.boxes.box[this.boxes.box.length - 1].class['type'] !== 'EntropyEncoder') {
           message = 'The EntropyEncoder must be the last box';
         }
       }
-      if (theresWavelet && theresQuantizer) {
-        if (positionWavelet > positionQuantizer) {
-          message = 'WARNING: The Wavelet normally goes before Quantizer';
-        }
-      }
+      // if (theresWavelet && theresQuantizer) {
+      //   if (positionWavelet > positionQuantizer) {
+      //     message = 'WARNING: The Wavelet normally goes before Quantizer';
+      //   }
+      // }
     }
 
     return message;
@@ -187,6 +187,8 @@ export class LetsCreateComponent {
     console.log(valid);
     if (valid === 'FUNCIONA') {
       this.isValid = true;
+    } else{
+      alert(valid);
     }
   }
   selectImage(event: any) {
@@ -229,37 +231,56 @@ export class LetsCreateComponent {
       this.processLogger = data;
       var te = new Blob([JSON.stringify(data)], { type: 'text/plain' });
       const url = window.URL.createObjectURL(te);
+      this.ableAllImagesButtons();
       window.open(url);
     });
     this.isSent = true;
     this.isFormatChange = true;
   }
 
+  ableAllImagesButtons(){
+    for(let i = 0; i < 4; i++){
+      const elementToRemove = document.getElementById(`Image_${i}`);
+      elementToRemove?.removeAttribute('disabled');
+    }
+    for(let j = 0; j < 4; j++){
+      const elementToRemove = document.getElementById(`R_Image_${j}`);
+      elementToRemove?.removeAttribute('disabled');
+      
+    }
+  }
+
+  newWindowImage(data: any){
+    const imagen = new Image();
+    const imgElement = new Image();
+    imagen.src = 'data:image/' + this.originalFormat + ';base64,' + data.image;
+    imagen.onload = function () {
+      const canvas = document.createElement('canvas');
+      canvas.width = imagen.naturalWidth;
+      canvas.height = imagen.naturalHeight;
+      const ctx = canvas.getContext('2d');
+      ctx?.drawImage(imagen, 0, 0);
+      const imagenUrl = canvas.toDataURL();
+      imgElement.src = imagenUrl;
+      const newWindow = window.open(
+        '',
+        '_blank',
+        'width=${screen.availWidth},height=${screen.availHeight}'
+      );
+      newWindow?.document.write('<html><body></body></html>');
+      newWindow?.document.body.appendChild(imgElement);
+    }
+  }
+
   showImageNewWindow() {
+    console.log(this.originalFormat);
+    const formData = new FormData();
+    formData.append('originalFormat', this.originalFormat);
     this.http
-      .post('/api/getFinalImage', this.originalFormat)
+      .post('/api/getFinalImage', formData)
       .subscribe((data: any) => {
         // this.imageSrc = `data:image/${this.originalFormat};base64,` + data.image;
-        const imagen = new Image();
-        const imgElement = new Image();
-        imagen.src =
-          'data:image/' + this.originalFormat + ';base64,' + data.image;
-        imagen.onload = function () {
-          const canvas = document.createElement('canvas');
-          canvas.width = imagen.naturalWidth;
-          canvas.height = imagen.naturalHeight;
-          const ctx = canvas.getContext('2d');
-          ctx?.drawImage(imagen, 0, 0);
-          const imagenUrl = canvas.toDataURL();
-          imgElement.src = imagenUrl;
-          const newWindow = window.open(
-            '',
-            '_blank',
-            'width=${screen.availWidth},height=${screen.availHeight}'
-          );
-          newWindow?.document.write('<html><body></body></html>');
-          newWindow?.document.body.appendChild(imgElement);
-        };
+          this.newWindowImage(data);
       });
   }
 
@@ -471,6 +492,7 @@ export class LetsCreateComponent {
         );
       }
       this.numBoxesReverse++;
+      this.isValid = false;
     } else {
       alert("You can't create more than 4 boxes");
     }
@@ -533,6 +555,27 @@ export class LetsCreateComponent {
         span2w.textContent = `Tipus: ${resultClass.waveletType}`;
         span2w.style.fontWeight = 'bold';
         newBox.appendChild(span2w);
+
+        const newImageOpen1w = document.createElement('button');
+        newImageOpen1w.textContent = `IMAGE`;
+        newImageOpen1w.id = `R_Image_${this.numBoxes}`;
+        newImageOpen1w.disabled = true;
+        newImageOpen1w.addEventListener('click', () => {
+          const formData = new FormData();
+          formData.append('originalFormat', this.originalFormat);
+          formData.append('name', `reverse_wavelet_${resultClass.waveletType}_${resultClass.waveletLevel}`);
+          this.http
+          .post('/api/getImageCustom', formData)
+          .subscribe((data: any) => {
+            this.newWindowImage(data);
+          });
+        });
+    
+        newImageOpen1w.style.position = 'absolute';
+        newImageOpen1w.style.top = `${parseInt(newBox.style.height) + 20}px`;
+        newImageOpen1w.style.left = '60%';
+    
+        newBox.appendChild(newImageOpen1w);
         break;
 
       case 'ArithmeticOperation':
@@ -668,7 +711,11 @@ export class LetsCreateComponent {
 
     newDelete.style.position = 'absolute';
     newDelete.style.top = `${parseInt(newBox.style.height) + 20}px`;
-    newDelete.style.left = '35%';
+    if(resultClass.type == 'Wavelet' || resultClass.type == 'Quantizer' || resultClass.type == 'ArithmeticOperation'){
+      newDelete.style.left = '10%';
+    } else{
+      newDelete.style.left = '35%';
+    }
 
     newBox.appendChild(newDelete);
 
@@ -691,6 +738,27 @@ export class LetsCreateComponent {
         span2w.textContent = `Tipus: ${resultClass.waveletType}`;
         span2w.style.fontWeight = 'bold';
         newBox.appendChild(span2w);
+
+        const newImageOpen1w = document.createElement('button');
+        newImageOpen1w.textContent = `IMAGE`;
+        newImageOpen1w.id = `Image_${this.numBoxes}`;
+        newImageOpen1w.disabled = true;
+        newImageOpen1w.addEventListener('click', () => {
+          const formData = new FormData();
+          formData.append('originalFormat', this.originalFormat);
+          formData.append('name', `wavelet_${resultClass.waveletType}_${resultClass.waveletLevel}`);
+          this.http
+          .post('/api/getImageCustom', formData)
+          .subscribe((data: any) => {
+            this.newWindowImage(data);
+          });
+        });
+    
+        newImageOpen1w.style.position = 'absolute';
+        newImageOpen1w.style.top = `${parseInt(newBox.style.height) + 20}px`;
+        newImageOpen1w.style.left = '60%';
+    
+        newBox.appendChild(newImageOpen1w);
         break;
 
       case 'ArithmeticOperation':
@@ -704,6 +772,26 @@ export class LetsCreateComponent {
         span2a.textContent = `Tipus: ${resultClass.operationType}`;
         span2a.style.fontWeight = 'bold';
         newBox.appendChild(span2a);
+        const newImageOpen1a = document.createElement('button');
+        newImageOpen1a.textContent = `IMAGE`;
+        newImageOpen1a.id = `Image_${this.numBoxes}`;
+        newImageOpen1a.disabled = true;
+        newImageOpen1a.addEventListener('click', () => {
+          const formData = new FormData();
+          formData.append('originalFormat', this.originalFormat);
+          formData.append('name', `${resultClass.operationType}_${resultClass.operationNumber}`);
+          this.http
+          .post('/api/getImageCustom', formData)
+          .subscribe((data: any) => {
+            this.newWindowImage(data);
+          });
+        });
+    
+        newImageOpen1a.style.position = 'absolute';
+        newImageOpen1a.style.top = `${parseInt(newBox.style.height) + 20}px`;
+        newImageOpen1a.style.left = '60%';
+    
+        newBox.appendChild(newImageOpen1a);
         break;
 
       case 'Quantizer':
@@ -712,6 +800,26 @@ export class LetsCreateComponent {
         span1q.textContent = `Pas de Quantització: ${resultClass.q_step}`;
         span1q.style.fontWeight = 'bold';
         newBox.appendChild(span1q);
+        const newImageOpen1q = document.createElement('button');
+        newImageOpen1q.textContent = `IMAGE`;
+        newImageOpen1q.id = `Image_${this.numBoxes}`;
+        newImageOpen1q.disabled = true;
+        newImageOpen1q.addEventListener('click', () => {
+          const formData = new FormData();
+          formData.append('originalFormat', this.originalFormat);
+          formData.append('name', `quantizer_${resultClass.q_step}`);
+          this.http
+          .post('/api/getImageCustom', formData)
+          .subscribe((data: any) => {
+            this.newWindowImage(data);
+          });
+        });
+    
+        newImageOpen1q.style.position = 'absolute';
+        newImageOpen1q.style.top = `${parseInt(newBox.style.height) + 20}px`;
+        newImageOpen1q.style.left = '60%';
+    
+        newBox.appendChild(newImageOpen1q);
         break;
 
       case 'EntropyEncoder':
@@ -782,6 +890,7 @@ export class LetsCreateComponent {
         );
       }
       this.numBoxes++;
+      this.isValid = false;
     } else {
       alert("You can't create more than 4 boxes");
     }
@@ -963,6 +1072,8 @@ export class LetsCreateComponent {
     if (this.numBoxes === 0) {
       this.deletedNum = [];
     }
+
+    this.isValid = false;
   }
 
   deleteAll() {
@@ -978,6 +1089,7 @@ export class LetsCreateComponent {
       elementToRemove?.remove();
     }
     this.isArrowDraw = false;
+    this.isValid = false;
     this.numBoxes = 0;
     this.numBoxesReverse = 0;
     this.boxes.deleteBoxes();
