@@ -1,0 +1,25 @@
+<h2 mat-dialog-title>Choose your format to download</h2>
+<div mat-dialog-content>
+    <label>
+        <input type="radio" name="format" [(ngModel)]="selectedFormat" value="excel">
+        Excel
+      </label>
+      <label>
+        <input type="radio" name="format" [(ngModel)]="selectedFormat" value="csv">
+        CSV
+      </label>
+      <label>
+        <input type="radio" name="format" [(ngModel)]="selectedFormat" value="json">
+        JSON
+      </label>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="onSaveClick()"
+  >
+    Save
+  </button>
+</div>

@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { BoxTypeDialogComponent } from '../box-type-dialog/box-type-dialog.component';
 import { ReverseBoxTypeDialogComponent } from '../reverse-box-type-dialog/reverse-box-type-dialog.component';
+import { DownloadFromJsonFormatComponent } from '../download-from-json-format/download-from-json-format.component';
 
 @Component({
   selector: 'app-lets-create',
@@ -34,6 +35,7 @@ export class LetsCreateComponent {
     'Crea una nova box per introduir un nou pas a la teva tècnica de compressió';
   public NewReverseBoxToolTip: string =
     'Crea una nova reverse box per introduir un nou pas en la teva tècnica de descompressió';
+  public DownloadToolTip: string = 'Escull el format per descarregar les dades creades en execucions anteriors';
   public deleteAllToolTip: string = 'Elimina totes les box';
   public deleteToolTip: string = 'Elimina aquesta box';
 
@@ -67,7 +69,7 @@ export class LetsCreateComponent {
     if (lengthDesc === lengthComp) {
       for (let i = 0; i < lengthComp; i++) {
         const typeComp = this.boxes.box[i].class['type'];
-        const typeDesc = this.boxesReverse.box[i].class['type'];
+        const typeDesc = this.boxesReverse.box[lengthComp -1 - i].class['type'];
 
         switch (typeComp) {
           case 'Wavelet':
@@ -79,10 +81,10 @@ export class LetsCreateComponent {
               if (typeDesc === 'Reverse_Wavelet') {
                 const levelComp = this.boxes.box[i].class['waveletLevel'];
                 const levelDesc =
-                  this.boxesReverse.box[i].class['waveletLevel'];
+                  this.boxesReverse.box[lengthComp -1 - i].class['waveletLevel'];
                 const w_typeComp = this.boxes.box[i].class['waveletType'];
                 const w_typeDesc =
-                  this.boxesReverse.box[i].class['waveletType'];
+                  this.boxesReverse.box[lengthComp -1 - i].class['waveletType'];
                 if (levelDesc === levelComp) {
                   if (w_typeComp !== w_typeDesc) {
                     return (message = 'Wavelet type is not the same');
@@ -103,7 +105,7 @@ export class LetsCreateComponent {
               positionQuantizer = i;
               if (typeDesc === 'Dequantizer') {
                 const q_stepComp = this.boxes.box[i].class['q_step'];
-                const q_stepDesc = this.boxesReverse.box[i].class['q_step'];
+                const q_stepDesc = this.boxesReverse.box[lengthComp -1 - i].class['q_step'];
                 if (q_stepComp !== q_stepDesc) {
                   return (message = 'Quantizer q_step is not the same');
                 }
@@ -122,19 +124,42 @@ export class LetsCreateComponent {
                 const operationTypeComp =
                   this.boxes.box[i].class['operationType'];
                 const operationTypeDesc =
-                  this.boxesReverse.box[i].class['operationType'];
+                  this.boxesReverse.box[lengthComp -1 - i].class['operationType'];
                 const operationNumberComp =
                   this.boxes.box[i].class['operationNumber'];
                 const operationNumberDesc =
-                  this.boxesReverse.box[i].class['operationNumber'];
-                if (operationTypeComp === operationTypeDesc) {
-                  if (operationNumberComp !== operationNumberDesc) {
-                    return (message =
-                      'ArithmeticOperation number is not the same');
+                  this.boxesReverse.box[lengthComp -1 - i].class['operationNumber'];
+                
+                switch (operationTypeComp) {
+                  case 'Add':
+                    if(operationTypeDesc !== 'Sub'){
+                      return (message = 'ArithmeticOperation type is not the correct one');
+                    }
+                    break;
+                  case 'Sub':
+                  if(operationTypeDesc !== 'Add'){
+                    return (message = 'ArithmeticOperation type is not the correct one');
                   }
-                } else {
-                  return (message = 'ArithmeticOperation type is not the same');
+                  break;
+                  case 'Mult':
+                  if(operationTypeDesc !== 'Div'){
+                    return (message = 'ArithmeticOperation type is not the correct one');
+                  }
+                  break;
+                  case 'Div':
+                  if(operationTypeDesc !== 'Mult'){
+                    return (message = 'ArithmeticOperation type is not the correct one');
+                  }
+                  break;
+                  default:
+                    break;
+                } 
+
+                if (operationNumberComp !== operationNumberDesc) {
+                  return (message =
+                    'ArithmeticOperation number is not the same');
                 }
+
               } else {
                 return (message =
                   'Inverse module is not a ArithmeticOperation');
@@ -150,7 +175,7 @@ export class LetsCreateComponent {
               if (typeDesc === 'EntropyDecoder') {
                 const entropyTypeComp = this.boxes.box[i].class['encoderType'];
                 const entropyTypeDesc =
-                  this.boxesReverse.box[i].class['decoderType'];
+                  this.boxesReverse.box[lengthComp -1 - i].class['decoderType'];
                 if (entropyTypeComp !== entropyTypeDesc) {
                   return (message = 'EntropyEncoder type is not the same');
                 }
@@ -168,7 +193,7 @@ export class LetsCreateComponent {
 
     if (message === 'FUNCIONA') {
       if (theresEntropyEncoder) {
-        if (this.boxes.box[this.boxes.box.length - 1].class['type'] !== 'EntropyEncoder') {
+        if (this.boxes.box[lengthComp - 1].class['type'] !== 'EntropyEncoder') {
           message = 'The EntropyEncoder must be the last box';
         }
       }
@@ -330,6 +355,16 @@ export class LetsCreateComponent {
     });
   }
 
+  openDownloadFromJsonFormatDialog(): void {
+    const dialogRef = this.dialog.open(DownloadFromJsonFormatComponent, {
+      width: '400px',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(result);
+    });
+  }
+
   executeSelectedOptionReverse(resultClass: any) {
     switch (this.selectedOption) {
       case 'Reverse_Wavelet':
@@ -386,7 +421,11 @@ export class LetsCreateComponent {
 
     newDelete.style.position = 'absolute';
     newDelete.style.top = `${parseInt(newBox.style.height) + 20}px`;
-    newDelete.style.left = '35%';
+    if(resultClass.type == 'Reverse_Wavelet' || resultClass.type == 'Dequantizer' || resultClass.type == 'ArithmeticOperation'){
+      newDelete.style.left = '10%';
+    } else{
+      newDelete.style.left = '35%';
+    }
 
     newBox.appendChild(newDelete);
 
@@ -409,6 +448,27 @@ export class LetsCreateComponent {
         span2w.textContent = `Tipus: ${resultClass.waveletType}`;
         span2w.style.fontWeight = 'bold';
         newBox.appendChild(span2w);
+
+        const newImageOpen1w = document.createElement('button');
+        newImageOpen1w.textContent = `IMAGE`;
+        newImageOpen1w.id = `R_Image_${this.numBoxesReverse}`;
+        newImageOpen1w.disabled = true;
+        newImageOpen1w.addEventListener('click', () => {
+          const formData = new FormData();
+          formData.append('originalFormat', this.originalFormat);
+          formData.append('name', `reverse_wavelet_${resultClass.waveletType}_${resultClass.waveletLevel}`);
+          this.http
+          .post('/api/getImageCustom', formData)
+          .subscribe((data: any) => {
+            this.newWindowImage(data);
+          });
+        });
+    
+        newImageOpen1w.style.position = 'absolute';
+        newImageOpen1w.style.top = `${parseInt(newBox.style.height) + 20}px`;
+        newImageOpen1w.style.left = '60%';
+    
+        newBox.appendChild(newImageOpen1w);
         break;
 
       case 'ArithmeticOperation':
@@ -422,6 +482,27 @@ export class LetsCreateComponent {
         span2a.textContent = `Tipus: ${resultClass.operationType}`;
         span2a.style.fontWeight = 'bold';
         newBox.appendChild(span2a);
+
+        const newImageOpen1a = document.createElement('button');
+        newImageOpen1a.textContent = `IMAGE`;
+        newImageOpen1a.id = `R_Image_${this.numBoxesReverse}`;
+        newImageOpen1a.disabled = true;
+        newImageOpen1a.addEventListener('click', () => {
+          const formData = new FormData();
+          formData.append('originalFormat', this.originalFormat);
+          formData.append('name', `${resultClass.operationType}_${resultClass.operationNumber}`);
+          this.http
+          .post('/api/getImageCustom', formData)
+          .subscribe((data: any) => {
+            this.newWindowImage(data);
+          });
+        });
+    
+        newImageOpen1a.style.position = 'absolute';
+        newImageOpen1a.style.top = `${parseInt(newBox.style.height) + 20}px`;
+        newImageOpen1a.style.left = '60%';
+    
+        newBox.appendChild(newImageOpen1a);
         break;
 
       case 'Dequantizer':
@@ -430,6 +511,26 @@ export class LetsCreateComponent {
         span1q.textContent = `Pas de Quantització: ${resultClass.q_step}`;
         span1q.style.fontWeight = 'bold';
         newBox.appendChild(span1q);
+        const newImageOpen1q = document.createElement('button');
+        newImageOpen1q.textContent = `IMAGE`;
+        newImageOpen1q.id = `R_Image_${this.numBoxesReverse}`;
+        newImageOpen1q.disabled = true;
+        newImageOpen1q.addEventListener('click', () => {
+          const formData = new FormData();
+          formData.append('originalFormat', this.originalFormat);
+          formData.append('name', `dequantizer_${resultClass.q_step}`);
+          this.http
+          .post('/api/getImageCustom', formData)
+          .subscribe((data: any) => {
+            this.newWindowImage(data);
+          });
+        });
+    
+        newImageOpen1q.style.position = 'absolute';
+        newImageOpen1q.style.top = `${parseInt(newBox.style.height) + 20}px`;
+        newImageOpen1q.style.left = '60%';
+    
+        newBox.appendChild(newImageOpen1q);
         break;
 
       case 'EntropyDecoder':
@@ -532,7 +633,11 @@ export class LetsCreateComponent {
 
     newDelete.style.position = 'absolute';
     newDelete.style.top = `${parseInt(newBox.style.height) + 20}px`;
-    newDelete.style.left = '35%';
+    if(resultClass.type == 'Reverse_Wavelet' || resultClass.type == 'Dequantizer' || resultClass.type == 'ArithmeticOperation'){
+      newDelete.style.left = '10%';
+    } else{
+      newDelete.style.left = '35%';
+    }
 
     newBox.appendChild(newDelete);
 
@@ -558,7 +663,7 @@ export class LetsCreateComponent {
 
         const newImageOpen1w = document.createElement('button');
         newImageOpen1w.textContent = `IMAGE`;
-        newImageOpen1w.id = `R_Image_${this.numBoxes}`;
+        newImageOpen1w.id = `R_Image_${numBox}`;
         newImageOpen1w.disabled = true;
         newImageOpen1w.addEventListener('click', () => {
           const formData = new FormData();
@@ -589,6 +694,27 @@ export class LetsCreateComponent {
         span2a.textContent = `Tipus: ${resultClass.operationType}`;
         span2a.style.fontWeight = 'bold';
         newBox.appendChild(span2a);
+
+        const newImageOpen1a = document.createElement('button');
+        newImageOpen1a.textContent = `IMAGE`;
+        newImageOpen1a.id = `R_Image_${numBox}`;
+        newImageOpen1a.disabled = true;
+        newImageOpen1a.addEventListener('click', () => {
+          const formData = new FormData();
+          formData.append('originalFormat', this.originalFormat);
+          formData.append('name', `${resultClass.operationType}_${resultClass.operationNumber}`);
+          this.http
+          .post('/api/getImageCustom', formData)
+          .subscribe((data: any) => {
+            this.newWindowImage(data);
+          });
+        });
+    
+        newImageOpen1a.style.position = 'absolute';
+        newImageOpen1a.style.top = `${parseInt(newBox.style.height) + 20}px`;
+        newImageOpen1a.style.left = '60%';
+    
+        newBox.appendChild(newImageOpen1a);
         break;
 
       case 'Dequantizer':
@@ -597,6 +723,26 @@ export class LetsCreateComponent {
         span1q.textContent = `Pas de Quantització: ${resultClass.q_step}`;
         span1q.style.fontWeight = 'bold';
         newBox.appendChild(span1q);
+        const newImageOpen1q = document.createElement('button');
+        newImageOpen1q.textContent = `IMAGE`;
+        newImageOpen1q.id = `R_Image_${numBox}`;
+        newImageOpen1q.disabled = true;
+        newImageOpen1q.addEventListener('click', () => {
+          const formData = new FormData();
+          formData.append('originalFormat', this.originalFormat);
+          formData.append('name', `dequantizer_${resultClass.q_step}`);
+          this.http
+          .post('/api/getImageCustom', formData)
+          .subscribe((data: any) => {
+            this.newWindowImage(data);
+          });
+        });
+    
+        newImageOpen1q.style.position = 'absolute';
+        newImageOpen1q.style.top = `${parseInt(newBox.style.height) + 20}px`;
+        newImageOpen1q.style.left = '60%';
+    
+        newBox.appendChild(newImageOpen1q);
         break;
 
       case 'EntropyDecoder':
@@ -647,10 +793,6 @@ export class LetsCreateComponent {
       }
     }
   }
-
-  // FUNCTION TO REMOVE
-  // const elementToRemove = document.getElementById('my-element');
-  // elementToRemove.remove();
 
   executeSelectedOption(resultClass: any) {
     switch (this.selectedOption) {
@@ -930,7 +1072,11 @@ export class LetsCreateComponent {
 
     newDelete.style.position = 'absolute';
     newDelete.style.top = `${parseInt(newBox.style.height) + 20}px`;
-    newDelete.style.left = '35%';
+    if(resultClass.type == 'Wavelet' || resultClass.type == 'Quantizer' || resultClass.type == 'ArithmeticOperation'){
+      newDelete.style.left = '10%';
+    } else{
+      newDelete.style.left = '35%';
+    }
 
     newBox.appendChild(newDelete);
 
@@ -953,6 +1099,27 @@ export class LetsCreateComponent {
         span2w.textContent = `Tipus: ${resultClass.waveletType}`;
         span2w.style.fontWeight = 'bold';
         newBox.appendChild(span2w);
+
+        const newImageOpen1w = document.createElement('button');
+        newImageOpen1w.textContent = `IMAGE`;
+        newImageOpen1w.id = `Image_${numBox}`;
+        newImageOpen1w.disabled = true;
+        newImageOpen1w.addEventListener('click', () => {
+          const formData = new FormData();
+          formData.append('originalFormat', this.originalFormat);
+          formData.append('name', `wavelet_${resultClass.waveletType}_${resultClass.waveletLevel}`);
+          this.http
+          .post('/api/getImageCustom', formData)
+          .subscribe((data: any) => {
+            this.newWindowImage(data);
+          });
+        });
+    
+        newImageOpen1w.style.position = 'absolute';
+        newImageOpen1w.style.top = `${parseInt(newBox.style.height) + 20}px`;
+        newImageOpen1w.style.left = '60%';
+    
+        newBox.appendChild(newImageOpen1w);
         break;
 
       case 'ArithmeticOperation':
@@ -966,6 +1133,27 @@ export class LetsCreateComponent {
         span2a.textContent = `Tipus: ${resultClass.operationType}`;
         span2a.style.fontWeight = 'bold';
         newBox.appendChild(span2a);
+
+        const newImageOpen1a = document.createElement('button');
+        newImageOpen1a.textContent = `IMAGE`;
+        newImageOpen1a.id = `Image_${numBox}`;
+        newImageOpen1a.disabled = true;
+        newImageOpen1a.addEventListener('click', () => {
+          const formData = new FormData();
+          formData.append('originalFormat', this.originalFormat);
+          formData.append('name', `${resultClass.operationType}_${resultClass.operationNumber}`);
+          this.http
+          .post('/api/getImageCustom', formData)
+          .subscribe((data: any) => {
+            this.newWindowImage(data);
+          });
+        });
+    
+        newImageOpen1a.style.position = 'absolute';
+        newImageOpen1a.style.top = `${parseInt(newBox.style.height) + 20}px`;
+        newImageOpen1a.style.left = '60%';
+    
+        newBox.appendChild(newImageOpen1a);
         break;
 
       case 'Quantizer':
@@ -974,6 +1162,27 @@ export class LetsCreateComponent {
         span1q.textContent = `Pas de Quantització: ${resultClass.q_step}`;
         span1q.style.fontWeight = 'bold';
         newBox.appendChild(span1q);
+
+        const newImageOpen1q = document.createElement('button');
+        newImageOpen1q.textContent = `IMAGE`;
+        newImageOpen1q.id = `Image_${numBox}`;
+        newImageOpen1q.disabled = true;
+        newImageOpen1q.addEventListener('click', () => {
+          const formData = new FormData();
+          formData.append('originalFormat', this.originalFormat);
+          formData.append('name', `quantizer_${resultClass.q_step}`);
+          this.http
+          .post('/api/getImageCustom', formData)
+          .subscribe((data: any) => {
+            this.newWindowImage(data);
+          });
+        });
+    
+        newImageOpen1q.style.position = 'absolute';
+        newImageOpen1q.style.top = `${parseInt(newBox.style.height) + 20}px`;
+        newImageOpen1q.style.left = '60%';
+    
+        newBox.appendChild(newImageOpen1q);
         break;
 
       case 'EntropyEncoder':

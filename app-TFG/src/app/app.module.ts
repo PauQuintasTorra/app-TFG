@@ -15,6 +15,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { ReverseBoxTypeDialogComponent } from './reverse-box-type-dialog/reverse-box-type-dialog.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { DownloadFromJsonFormatComponent } from './download-from-json-format/download-from-json-format.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     LetsCreateComponent,
     BoxTypeDialogComponent,
     ReverseBoxTypeDialogComponent,
+    DownloadFromJsonFormatComponent,
   ],
   imports: [
     BrowserModule,
