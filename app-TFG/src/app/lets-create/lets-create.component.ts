@@ -225,6 +225,8 @@ export class LetsCreateComponent {
   }
 
   executeProcess() {
+    this.isImage = false;
+    this.disableAllImagesButtons();
     if (!this.isArrowDraw) {
       const lastBox = document.getElementById(
         `${this.boxes.box[this.boxes.box.length - 1].numberBox}`
@@ -271,6 +273,18 @@ export class LetsCreateComponent {
     for(let j = 0; j < 4; j++){
       const elementToRemove = document.getElementById(`R_Image_${j}`);
       elementToRemove?.removeAttribute('disabled');
+      
+    }
+  }
+
+  disableAllImagesButtons(){
+    for(let i = 0; i < 4; i++){
+      const elementToRemove = document.getElementById(`Image_${i}`);
+      elementToRemove?.setAttribute('disabled','disabled');
+    }
+    for(let j = 0; j < 4; j++){
+      const elementToRemove = document.getElementById(`R_Image_${j}`);
+      elementToRemove?.setAttribute('disabled','disabled');
       
     }
   }
