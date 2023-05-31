@@ -18,6 +18,7 @@
   class="downloadJson"
   (click)="openDownloadFromJsonFormatDialog()"
   [matTooltip]="DownloadToolTip"
+  [disabled]="isEmptyJSON"
 >
   Download Data
 </button>
@@ -28,6 +29,12 @@
   (click)="executeProcess()"
 >
   EXECUTAR
+</button>
+<button
+  class="deleteJSON"
+  (click)="deleteJSON()"
+>
+  DELETE JSON
 </button>
 <button class="deleteAll" (click)="deleteAll()" [matTooltip]="deleteAllToolTip">
   BORRAR TOT

@@ -18,6 +18,7 @@ export class LetsCreateComponent {
   public isSent: boolean = false;
   public isImage: boolean = false;
   public isValid: boolean = false;
+  public isEmptyJSON: boolean = false;
   public nameImage: string = '';
   public imageSrc: string = '';
   public originalFormat: string = '';
@@ -365,12 +366,62 @@ export class LetsCreateComponent {
   }
 
   downloadFromJsonFormat(format: string){
-    const formData = new FormData();
-    formData.append('formatToDownload', format);
-    this.http.post('/api/downloadDataFromJson', formData).subscribe((data: any) => {
-      console.log(data);
+    this.http.post('/api/isEmptyJSON', {} ).subscribe((object: any) => {
+      console.log(object)
+      this.isEmptyJSON = !(object.exists);
       
+      if(!this.isEmptyJSON){
+        const formData = new FormData();
+        formData.append('formatToDownload', format);
+        
+        switch (format) {
+          case 'xlsx':
+            this.http.post('/api/downloadDataFromJson', formData, { responseType: 'arraybuffer' } ).subscribe((data: any) => {
+              console.log(data);
+              this.saveFile(data, 'data.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            });
+            break;
+          case 'csv':
+            this.http.post('/api/downloadDataFromJson', formData, { responseType: 'text' } ).subscribe((data: string) => {
+              console.log(data);
+              this.saveFile(data, 'data.csv', 'text/csv;charset=utf-8;');
+            });
+            break;
+          case 'json':
+            this.http.post('/api/downloadDataFromJson', formData, { responseType: 'text' } ).subscribe((data: string) => {
+              console.log(data);
+              this.saveFile(data, 'data.json', 'application/json');
+            });
+            break;
+    
+        }
+    
+      } else {
+        alert("Data.json is empty. Execute a new proces to add some data.")
+      }
     });
+
+    
+    
+
+  }
+
+  saveFile(data: any, fileName: string, fileType: string){
+    const blob = new Blob([data], { type: fileType });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    link.click();
+
+    window.URL.revokeObjectURL(url);
+  }
+
+  deleteJSON(){
+    this.http.post('/api/deleteJSON', {} ).subscribe(() => {
+      console.log("deleted");
+    });
+    this.isEmptyJSON = true;
   }
 
   executeSelectedOptionReverse(resultClass: any) {
