@@ -7,7 +7,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./download-from-json-format.component.css']
 })
 export class DownloadFromJsonFormatComponent {
-  selectedFormat: string = 'excel';
+  selectedFormat: string = 'xlsx';
   
   constructor(
     public dialogRef: MatDialogRef<DownloadFromJsonFormatComponent>,

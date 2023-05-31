@@ -312,7 +312,6 @@ export class LetsCreateComponent {
   }
 
   showImageNewWindow() {
-    console.log(this.originalFormat);
     const formData = new FormData();
     formData.append('originalFormat', this.originalFormat);
     this.http
@@ -322,20 +321,6 @@ export class LetsCreateComponent {
           this.newWindowImage(data);
       });
   }
-
-  // invisible() {
-  //   for (let i = 0; i < this.numBoxes; i++) {
-  //     const elementToHide = document.getElementById(`${i}`);
-  //     if (elementToHide?.style.display){elementToHide.style.display = 'none';}
-  //   }
-  // }
-
-  // proces(){
-  //   for (let i = 0; i < this.numBoxes; i++) {
-  //     const elementToHide = document.getElementById(`${i}`);
-  //     if (elementToHide?.style.display){elementToHide.style.display = 'flex';}
-  //   }
-  // }
 
   openBoxTypeDialogReverse(): void {
     const dialogRef = this.dialog.open(ReverseBoxTypeDialogComponent, {
@@ -375,7 +360,16 @@ export class LetsCreateComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log(result);
+      this.downloadFromJsonFormat(result);
+    });
+  }
+
+  downloadFromJsonFormat(format: string){
+    const formData = new FormData();
+    formData.append('formatToDownload', format);
+    this.http.post('/api/downloadDataFromJson', formData).subscribe((data: any) => {
+      console.log(data);
+      
     });
   }
 
