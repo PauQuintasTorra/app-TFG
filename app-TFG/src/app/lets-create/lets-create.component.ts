@@ -292,8 +292,10 @@ export class LetsCreateComponent {
 
   newWindowImage(data: any){
     const imagen = new Image();
+    const originalImage = new Image();
     const imgElement = new Image();
     imagen.src = 'data:image/' + this.originalFormat + ';base64,' + data.image;
+    originalImage.src = URL.createObjectURL(this.selectedImage);
     imagen.onload = function () {
       const canvas = document.createElement('canvas');
       canvas.width = imagen.naturalWidth;
