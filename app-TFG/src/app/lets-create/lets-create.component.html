@@ -18,7 +18,6 @@
   class="downloadJson"
   (click)="openDownloadFromJsonFormatDialog()"
   [matTooltip]="DownloadToolTip"
-  [disabled]="isEmptyJSON"
 >
   Download Data
 </button>
@@ -44,6 +43,77 @@
   imatge
 </button>
 <button class="comprovacio" (click)="validate()">SA POT?</button>
+
+
+<div class="table">
+  <table *ngIf="isDataAvailable">
+    <tbody>
+      <tr>
+        <td>Name Image</td>
+        <td>{{ processLogger.nameImage }}</td>
+      </tr>
+      <tr>
+        <td>Timestamp</td>
+        <td>{{ processLogger.timestamp }}</td>
+      </tr>
+      <tr>
+        <td>Compression Ratio</td>
+        <td>{{ processLogger.entropyStats.compressionRatio }}</td>
+      </tr>
+      <tr>
+        <td>Bits per Sample</td>
+        <td>{{ processLogger.entropyStats.bitsPerSample }}</td>
+      </tr>
+      <tr>
+        <td>Bits per Sample (Original)</td>
+        <td>{{ processLogger.entropyStats.bitsPerSampleOriginal }}</td>
+      </tr>
+      <tr>
+        <td>Final Bits per Sample</td>
+        <td>{{ processLogger.entropyStats.finalBitsPerSample }}</td>
+      </tr>
+      <tr>
+        <td>Max</td>
+        <td>{{ processLogger.initStats.max }}</td>
+      </tr>
+      <tr>
+        <td>Min</td>
+        <td>{{ processLogger.initStats.min }}</td>
+      </tr>
+      <tr>
+        <td>Entropy</td>
+        <td>{{ processLogger.initStats.entropy }}</td>
+      </tr>
+      <tr>
+        <td>Variance</td>
+        <td>{{ processLogger.initStats.varianze }}</td>
+      </tr>
+      <tr>
+        <td>Mean</td>
+        <td>{{ processLogger.initStats.mean }}</td>
+      </tr>
+      <tr>
+        <td>PSNR</td>
+        <td>{{ processLogger.finalStats.psnr }}</td>
+      </tr>
+      <tr>
+        <td>PAE</td>
+        <td>{{ processLogger.finalStats.pae }}</td>
+      </tr>
+      <tr>
+        <td>MSE</td>
+        <td>{{ processLogger.finalStats.mse }}</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <div *ngIf="!isDataAvailable">
+    Loading data...
+  </div>
+
+</div>
+
+
 
 <!-- <div class="image-container">
   <img [src]="imageSrc" alt="descripció-de-la-imatge">

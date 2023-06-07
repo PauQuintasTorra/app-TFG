@@ -43,15 +43,18 @@ export class BoxTypeDialogComponent {
         break;
 
       case 'Quantizer':
+        this.returner.quantizerType = 'Scalar';
         this.returner.q_step = this.q_step;
         break;
 
       case 'EntropyEncoder':
         this.returner.encoderType = this.encoderType;
+        this.returner.encoderValue = "Sense dades";
         break;
 
       case 'Predictor':
         this.returner.predictorType = this.predictorType;
+        this.returner.predictorValue = "Sense dades";
         break;
 
       default:

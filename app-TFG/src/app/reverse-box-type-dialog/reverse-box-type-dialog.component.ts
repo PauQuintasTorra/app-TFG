@@ -41,15 +41,18 @@ export class ReverseBoxTypeDialogComponent {
         break;
 
       case 'Dequantizer':
+        this.returner.quantizerType = 'Scalar';
         this.returner.q_step = this.q_step;
         break;
 
       case 'EntropyDecoder':
         this.returner.decoderType = this.decoderType;
+        this.returner.decoderValue = "Sense dades";
         break;
 
       case 'Reverse_Prediction':
         this.returner.predictorType = this.predictorType;
+        this.returner.predictorValue = "Sense dades";
         break;
       default:
         break;

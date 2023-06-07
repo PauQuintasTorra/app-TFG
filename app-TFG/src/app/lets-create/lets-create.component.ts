@@ -19,6 +19,7 @@ export class LetsCreateComponent {
   public isImage: boolean = false;
   public isValid: boolean = false;
   public isEmptyJSON: boolean = false;
+  public isDataAvailable: boolean = false;
   public nameImage: string = '';
   public imageSrc: string = '';
   public originalFormat: string = '';
@@ -257,10 +258,9 @@ export class LetsCreateComponent {
       console.log(data);
       this.isImage = true;
       this.processLogger = data;
-      var te = new Blob([JSON.stringify(data)], { type: 'text/plain' });
-      const url = window.URL.createObjectURL(te);
+      this.isDataAvailable = true;
+      
       this.ableAllImagesButtons();
-      window.open(url);
     });
     this.isSent = true;
     this.isFormatChange = true;
@@ -292,10 +292,8 @@ export class LetsCreateComponent {
 
   newWindowImage(data: any){
     const imagen = new Image();
-    const originalImage = new Image();
     const imgElement = new Image();
     imagen.src = 'data:image/' + this.originalFormat + ';base64,' + data.image;
-    originalImage.src = URL.createObjectURL(this.selectedImage);
     imagen.onload = function () {
       const canvas = document.createElement('canvas');
       canvas.width = imagen.naturalWidth;

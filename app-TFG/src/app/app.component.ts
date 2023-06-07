@@ -9,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
     <div>{{ message }}</div>
     <button (click)="changeComponent()">Canviar component</button>
     <br />
-    <br /><br /><br />
+    <br />
     <app-image-loader *ngIf="isLetsCreate"> </app-image-loader>
     <app-lets-create *ngIf="!isLetsCreate"> </app-lets-create>
   `,
