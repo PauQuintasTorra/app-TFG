@@ -5,21 +5,21 @@
   (click)="openBoxTypeDialog()"
   [matTooltip]="NewBoxToolTip"
 >
-  New Box
+  Nova caixa
 </button>
 <button
   class="reverseBox"
   (click)="openBoxTypeDialogReverse()"
   [matTooltip]="NewReverseBoxToolTip"
 >
-  New Reverse Box
+  Nova caixa inversa
 </button>
 <button
   class="downloadJson"
   (click)="openDownloadFromJsonFormatDialog()"
   [matTooltip]="DownloadToolTip"
 >
-  Download Data
+  Descarregar dades
 </button>
 
 <button
@@ -29,21 +29,17 @@
 >
   EXECUTAR
 </button>
-<button
-  class="deleteJSON"
-  (click)="deleteJSON()"
->
-  DELETE JSON
+<button class="deleteJSON" (click)="deleteJSON()">
+  Borrar historial dades
 </button>
 <button class="deleteAll" (click)="deleteAll()" [matTooltip]="deleteAllToolTip">
-  BORRAR TOT
+  Borrar-ho tot
 </button>
 <!-- <button class="proces" (click)="proces()"> proces </button> -->
 <button class="imatge" [disabled]="!isImage" (click)="showImageNewWindow()">
-  imatge
+  Imatge final
 </button>
-<button class="comprovacio" (click)="validate()">SA POT?</button>
-
+<button class="comprovacio" (click)="validate()">Validació</button>
 
 <div class="table">
   <table *ngIf="isDataAvailable">
@@ -106,14 +102,9 @@
       </tr>
     </tbody>
   </table>
-  
-  <div *ngIf="!isDataAvailable">
-    Loading data...
-  </div>
 
+  <div *ngIf="!isDataAvailable">Esperant dades...</div>
 </div>
-
-
 
 <!-- <div class="image-container">
   <img [src]="imageSrc" alt="descripció-de-la-imatge">

@@ -1,8 +1,8 @@
-<h2 mat-dialog-title>Configure your Box</h2>
+<h2 mat-dialog-title>Configura la teva caixa inversa</h2>
 <div mat-dialog-content>
   <form #form="ngForm">
     <mat-form-field>
-      <mat-label>Tipus de Box</mat-label>
+      <mat-label>Tipus de caixa inversa</mat-label>
       <mat-select name="type" [(ngModel)]="selectedBoxType" required>
         <mat-option value="Reverse_Wavelet">Reverse Wavelet</mat-option>
         <mat-option value="ArithmeticOperation"
@@ -10,7 +10,7 @@
         >
         <mat-option value="Dequantizer">Dequantizer</mat-option>
         <mat-option value="EntropyDecoder">EntropyDecoder</mat-option>
-        <mat-option value="Reverse_Prediction">Reverse_Prediction</mat-option>
+        <!-- <mat-option value="Reverse_Prediction">Reverse_Prediction</mat-option> -->
       </mat-select>
     </mat-form-field>
 
@@ -48,8 +48,8 @@
       <label> Tipus de Wavelet: </label>
       <select name="WaveletType" [(ngModel)]="waveletType" required>
         <option value="Haar">Haar</option>
-        <option value="5:3">5:3</option>
-        <option value="9:7">9:7</option>
+        <!-- <option value="5:3">5:3</option>
+        <option value="9:7">9:7</option> -->
       </select>
     </div>
 
@@ -85,13 +85,13 @@
   </form>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button (click)="onNoClick()">Cancelar</button>
   <button
     mat-raised-button
     color="primary"
     [disabled]="!form.valid"
     (click)="onSaveClick()"
   >
-    Save
+    Guardar
   </button>
 </div>
