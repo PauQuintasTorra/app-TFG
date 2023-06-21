@@ -65,7 +65,6 @@ export class LetsCreateComponent {
     let positionPredictor: number = -1;
     let positionArithmeticOperation: number = -1;
 
-    // console.log(this.boxes);
     const lengthComp = this.boxes.box.length;
     const lengthDesc = this.boxesReverse.box.length;
     if (lengthDesc === lengthComp) {
@@ -211,7 +210,6 @@ export class LetsCreateComponent {
 
   validate() {
     const valid = this.validateP();
-    console.log(valid);
     if (valid === 'FUNCIONA') {
       this.isValid = true;
     } else{
@@ -248,14 +246,12 @@ export class LetsCreateComponent {
         lastBox.appendChild(newIcon);
       }
     }
-    console.log(this.boxes);
     const formData = new FormData();
     formData.append('image', this.selectedImage, this.selectedImage.name);
     formData.append('originalFormat', this.originalFormat);
     formData.append('boxes', JSON.stringify(this.boxes.box));
 
     this.http.post('/api/seeImage', formData).subscribe((data: any) => {
-      console.log(data);
       this.isImage = true;
       this.processLogger = data;
       this.isDataAvailable = true;
@@ -331,7 +327,6 @@ export class LetsCreateComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        console.log(result);
         this.selectedOption = result.type;
 
         this.executeSelectedOptionReverse(result);
@@ -347,7 +342,6 @@ export class LetsCreateComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        console.log(result);
         this.selectedOption = result.type;
 
         this.executeSelectedOption(result);
@@ -367,7 +361,6 @@ export class LetsCreateComponent {
 
   downloadFromJsonFormat(format: string){
     this.http.post('/api/isEmptyJSON', {} ).subscribe((object: any) => {
-      console.log(object)
       this.isEmptyJSON = !(object.exists);
       
       if(!this.isEmptyJSON){
@@ -377,19 +370,16 @@ export class LetsCreateComponent {
         switch (format) {
           case 'xlsx':
             this.http.post('/api/downloadDataFromJson', formData, { responseType: 'arraybuffer' } ).subscribe((data: any) => {
-              console.log(data);
               this.saveFile(data, 'data.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
             });
             break;
           case 'csv':
             this.http.post('/api/downloadDataFromJson', formData, { responseType: 'text' } ).subscribe((data: string) => {
-              console.log(data);
               this.saveFile(data, 'data.csv', 'text/csv;charset=utf-8;');
             });
             break;
           case 'json':
             this.http.post('/api/downloadDataFromJson', formData, { responseType: 'text' } ).subscribe((data: string) => {
-              console.log(data);
               this.saveFile(data, 'data.json', 'application/json');
             });
             break;
@@ -419,7 +409,6 @@ export class LetsCreateComponent {
 
   deleteJSON(){
     this.http.post('/api/deleteJSON', {} ).subscribe(() => {
-      console.log("deleted");
     });
     this.isEmptyJSON = true;
   }
