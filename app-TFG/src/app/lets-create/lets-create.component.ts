@@ -20,6 +20,8 @@ export class LetsCreateComponent {
   public isValid: boolean = false;
   public isEmptyJSON: boolean = false;
   public isDataAvailable: boolean = false;
+  public isArrowDraw: boolean = false;
+  public isBaseOf2: boolean = true;
   public nameImage: string = '';
   public imageSrc: string = '';
   public originalFormat: string = '';
@@ -30,7 +32,6 @@ export class LetsCreateComponent {
   public numBoxesReverse = 0;
   public boxesReverse!: Boxes;
   public deletedNumReverse: number[] = [];
-  public isArrowDraw: boolean = false;
   public container: any;
   public processLogger: any = {};
   public NewBoxToolTip: string =
@@ -216,12 +217,37 @@ export class LetsCreateComponent {
       alert(valid);
     }
   }
+
   selectImage(event: any) {
     this.selectedImage = <File>event.target.files[0];
     this.isUploaded = true;
     let name = this.selectedImage.name.split('.');
     this.nameImage = name[0];
     this.originalFormat = name[name.length - 1];
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const image = new Image();
+      image.src = e?.target?.result as string;
+
+      image.onload = () => {
+        const width = image.naturalWidth;
+        const height = image.naturalHeight;
+
+        const isWidthPowerOf2 = (width & (width - 1)) === 0;
+        const isHeightPowerOf2 = (height & (height - 1)) === 0;
+
+        if (isWidthPowerOf2 && isHeightPowerOf2) {
+          console.log("és potencia de 2");
+          this.isBaseOf2 = true;
+        } else {
+          console.log("NOOO és potencia de 2");
+          this.isBaseOf2 = false;
+        }
+      };
+    };
+
+    reader.readAsDataURL(this.selectedImage);
   }
 
   executeProcess() {
@@ -453,7 +479,7 @@ export class LetsCreateComponent {
     newBox.style.justifyContent = 'center';
     newBox.style.display = 'flex';
     newBox.style.flexDirection = 'column';
-
+    
     this.elementRef.nativeElement.appendChild(newBox);
     box.dashedBox = newBox;
     this.boxesReverse?.box.push(box);

@@ -1,99 +1,116 @@
-<input type="file" name="image" (change)="selectImage($event)" /> <br />
-
-<button
-  class="newBox"
-  (click)="openBoxTypeDialog()"
-  [matTooltip]="NewBoxToolTip"
->
-  Nova caixa
-</button>
-<button
-  class="reverseBox"
-  (click)="openBoxTypeDialogReverse()"
-  [matTooltip]="NewReverseBoxToolTip"
->
-  Nova caixa inversa
-</button>
-<button
-  class="downloadJson"
-  (click)="openDownloadFromJsonFormatDialog()"
-  [matTooltip]="DownloadToolTip"
->
-  Descarregar dades
-</button>
-
-<button
-  class="sendImage"
-  [disabled]="!(isValid && isUploaded)"
-  (click)="executeProcess()"
->
-  EXECUTAR
-</button>
-<button class="deleteJSON" (click)="deleteJSON()">
-  Borrar historial dades
-</button>
-<button class="deleteAll" (click)="deleteAll()" [matTooltip]="deleteAllToolTip">
-  Borrar-ho tot
-</button>
-<!-- <button class="proces" (click)="proces()"> proces </button> -->
-<button class="imatge" [disabled]="!isImage" (click)="showImageNewWindow()">
-  Imatge final
-</button>
-<button class="comprovacio" (click)="validate()">Validació</button>
-
-<div class="table">
-  <table *ngIf="isDataAvailable">
-    <tbody>
-      <tr>
-        <td>Nom de la imatge</td>
-        <td>{{ processLogger.nameImage }}</td>
-      </tr>
-      <tr>
-        <td>Timestamp</td>
-        <td>{{ processLogger.timestamp }}</td>
-      </tr>
-      <tr>
-        <td>Valor màxim</td>
-        <td>{{ processLogger.initStats.max }}</td>
-      </tr>
-      <tr>
-        <td>Valor mínim</td>
-        <td>{{ processLogger.initStats.min }}</td>
-      </tr>
-      <tr>
-        <td>Valor mitjà</td>
-        <td>{{ processLogger.initStats.mean }}</td>
-      </tr>
-      <tr>
-        <td>Entropia inicial</td>
-        <td>{{ processLogger.initStats.entropy }}</td>
-      </tr>
-      <tr>
-        <td>Entropia final</td>
-        <td>{{ processLogger.entropyStats.finalEntropy }}</td>
-      </tr>
-      <tr>
-        <td>Rati de compressió</td>
-        <td>{{ processLogger.entropyStats.compressionRatio }}</td>
-      </tr>
-      <tr>
-        <td>PSNR</td>
-        <td>{{ processLogger.finalStats.psnr }}</td>
-      </tr>
-      <tr>
-        <td>PAE</td>
-        <td>{{ processLogger.finalStats.pae }}</td>
-      </tr>
-      <tr>
-        <td>MSE</td>
-        <td>{{ processLogger.finalStats.mse }}</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <div *ngIf="!isDataAvailable">Esperant dades...</div>
+<div class="container-fluid d-flex justify-content-center">
+  <div>
+    <div class="row mb-3">
+      <div class="col">
+        <button
+          class="newBox margin-right"
+          (click)="openBoxTypeDialog()"
+          [matTooltip]="NewBoxToolTip"
+        >
+          Nova caixa
+        </button>
+        <button
+          class="reverseBox"
+          (click)="openBoxTypeDialogReverse()"
+          [matTooltip]="NewReverseBoxToolTip"
+        >
+          Nova caixa inversa
+        </button>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col">
+        <button
+          class="margin-right"
+          (click)="openDownloadFromJsonFormatDialog()"
+          [matTooltip]="DownloadToolTip"
+        >
+          Descarregar dades
+        </button>
+        <button class="margin-right" (click)="deleteJSON()">
+          Borrar historial dades
+        </button>
+        <button class="margin-right" (click)="deleteAll()" [matTooltip]="deleteAllToolTip">
+          Borrar-ho tot
+        </button>
+  
+        <button class="margin-right" (click)="validate()">Validació</button>
+      </div>
+      
+    </div>
+    <div class="row mb-3">
+      <div class="col">
+        <button
+          class="margin-right"
+          [disabled]="!(isValid && isUploaded)"
+          (click)="executeProcess()"
+        >
+          EXECUTAR
+        </button>
+        <button class="margin-right" [disabled]="!isImage" (click)="showImageNewWindow()">
+          Imatge final
+        </button>
+        <input type="file" name="image" class="margin-right" (change)="selectImage($event)" />
+      </div>
+      
+    </div>
+  </div>
+   
+  
 </div>
 
-<!-- <div class="image-container">
-  <img [src]="imageSrc" alt="descripció-de-la-imatge">
-</div> -->
+<div class="container-fluid">
+  <div class="d-flex justify-content-end">
+    <table *ngIf="isDataAvailable">
+      <tbody>
+        <tr>
+          <td>Nom de la imatge</td>
+          <td>{{ processLogger.nameImage }}</td>
+        </tr>
+        <tr>
+          <td>Timestamp</td>
+          <td>{{ processLogger.timestamp }}</td>
+        </tr>
+        <tr>
+          <td>Valor màxim</td>
+          <td>{{ processLogger.initStats.max }}</td>
+        </tr>
+        <tr>
+          <td>Valor mínim</td>
+          <td>{{ processLogger.initStats.min }}</td>
+        </tr>
+        <tr>
+          <td>Valor mitjà</td>
+          <td>{{ processLogger.initStats.mean }}</td>
+        </tr>
+        <tr>
+          <td>Entropia inicial</td>
+          <td>{{ processLogger.initStats.entropy }}</td>
+        </tr>
+        <tr>
+          <td>Entropia final</td>
+          <td>{{ processLogger.entropyStats.finalEntropy }}</td>
+        </tr>
+        <tr>
+          <td>Rati de compressió</td>
+          <td>{{ processLogger.entropyStats.compressionRatio }}</td>
+        </tr>
+        <tr>
+          <td>PSNR</td>
+          <td>{{ processLogger.finalStats.psnr }}</td>
+        </tr>
+        <tr>
+          <td>PAE</td>
+          <td>{{ processLogger.finalStats.pae }}</td>
+        </tr>
+        <tr>
+          <td>MSE</td>
+          <td>{{ processLogger.finalStats.mse }}</td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <div *ngIf="!isDataAvailable">Esperant dades...</div>
+  </div>
+  
+</div>
