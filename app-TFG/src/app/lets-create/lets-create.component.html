@@ -1,16 +1,16 @@
 <div class="container-fluid d-flex justify-content-center">
   <div>
-    <div class="row mb-3">
-      <div class="col">
+    <div class="row mb-3 d-flex justify-content-center">
+      <div class="col d-flex justify-content-center">
         <button
-          class="newBox margin-right"
+          class="newBox margin-right btn btn-outline-primary"
           (click)="openBoxTypeDialog()"
           [matTooltip]="NewBoxToolTip"
         >
           Nova caixa
         </button>
         <button
-          class="reverseBox"
+          class="reverseBox btn btn-outline-primary"
           (click)="openBoxTypeDialogReverse()"
           [matTooltip]="NewReverseBoxToolTip"
         >
@@ -18,39 +18,40 @@
         </button>
       </div>
     </div>
-    <div class="row mb-3">
-      <div class="col">
+    <div class="row mb-3 ">
+      <div class="col d-flex justify-content-center">
         <button
-          class="margin-right"
+          class="margin-right btn btn-outline-primary"
           (click)="openDownloadFromJsonFormatDialog()"
           [matTooltip]="DownloadToolTip"
         >
           Descarregar dades
         </button>
-        <button class="margin-right" (click)="deleteJSON()">
+        <button class="margin-right btn btn-outline-danger" [matTooltip]="DeleteRecordsToolTip" (click)="deleteJSON()">
           Borrar historial dades
         </button>
-        <button class="margin-right" (click)="deleteAll()" [matTooltip]="deleteAllToolTip">
+        <button class="margin-right btn btn-outline-danger" (click)="deleteAll()" [matTooltip]="deleteAllToolTip">
           Borrar-ho tot
         </button>
   
-        <button class="margin-right" (click)="validate()">Validació</button>
+        <button class="margin-right btn btn-outline-dark" [matTooltip]="ValidateToolTip" (click)="validate()">Validació</button>
       </div>
       
     </div>
-    <div class="row mb-3">
-      <div class="col">
+    <div class="row mb-3 ">
+      <div class="col d-flex justify-content-center">
         <button
-          class="margin-right"
+          class="margin-right btn btn-outline-dark"
           [disabled]="!(isValid && isUploaded)"
+          [matTooltip]="ExecuteToolTip"
           (click)="executeProcess()"
         >
           EXECUTAR
         </button>
-        <button class="margin-right" [disabled]="!isImage" (click)="showImageNewWindow()">
+        <button class="margin-right btn btn-outline-success" [matTooltip]="FinalImageToolTip" [disabled]="!isImage" (click)="showImageNewWindow()">
           Imatge final
         </button>
-        <input type="file" name="image" class="margin-right" (change)="selectImage($event)" />
+        <input type="file" name="image" class="margin-right btn btn-outline-info" (change)="selectImage($event)" />
       </div>
       
     </div>
@@ -59,58 +60,69 @@
   
 </div>
 
-<div class="container-fluid">
-  <div class="d-flex justify-content-end">
-    <table *ngIf="isDataAvailable">
-      <tbody>
-        <tr>
-          <td>Nom de la imatge</td>
-          <td>{{ processLogger.nameImage }}</td>
-        </tr>
-        <tr>
-          <td>Timestamp</td>
-          <td>{{ processLogger.timestamp }}</td>
-        </tr>
-        <tr>
-          <td>Valor màxim</td>
-          <td>{{ processLogger.initStats.max }}</td>
-        </tr>
-        <tr>
-          <td>Valor mínim</td>
-          <td>{{ processLogger.initStats.min }}</td>
-        </tr>
-        <tr>
-          <td>Valor mitjà</td>
-          <td>{{ processLogger.initStats.mean }}</td>
-        </tr>
-        <tr>
-          <td>Entropia inicial</td>
-          <td>{{ processLogger.initStats.entropy }}</td>
-        </tr>
-        <tr>
-          <td>Entropia final</td>
-          <td>{{ processLogger.entropyStats.finalEntropy }}</td>
-        </tr>
-        <tr>
-          <td>Rati de compressió</td>
-          <td>{{ processLogger.entropyStats.compressionRatio }}</td>
-        </tr>
-        <tr>
-          <td>PSNR</td>
-          <td>{{ processLogger.finalStats.psnr }}</td>
-        </tr>
-        <tr>
-          <td>PAE</td>
-          <td>{{ processLogger.finalStats.pae }}</td>
-        </tr>
-        <tr>
-          <td>MSE</td>
-          <td>{{ processLogger.finalStats.mse }}</td>
-        </tr>
-      </tbody>
-    </table>
-  
-    <div *ngIf="!isDataAvailable">Esperant dades...</div>
+<div class="alert alert-warning container-fluid" role="alert" *ngIf="!isBaseOf2">
+  {{warningText}}
+</div>
+
+<div class="container-fluid d-flex justify-content-end">
+  <div class="card" *ngIf="!isDataAvailable" >
+    <div class="card-body">
+      Esperant dades...
+    </div>
   </div>
   
+  <div class="row mb-3">
+    <div class="col d-flex justify-content-center">
+      <table *ngIf="isDataAvailable" class="table">
+        <tbody>
+          <tr class="table-info">
+            <td>Etapes</td>
+            <td>{{ numBoxes }}</td>
+          </tr>
+          <tr class="table-info">
+            <td>Valor màxim</td>
+            <td>{{ processLogger.initStats.max }}</td>
+          </tr>
+          <tr class="table-info">
+            <td>Valor mínim</td>
+            <td>{{ processLogger.initStats.min }}</td>
+          </tr>
+          <tr class="table-info">
+            <td>Valor mitjà</td>
+            <td>{{ processLogger.initStats.mean }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table *ngIf="isDataAvailable" class="table">
+        <tbody>
+          <tr class="table-info">
+            <td>Entropia inicial</td>
+            <td>{{ processLogger.initStats.entropy }}</td>
+          </tr>
+          <tr class="table-info">
+            <td>Entropia final</td>
+            <td>{{ processLogger.entropyStats.finalEntropy }}</td>
+          </tr>
+          <tr class="table-info">
+            <td>Rati de compressió</td>
+            <td>{{ processLogger.entropyStats.compressionRatio }}</td>
+          </tr>
+          <tr [ngClass]="{'table-success': processLogger.finalStats.psnr == '∞', 'table-danger': processLogger.finalStats.psnr < 36, 'table-info': processLogger.finalStats.psnr !='∞' && processLogger.finalStats.psnr >= 36 }">
+            <td>PSNR</td>
+            <td>{{ processLogger.finalStats.psnr }}</td>
+          </tr>
+          <tr [ngClass]="{'table-success': processLogger.finalStats.pae == 0,'table-info': processLogger.finalStats.pae != 0}">
+            <td>PAE</td>
+            <td>{{ processLogger.finalStats.pae }}</td>
+          </tr>
+          <tr [ngClass]="{'table-success': processLogger.finalStats.mse == 0, 'table-info': processLogger.finalStats.mse != 0}">
+            <td>MSE</td>
+            <td>{{ processLogger.finalStats.mse }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
+

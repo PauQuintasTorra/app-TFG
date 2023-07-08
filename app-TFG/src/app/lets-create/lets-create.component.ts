@@ -35,12 +35,17 @@ export class LetsCreateComponent {
   public container: any;
   public processLogger: any = {};
   public NewBoxToolTip: string =
-    'Crea una nova box per introduir un nou pas a la teva tècnica de compressió';
+    'Crea una nova caixa per introduir una nova etapa a la teva tècnica de compressió';
   public NewReverseBoxToolTip: string =
-    'Crea una nova reverse box per introduir un nou pas en la teva tècnica de descompressió';
+    'Crea una nova caixa inversa per introduir una nova etapa a la teva tècnica de descompressió';
   public DownloadToolTip: string = 'Escull el format per descarregar les dades creades en execucions anteriors';
-  public deleteAllToolTip: string = 'Elimina totes les box';
-  public deleteToolTip: string = 'Elimina aquesta box';
+  public deleteAllToolTip: string = 'Elimina totes les caixes';
+  public deleteToolTip: string = 'Elimina aquesta caixa';
+  public warningText: string = 'La imatge introduïda no té dimensions que siguin potència de 2, per tant, es comprimiran més dades de les necessàries.';
+  public DeleteRecordsToolTip: string = "Elimina les dades de l'historial del servidor";
+  public ValidateToolTip: string = 'Valida el procés introduït';
+  public ExecuteToolTip: string = 'Executa el procés introduït';
+  public FinalImageToolTip: string = 'Visualitza la imatge final';
 
   constructor(
     private elementRef: ElementRef,
@@ -238,10 +243,8 @@ export class LetsCreateComponent {
         const isHeightPowerOf2 = (height & (height - 1)) === 0;
 
         if (isWidthPowerOf2 && isHeightPowerOf2) {
-          console.log("és potencia de 2");
           this.isBaseOf2 = true;
         } else {
-          console.log("NOOO és potencia de 2");
           this.isBaseOf2 = false;
         }
       };
@@ -485,6 +488,7 @@ export class LetsCreateComponent {
     this.boxesReverse?.box.push(box);
 
     const newDelete = document.createElement('button');
+    newDelete.classList.add("btn","btn-outline-danger");
     newDelete.textContent = 'DELETE';
     newDelete.id = `R_delete_${this.numBoxesReverse}`;
     newDelete.addEventListener('click', () => {
@@ -524,6 +528,7 @@ export class LetsCreateComponent {
         newBox.appendChild(span2w);
 
         const newImageOpen1w = document.createElement('button');
+        newImageOpen1w.classList.add("btn","btn-outline-success");
         newImageOpen1w.textContent = `IMAGE`;
         newImageOpen1w.id = `R_Image_${this.numBoxesReverse}`;
         newImageOpen1w.disabled = true;
@@ -558,6 +563,7 @@ export class LetsCreateComponent {
         newBox.appendChild(span2a);
 
         const newImageOpen1a = document.createElement('button');
+        newImageOpen1a.classList.add("btn","btn-outline-success");
         newImageOpen1a.textContent = `IMAGE`;
         newImageOpen1a.id = `R_Image_${this.numBoxesReverse}`;
         newImageOpen1a.disabled = true;
@@ -586,6 +592,7 @@ export class LetsCreateComponent {
         span1q.style.fontWeight = 'bold';
         newBox.appendChild(span1q);
         const newImageOpen1q = document.createElement('button');
+        newImageOpen1q.classList.add("btn","btn-outline-success");
         newImageOpen1q.textContent = `IMAGE`;
         newImageOpen1q.id = `R_Image_${this.numBoxesReverse}`;
         newImageOpen1q.disabled = true;
@@ -697,6 +704,7 @@ export class LetsCreateComponent {
     this.boxesReverse?.box.splice(numBox, 0, box);
 
     const newDelete = document.createElement('button');
+    newDelete.classList.add("btn","btn-outline-danger");
     newDelete.textContent = 'DELETE';
     newDelete.id = `R_delete_${numBox}`;
     newDelete.addEventListener('click', () => {
@@ -736,6 +744,7 @@ export class LetsCreateComponent {
         newBox.appendChild(span2w);
 
         const newImageOpen1w = document.createElement('button');
+        newImageOpen1w.classList.add("btn","btn-outline-success");
         newImageOpen1w.textContent = `IMAGE`;
         newImageOpen1w.id = `R_Image_${numBox}`;
         newImageOpen1w.disabled = true;
@@ -770,6 +779,7 @@ export class LetsCreateComponent {
         newBox.appendChild(span2a);
 
         const newImageOpen1a = document.createElement('button');
+        newImageOpen1a.classList.add("btn","btn-outline-success");
         newImageOpen1a.textContent = `IMAGE`;
         newImageOpen1a.id = `R_Image_${numBox}`;
         newImageOpen1a.disabled = true;
@@ -798,6 +808,7 @@ export class LetsCreateComponent {
         span1q.style.fontWeight = 'bold';
         newBox.appendChild(span1q);
         const newImageOpen1q = document.createElement('button');
+        newImageOpen1q.classList.add("btn","btn-outline-success");
         newImageOpen1q.textContent = `IMAGE`;
         newImageOpen1q.id = `R_Image_${numBox}`;
         newImageOpen1q.disabled = true;
@@ -902,7 +913,7 @@ export class LetsCreateComponent {
     newBox.style.height = '100px';
     newBox.style.position = 'fixed';
     newBox.style.border = '2px dashed ' + color;
-    newBox.style.top = '35%';
+    newBox.style.top = '45%';
     newBox.style.left = 200 + this.numBoxes * 250 + 'px';
     newBox.style.transform = 'translateX(-50%)';
     newBox.style.alignItems = 'center';
@@ -917,6 +928,7 @@ export class LetsCreateComponent {
     }
 
     const newDelete = document.createElement('button');
+    newDelete.classList.add("btn","btn-outline-danger");
     newDelete.textContent = 'DELETE';
     newDelete.id = `delete_${this.numBoxes}`;
     newDelete.addEventListener('click', () => {
@@ -956,6 +968,7 @@ export class LetsCreateComponent {
         newBox.appendChild(span2w);
 
         const newImageOpen1w = document.createElement('button');
+        newImageOpen1w.classList.add("btn","btn-outline-success");
         newImageOpen1w.textContent = `IMAGE`;
         newImageOpen1w.id = `Image_${this.numBoxes}`;
         newImageOpen1w.disabled = true;
@@ -989,6 +1002,7 @@ export class LetsCreateComponent {
         span2a.style.fontWeight = 'bold';
         newBox.appendChild(span2a);
         const newImageOpen1a = document.createElement('button');
+        newImageOpen1a.classList.add("btn","btn-outline-success");
         newImageOpen1a.textContent = `IMAGE`;
         newImageOpen1a.id = `Image_${this.numBoxes}`;
         newImageOpen1a.disabled = true;
@@ -1017,6 +1031,7 @@ export class LetsCreateComponent {
         span1q.style.fontWeight = 'bold';
         newBox.appendChild(span1q);
         const newImageOpen1q = document.createElement('button');
+        newImageOpen1q.classList.add("btn","btn-outline-success");
         newImageOpen1q.textContent = `IMAGE`;
         newImageOpen1q.id = `Image_${this.numBoxes}`;
         newImageOpen1q.disabled = true;
@@ -1123,7 +1138,7 @@ export class LetsCreateComponent {
     newBox.style.height = '100px';
     newBox.style.position = 'fixed';
     newBox.style.border = '2px dashed ' + color;
-    newBox.style.top = '35%';
+    newBox.style.top = '45%';
     newBox.style.left = 200 + numBox * 250 + 'px';
     newBox.style.transform = 'translateX(-50%)';
     newBox.style.alignItems = 'center';
@@ -1136,6 +1151,7 @@ export class LetsCreateComponent {
     this.boxes?.box.splice(numBox, 0, box);
 
     const newDelete = document.createElement('button');
+    newDelete.classList.add("btn","btn-outline-danger");
     newDelete.textContent = 'DELETE';
     newDelete.id = `delete_${numBox}`;
     newDelete.addEventListener('click', () => {
@@ -1175,6 +1191,7 @@ export class LetsCreateComponent {
         newBox.appendChild(span2w);
 
         const newImageOpen1w = document.createElement('button');
+        newImageOpen1w.classList.add("btn","btn-outline-success");
         newImageOpen1w.textContent = `IMAGE`;
         newImageOpen1w.id = `Image_${numBox}`;
         newImageOpen1w.disabled = true;
@@ -1209,6 +1226,7 @@ export class LetsCreateComponent {
         newBox.appendChild(span2a);
 
         const newImageOpen1a = document.createElement('button');
+        newImageOpen1a.classList.add("btn","btn-outline-success");
         newImageOpen1a.textContent = `IMAGE`;
         newImageOpen1a.id = `Image_${numBox}`;
         newImageOpen1a.disabled = true;
@@ -1238,6 +1256,7 @@ export class LetsCreateComponent {
         newBox.appendChild(span1q);
 
         const newImageOpen1q = document.createElement('button');
+        newImageOpen1q.classList.add("btn","btn-outline-success");
         newImageOpen1q.textContent = `IMAGE`;
         newImageOpen1q.id = `Image_${numBox}`;
         newImageOpen1q.disabled = true;
