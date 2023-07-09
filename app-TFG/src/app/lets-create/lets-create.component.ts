@@ -38,11 +38,14 @@ export class LetsCreateComponent {
     'Crea una nova caixa per introduir una nova etapa a la teva tècnica de compressió';
   public NewReverseBoxToolTip: string =
     'Crea una nova caixa inversa per introduir una nova etapa a la teva tècnica de descompressió';
-  public DownloadToolTip: string = 'Escull el format per descarregar les dades creades en execucions anteriors';
+  public DownloadToolTip: string =
+    'Escull el format per descarregar les dades creades en execucions anteriors';
   public deleteAllToolTip: string = 'Elimina totes les caixes';
   public deleteToolTip: string = 'Elimina aquesta caixa';
-  public warningText: string = 'La imatge introduïda no té dimensions que siguin potència de 2, per tant, es comprimiran més dades de les necessàries.';
-  public DeleteRecordsToolTip: string = "Elimina les dades de l'historial del servidor";
+  public warningText: string =
+    'La imatge introduïda no té dimensions que siguin potència de 2, per tant, es comprimiran més dades de les necessàries.';
+  public DeleteRecordsToolTip: string =
+    "Elimina les dades de l'historial del servidor";
   public ValidateToolTip: string = 'Valida el procés introduït';
   public ExecuteToolTip: string = 'Executa el procés introduït';
   public FinalImageToolTip: string = 'Visualitza la imatge final';
@@ -76,7 +79,8 @@ export class LetsCreateComponent {
     if (lengthDesc === lengthComp) {
       for (let i = 0; i < lengthComp; i++) {
         const typeComp = this.boxes.box[i].class['type'];
-        const typeDesc = this.boxesReverse.box[lengthComp -1 - i].class['type'];
+        const typeDesc =
+          this.boxesReverse.box[lengthComp - 1 - i].class['type'];
 
         switch (typeComp) {
           case 'Wavelet':
@@ -88,10 +92,14 @@ export class LetsCreateComponent {
               if (typeDesc === 'Reverse_Wavelet') {
                 const levelComp = this.boxes.box[i].class['waveletLevel'];
                 const levelDesc =
-                  this.boxesReverse.box[lengthComp -1 - i].class['waveletLevel'];
+                  this.boxesReverse.box[lengthComp - 1 - i].class[
+                    'waveletLevel'
+                  ];
                 const w_typeComp = this.boxes.box[i].class['waveletType'];
                 const w_typeDesc =
-                  this.boxesReverse.box[lengthComp -1 - i].class['waveletType'];
+                  this.boxesReverse.box[lengthComp - 1 - i].class[
+                    'waveletType'
+                  ];
                 if (levelDesc === levelComp) {
                   if (w_typeComp !== w_typeDesc) {
                     return (message = 'Wavelet type is not the same');
@@ -112,7 +120,8 @@ export class LetsCreateComponent {
               positionQuantizer = i;
               if (typeDesc === 'Dequantizer') {
                 const q_stepComp = this.boxes.box[i].class['q_step'];
-                const q_stepDesc = this.boxesReverse.box[lengthComp -1 - i].class['q_step'];
+                const q_stepDesc =
+                  this.boxesReverse.box[lengthComp - 1 - i].class['q_step'];
                 if (q_stepComp !== q_stepDesc) {
                   return (message = 'Quantizer q_step is not the same');
                 }
@@ -131,42 +140,49 @@ export class LetsCreateComponent {
                 const operationTypeComp =
                   this.boxes.box[i].class['operationType'];
                 const operationTypeDesc =
-                  this.boxesReverse.box[lengthComp -1 - i].class['operationType'];
+                  this.boxesReverse.box[lengthComp - 1 - i].class[
+                    'operationType'
+                  ];
                 const operationNumberComp =
                   this.boxes.box[i].class['operationNumber'];
                 const operationNumberDesc =
-                  this.boxesReverse.box[lengthComp -1 - i].class['operationNumber'];
-                
+                  this.boxesReverse.box[lengthComp - 1 - i].class[
+                    'operationNumber'
+                  ];
+
                 switch (operationTypeComp) {
                   case 'Add':
-                    if(operationTypeDesc !== 'Sub'){
-                      return (message = 'ArithmeticOperation type is not the correct one');
+                    if (operationTypeDesc !== 'Sub') {
+                      return (message =
+                        'ArithmeticOperation type is not the correct one');
                     }
                     break;
                   case 'Sub':
-                  if(operationTypeDesc !== 'Add'){
-                    return (message = 'ArithmeticOperation type is not the correct one');
-                  }
-                  break;
+                    if (operationTypeDesc !== 'Add') {
+                      return (message =
+                        'ArithmeticOperation type is not the correct one');
+                    }
+                    break;
                   case 'Mult':
-                  if(operationTypeDesc !== 'Div'){
-                    return (message = 'ArithmeticOperation type is not the correct one');
-                  }
-                  break;
+                    if (operationTypeDesc !== 'Div') {
+                      return (message =
+                        'ArithmeticOperation type is not the correct one');
+                    }
+                    break;
                   case 'Div':
-                  if(operationTypeDesc !== 'Mult'){
-                    return (message = 'ArithmeticOperation type is not the correct one');
-                  }
-                  break;
+                    if (operationTypeDesc !== 'Mult') {
+                      return (message =
+                        'ArithmeticOperation type is not the correct one');
+                    }
+                    break;
                   default:
                     break;
-                } 
+                }
 
                 if (operationNumberComp !== operationNumberDesc) {
                   return (message =
                     'ArithmeticOperation number is not the same');
                 }
-
               } else {
                 return (message =
                   'Inverse module is not a ArithmeticOperation');
@@ -182,7 +198,9 @@ export class LetsCreateComponent {
               if (typeDesc === 'EntropyDecoder') {
                 const entropyTypeComp = this.boxes.box[i].class['encoderType'];
                 const entropyTypeDesc =
-                  this.boxesReverse.box[lengthComp -1 - i].class['decoderType'];
+                  this.boxesReverse.box[lengthComp - 1 - i].class[
+                    'decoderType'
+                  ];
                 if (entropyTypeComp !== entropyTypeDesc) {
                   return (message = 'EntropyEncoder type is not the same');
                 }
@@ -218,7 +236,7 @@ export class LetsCreateComponent {
     const valid = this.validateP();
     if (valid === 'FUNCIONA') {
       this.isValid = true;
-    } else{
+    } else {
       alert(valid);
     }
   }
@@ -284,38 +302,36 @@ export class LetsCreateComponent {
       this.isImage = true;
       this.processLogger = data;
       this.isDataAvailable = true;
-      
+
       this.ableAllImagesButtons();
     });
     this.isSent = true;
     this.isFormatChange = true;
   }
 
-  ableAllImagesButtons(){
-    for(let i = 0; i < 4; i++){
+  ableAllImagesButtons() {
+    for (let i = 0; i < 4; i++) {
       const elementToRemove = document.getElementById(`Image_${i}`);
       elementToRemove?.removeAttribute('disabled');
     }
-    for(let j = 0; j < 4; j++){
+    for (let j = 0; j < 4; j++) {
       const elementToRemove = document.getElementById(`R_Image_${j}`);
       elementToRemove?.removeAttribute('disabled');
-      
     }
   }
 
-  disableAllImagesButtons(){
-    for(let i = 0; i < 4; i++){
+  disableAllImagesButtons() {
+    for (let i = 0; i < 4; i++) {
       const elementToRemove = document.getElementById(`Image_${i}`);
-      elementToRemove?.setAttribute('disabled','disabled');
+      elementToRemove?.setAttribute('disabled', 'disabled');
     }
-    for(let j = 0; j < 4; j++){
+    for (let j = 0; j < 4; j++) {
       const elementToRemove = document.getElementById(`R_Image_${j}`);
-      elementToRemove?.setAttribute('disabled','disabled');
-      
+      elementToRemove?.setAttribute('disabled', 'disabled');
     }
   }
 
-  newWindowImage(data: any){
+  newWindowImage(data: any) {
     const imagen = new Image();
     const imgElement = new Image();
     imagen.src = 'data:image/' + this.originalFormat + ';base64,' + data.image;
@@ -334,18 +350,16 @@ export class LetsCreateComponent {
       );
       newWindow?.document.write('<html><body></body></html>');
       newWindow?.document.body.appendChild(imgElement);
-    }
+    };
   }
 
   showImageNewWindow() {
     const formData = new FormData();
     formData.append('originalFormat', this.originalFormat);
-    this.http
-      .post('/api/getFinalImage', formData)
-      .subscribe((data: any) => {
-        // this.imageSrc = `data:image/${this.originalFormat};base64,` + data.image;
-          this.newWindowImage(data);
-      });
+    this.http.post('/api/getFinalImage', formData).subscribe((data: any) => {
+      // this.imageSrc = `data:image/${this.originalFormat};base64,` + data.image;
+      this.newWindowImage(data);
+    });
   }
 
   openBoxTypeDialogReverse(): void {
@@ -388,44 +402,54 @@ export class LetsCreateComponent {
     });
   }
 
-  downloadFromJsonFormat(format: string){
-    this.http.post('/api/isEmptyJSON', {} ).subscribe((object: any) => {
-      this.isEmptyJSON = !(object.exists);
-      
-      if(!this.isEmptyJSON){
+  downloadFromJsonFormat(format: string) {
+    this.http.post('/api/isEmptyJSON', {}).subscribe((object: any) => {
+      this.isEmptyJSON = !object.exists;
+
+      if (!this.isEmptyJSON) {
         const formData = new FormData();
         formData.append('formatToDownload', format);
-        
+
         switch (format) {
           case 'xlsx':
-            this.http.post('/api/downloadDataFromJson', formData, { responseType: 'arraybuffer' } ).subscribe((data: any) => {
-              this.saveFile(data, 'data.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-            });
+            this.http
+              .post('/api/downloadDataFromJson', formData, {
+                responseType: 'arraybuffer',
+              })
+              .subscribe((data: any) => {
+                this.saveFile(
+                  data,
+                  'data.xlsx',
+                  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                );
+              });
             break;
           case 'csv':
-            this.http.post('/api/downloadDataFromJson', formData, { responseType: 'text' } ).subscribe((data: string) => {
-              this.saveFile(data, 'data.csv', 'text/csv;charset=utf-8;');
-            });
+            this.http
+              .post('/api/downloadDataFromJson', formData, {
+                responseType: 'text',
+              })
+              .subscribe((data: string) => {
+                this.saveFile(data, 'data.csv', 'text/csv;charset=utf-8;');
+              });
             break;
           case 'json':
-            this.http.post('/api/downloadDataFromJson', formData, { responseType: 'text' } ).subscribe((data: string) => {
-              this.saveFile(data, 'data.json', 'application/json');
-            });
+            this.http
+              .post('/api/downloadDataFromJson', formData, {
+                responseType: 'text',
+              })
+              .subscribe((data: string) => {
+                this.saveFile(data, 'data.json', 'application/json');
+              });
             break;
-    
         }
-    
       } else {
-        alert("Data.json is empty. Execute a new proces to add some data.")
+        alert('Data.json is empty. Execute a new proces to add some data.');
       }
     });
-
-    
-    
-
   }
 
-  saveFile(data: any, fileName: string, fileType: string){
+  saveFile(data: any, fileName: string, fileType: string) {
     const blob = new Blob([data], { type: fileType });
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -436,9 +460,8 @@ export class LetsCreateComponent {
     window.URL.revokeObjectURL(url);
   }
 
-  deleteJSON(){
-    this.http.post('/api/deleteJSON', {} ).subscribe(() => {
-    });
+  deleteJSON() {
+    this.http.post('/api/deleteJSON', {}).subscribe(() => {});
     this.isEmptyJSON = true;
   }
 
@@ -475,20 +498,20 @@ export class LetsCreateComponent {
     newBox.style.height = '100px';
     newBox.style.position = 'fixed';
     newBox.style.border = '2px dashed ' + color;
-    newBox.style.top = '65%';
+    newBox.style.top = '70%';
     newBox.style.left = 200 + this.numBoxesReverse * 250 + 'px';
     newBox.style.transform = 'translateX(-50%)';
     newBox.style.alignItems = 'center';
     newBox.style.justifyContent = 'center';
     newBox.style.display = 'flex';
     newBox.style.flexDirection = 'column';
-    
+
     this.elementRef.nativeElement.appendChild(newBox);
     box.dashedBox = newBox;
     this.boxesReverse?.box.push(box);
 
     const newDelete = document.createElement('button');
-    newDelete.classList.add("btn","btn-outline-danger");
+    newDelete.classList.add('btn', 'btn-outline-danger');
     newDelete.textContent = 'DELETE';
     newDelete.id = `R_delete_${this.numBoxesReverse}`;
     newDelete.addEventListener('click', () => {
@@ -499,9 +522,13 @@ export class LetsCreateComponent {
 
     newDelete.style.position = 'absolute';
     newDelete.style.top = `${parseInt(newBox.style.height) + 20}px`;
-    if(resultClass.type == 'Reverse_Wavelet' || resultClass.type == 'Dequantizer' || resultClass.type == 'ArithmeticOperation'){
+    if (
+      resultClass.type == 'Reverse_Wavelet' ||
+      resultClass.type == 'Dequantizer' ||
+      resultClass.type == 'ArithmeticOperation'
+    ) {
       newDelete.style.left = '10%';
-    } else{
+    } else {
       newDelete.style.left = '35%';
     }
 
@@ -528,25 +555,28 @@ export class LetsCreateComponent {
         newBox.appendChild(span2w);
 
         const newImageOpen1w = document.createElement('button');
-        newImageOpen1w.classList.add("btn","btn-outline-success");
+        newImageOpen1w.classList.add('btn', 'btn-outline-success');
         newImageOpen1w.textContent = `IMAGE`;
         newImageOpen1w.id = `R_Image_${this.numBoxesReverse}`;
         newImageOpen1w.disabled = true;
         newImageOpen1w.addEventListener('click', () => {
           const formData = new FormData();
           formData.append('originalFormat', this.originalFormat);
-          formData.append('name', `reverse_wavelet_${resultClass.waveletType}_${resultClass.waveletLevel}`);
+          formData.append(
+            'name',
+            `reverse_wavelet_${resultClass.waveletType}_${resultClass.waveletLevel}`
+          );
           this.http
-          .post('/api/getImageCustom', formData)
-          .subscribe((data: any) => {
-            this.newWindowImage(data);
-          });
+            .post('/api/getImageCustom', formData)
+            .subscribe((data: any) => {
+              this.newWindowImage(data);
+            });
         });
-    
+
         newImageOpen1w.style.position = 'absolute';
         newImageOpen1w.style.top = `${parseInt(newBox.style.height) + 20}px`;
         newImageOpen1w.style.left = '60%';
-    
+
         newBox.appendChild(newImageOpen1w);
         break;
 
@@ -563,25 +593,28 @@ export class LetsCreateComponent {
         newBox.appendChild(span2a);
 
         const newImageOpen1a = document.createElement('button');
-        newImageOpen1a.classList.add("btn","btn-outline-success");
+        newImageOpen1a.classList.add('btn', 'btn-outline-success');
         newImageOpen1a.textContent = `IMAGE`;
         newImageOpen1a.id = `R_Image_${this.numBoxesReverse}`;
         newImageOpen1a.disabled = true;
         newImageOpen1a.addEventListener('click', () => {
           const formData = new FormData();
           formData.append('originalFormat', this.originalFormat);
-          formData.append('name', `${resultClass.operationType}_${resultClass.operationNumber}`);
+          formData.append(
+            'name',
+            `${resultClass.operationType}_${resultClass.operationNumber}`
+          );
           this.http
-          .post('/api/getImageCustom', formData)
-          .subscribe((data: any) => {
-            this.newWindowImage(data);
-          });
+            .post('/api/getImageCustom', formData)
+            .subscribe((data: any) => {
+              this.newWindowImage(data);
+            });
         });
-    
+
         newImageOpen1a.style.position = 'absolute';
         newImageOpen1a.style.top = `${parseInt(newBox.style.height) + 20}px`;
         newImageOpen1a.style.left = '60%';
-    
+
         newBox.appendChild(newImageOpen1a);
         break;
 
@@ -592,7 +625,7 @@ export class LetsCreateComponent {
         span1q.style.fontWeight = 'bold';
         newBox.appendChild(span1q);
         const newImageOpen1q = document.createElement('button');
-        newImageOpen1q.classList.add("btn","btn-outline-success");
+        newImageOpen1q.classList.add('btn', 'btn-outline-success');
         newImageOpen1q.textContent = `IMAGE`;
         newImageOpen1q.id = `R_Image_${this.numBoxesReverse}`;
         newImageOpen1q.disabled = true;
@@ -601,16 +634,16 @@ export class LetsCreateComponent {
           formData.append('originalFormat', this.originalFormat);
           formData.append('name', `dequantizer_${resultClass.q_step}`);
           this.http
-          .post('/api/getImageCustom', formData)
-          .subscribe((data: any) => {
-            this.newWindowImage(data);
-          });
+            .post('/api/getImageCustom', formData)
+            .subscribe((data: any) => {
+              this.newWindowImage(data);
+            });
         });
-    
+
         newImageOpen1q.style.position = 'absolute';
         newImageOpen1q.style.top = `${parseInt(newBox.style.height) + 20}px`;
         newImageOpen1q.style.left = '60%';
-    
+
         newBox.appendChild(newImageOpen1q);
         break;
 
@@ -691,7 +724,7 @@ export class LetsCreateComponent {
     newBox.style.height = '100px';
     newBox.style.position = 'fixed';
     newBox.style.border = '2px dashed ' + color;
-    newBox.style.top = '65%';
+    newBox.style.top = '70%';
     newBox.style.left = 200 + numBox * 250 + 'px';
     newBox.style.transform = 'translateX(-50%)';
     newBox.style.alignItems = 'center';
@@ -704,7 +737,7 @@ export class LetsCreateComponent {
     this.boxesReverse?.box.splice(numBox, 0, box);
 
     const newDelete = document.createElement('button');
-    newDelete.classList.add("btn","btn-outline-danger");
+    newDelete.classList.add('btn', 'btn-outline-danger');
     newDelete.textContent = 'DELETE';
     newDelete.id = `R_delete_${numBox}`;
     newDelete.addEventListener('click', () => {
@@ -715,9 +748,13 @@ export class LetsCreateComponent {
 
     newDelete.style.position = 'absolute';
     newDelete.style.top = `${parseInt(newBox.style.height) + 20}px`;
-    if(resultClass.type == 'Reverse_Wavelet' || resultClass.type == 'Dequantizer' || resultClass.type == 'ArithmeticOperation'){
+    if (
+      resultClass.type == 'Reverse_Wavelet' ||
+      resultClass.type == 'Dequantizer' ||
+      resultClass.type == 'ArithmeticOperation'
+    ) {
       newDelete.style.left = '10%';
-    } else{
+    } else {
       newDelete.style.left = '35%';
     }
 
@@ -744,25 +781,28 @@ export class LetsCreateComponent {
         newBox.appendChild(span2w);
 
         const newImageOpen1w = document.createElement('button');
-        newImageOpen1w.classList.add("btn","btn-outline-success");
+        newImageOpen1w.classList.add('btn', 'btn-outline-success');
         newImageOpen1w.textContent = `IMAGE`;
         newImageOpen1w.id = `R_Image_${numBox}`;
         newImageOpen1w.disabled = true;
         newImageOpen1w.addEventListener('click', () => {
           const formData = new FormData();
           formData.append('originalFormat', this.originalFormat);
-          formData.append('name', `reverse_wavelet_${resultClass.waveletType}_${resultClass.waveletLevel}`);
+          formData.append(
+            'name',
+            `reverse_wavelet_${resultClass.waveletType}_${resultClass.waveletLevel}`
+          );
           this.http
-          .post('/api/getImageCustom', formData)
-          .subscribe((data: any) => {
-            this.newWindowImage(data);
-          });
+            .post('/api/getImageCustom', formData)
+            .subscribe((data: any) => {
+              this.newWindowImage(data);
+            });
         });
-    
+
         newImageOpen1w.style.position = 'absolute';
         newImageOpen1w.style.top = `${parseInt(newBox.style.height) + 20}px`;
         newImageOpen1w.style.left = '60%';
-    
+
         newBox.appendChild(newImageOpen1w);
         break;
 
@@ -779,25 +819,28 @@ export class LetsCreateComponent {
         newBox.appendChild(span2a);
 
         const newImageOpen1a = document.createElement('button');
-        newImageOpen1a.classList.add("btn","btn-outline-success");
+        newImageOpen1a.classList.add('btn', 'btn-outline-success');
         newImageOpen1a.textContent = `IMAGE`;
         newImageOpen1a.id = `R_Image_${numBox}`;
         newImageOpen1a.disabled = true;
         newImageOpen1a.addEventListener('click', () => {
           const formData = new FormData();
           formData.append('originalFormat', this.originalFormat);
-          formData.append('name', `${resultClass.operationType}_${resultClass.operationNumber}`);
+          formData.append(
+            'name',
+            `${resultClass.operationType}_${resultClass.operationNumber}`
+          );
           this.http
-          .post('/api/getImageCustom', formData)
-          .subscribe((data: any) => {
-            this.newWindowImage(data);
-          });
+            .post('/api/getImageCustom', formData)
+            .subscribe((data: any) => {
+              this.newWindowImage(data);
+            });
         });
-    
+
         newImageOpen1a.style.position = 'absolute';
         newImageOpen1a.style.top = `${parseInt(newBox.style.height) + 20}px`;
         newImageOpen1a.style.left = '60%';
-    
+
         newBox.appendChild(newImageOpen1a);
         break;
 
@@ -808,7 +851,7 @@ export class LetsCreateComponent {
         span1q.style.fontWeight = 'bold';
         newBox.appendChild(span1q);
         const newImageOpen1q = document.createElement('button');
-        newImageOpen1q.classList.add("btn","btn-outline-success");
+        newImageOpen1q.classList.add('btn', 'btn-outline-success');
         newImageOpen1q.textContent = `IMAGE`;
         newImageOpen1q.id = `R_Image_${numBox}`;
         newImageOpen1q.disabled = true;
@@ -817,16 +860,16 @@ export class LetsCreateComponent {
           formData.append('originalFormat', this.originalFormat);
           formData.append('name', `dequantizer_${resultClass.q_step}`);
           this.http
-          .post('/api/getImageCustom', formData)
-          .subscribe((data: any) => {
-            this.newWindowImage(data);
-          });
+            .post('/api/getImageCustom', formData)
+            .subscribe((data: any) => {
+              this.newWindowImage(data);
+            });
         });
-    
+
         newImageOpen1q.style.position = 'absolute';
         newImageOpen1q.style.top = `${parseInt(newBox.style.height) + 20}px`;
         newImageOpen1q.style.left = '60%';
-    
+
         newBox.appendChild(newImageOpen1q);
         break;
 
@@ -928,7 +971,7 @@ export class LetsCreateComponent {
     }
 
     const newDelete = document.createElement('button');
-    newDelete.classList.add("btn","btn-outline-danger");
+    newDelete.classList.add('btn', 'btn-outline-danger');
     newDelete.textContent = 'DELETE';
     newDelete.id = `delete_${this.numBoxes}`;
     newDelete.addEventListener('click', () => {
@@ -939,9 +982,13 @@ export class LetsCreateComponent {
 
     newDelete.style.position = 'absolute';
     newDelete.style.top = `${parseInt(newBox.style.height) + 20}px`;
-    if(resultClass.type == 'Wavelet' || resultClass.type == 'Quantizer' || resultClass.type == 'ArithmeticOperation'){
+    if (
+      resultClass.type == 'Wavelet' ||
+      resultClass.type == 'Quantizer' ||
+      resultClass.type == 'ArithmeticOperation'
+    ) {
       newDelete.style.left = '10%';
-    } else{
+    } else {
       newDelete.style.left = '35%';
     }
 
@@ -968,25 +1015,28 @@ export class LetsCreateComponent {
         newBox.appendChild(span2w);
 
         const newImageOpen1w = document.createElement('button');
-        newImageOpen1w.classList.add("btn","btn-outline-success");
+        newImageOpen1w.classList.add('btn', 'btn-outline-success');
         newImageOpen1w.textContent = `IMAGE`;
         newImageOpen1w.id = `Image_${this.numBoxes}`;
         newImageOpen1w.disabled = true;
         newImageOpen1w.addEventListener('click', () => {
           const formData = new FormData();
           formData.append('originalFormat', this.originalFormat);
-          formData.append('name', `wavelet_${resultClass.waveletType}_${resultClass.waveletLevel}`);
+          formData.append(
+            'name',
+            `wavelet_${resultClass.waveletType}_${resultClass.waveletLevel}`
+          );
           this.http
-          .post('/api/getImageCustom', formData)
-          .subscribe((data: any) => {
-            this.newWindowImage(data);
-          });
+            .post('/api/getImageCustom', formData)
+            .subscribe((data: any) => {
+              this.newWindowImage(data);
+            });
         });
-    
+
         newImageOpen1w.style.position = 'absolute';
         newImageOpen1w.style.top = `${parseInt(newBox.style.height) + 20}px`;
         newImageOpen1w.style.left = '60%';
-    
+
         newBox.appendChild(newImageOpen1w);
         break;
 
@@ -1002,25 +1052,28 @@ export class LetsCreateComponent {
         span2a.style.fontWeight = 'bold';
         newBox.appendChild(span2a);
         const newImageOpen1a = document.createElement('button');
-        newImageOpen1a.classList.add("btn","btn-outline-success");
+        newImageOpen1a.classList.add('btn', 'btn-outline-success');
         newImageOpen1a.textContent = `IMAGE`;
         newImageOpen1a.id = `Image_${this.numBoxes}`;
         newImageOpen1a.disabled = true;
         newImageOpen1a.addEventListener('click', () => {
           const formData = new FormData();
           formData.append('originalFormat', this.originalFormat);
-          formData.append('name', `${resultClass.operationType}_${resultClass.operationNumber}`);
+          formData.append(
+            'name',
+            `${resultClass.operationType}_${resultClass.operationNumber}`
+          );
           this.http
-          .post('/api/getImageCustom', formData)
-          .subscribe((data: any) => {
-            this.newWindowImage(data);
-          });
+            .post('/api/getImageCustom', formData)
+            .subscribe((data: any) => {
+              this.newWindowImage(data);
+            });
         });
-    
+
         newImageOpen1a.style.position = 'absolute';
         newImageOpen1a.style.top = `${parseInt(newBox.style.height) + 20}px`;
         newImageOpen1a.style.left = '60%';
-    
+
         newBox.appendChild(newImageOpen1a);
         break;
 
@@ -1031,7 +1084,7 @@ export class LetsCreateComponent {
         span1q.style.fontWeight = 'bold';
         newBox.appendChild(span1q);
         const newImageOpen1q = document.createElement('button');
-        newImageOpen1q.classList.add("btn","btn-outline-success");
+        newImageOpen1q.classList.add('btn', 'btn-outline-success');
         newImageOpen1q.textContent = `IMAGE`;
         newImageOpen1q.id = `Image_${this.numBoxes}`;
         newImageOpen1q.disabled = true;
@@ -1040,16 +1093,16 @@ export class LetsCreateComponent {
           formData.append('originalFormat', this.originalFormat);
           formData.append('name', `quantizer_${resultClass.q_step}`);
           this.http
-          .post('/api/getImageCustom', formData)
-          .subscribe((data: any) => {
-            this.newWindowImage(data);
-          });
+            .post('/api/getImageCustom', formData)
+            .subscribe((data: any) => {
+              this.newWindowImage(data);
+            });
         });
-    
+
         newImageOpen1q.style.position = 'absolute';
         newImageOpen1q.style.top = `${parseInt(newBox.style.height) + 20}px`;
         newImageOpen1q.style.left = '60%';
-    
+
         newBox.appendChild(newImageOpen1q);
         break;
 
@@ -1151,7 +1204,7 @@ export class LetsCreateComponent {
     this.boxes?.box.splice(numBox, 0, box);
 
     const newDelete = document.createElement('button');
-    newDelete.classList.add("btn","btn-outline-danger");
+    newDelete.classList.add('btn', 'btn-outline-danger');
     newDelete.textContent = 'DELETE';
     newDelete.id = `delete_${numBox}`;
     newDelete.addEventListener('click', () => {
@@ -1162,9 +1215,13 @@ export class LetsCreateComponent {
 
     newDelete.style.position = 'absolute';
     newDelete.style.top = `${parseInt(newBox.style.height) + 20}px`;
-    if(resultClass.type == 'Wavelet' || resultClass.type == 'Quantizer' || resultClass.type == 'ArithmeticOperation'){
+    if (
+      resultClass.type == 'Wavelet' ||
+      resultClass.type == 'Quantizer' ||
+      resultClass.type == 'ArithmeticOperation'
+    ) {
       newDelete.style.left = '10%';
-    } else{
+    } else {
       newDelete.style.left = '35%';
     }
 
@@ -1191,25 +1248,28 @@ export class LetsCreateComponent {
         newBox.appendChild(span2w);
 
         const newImageOpen1w = document.createElement('button');
-        newImageOpen1w.classList.add("btn","btn-outline-success");
+        newImageOpen1w.classList.add('btn', 'btn-outline-success');
         newImageOpen1w.textContent = `IMAGE`;
         newImageOpen1w.id = `Image_${numBox}`;
         newImageOpen1w.disabled = true;
         newImageOpen1w.addEventListener('click', () => {
           const formData = new FormData();
           formData.append('originalFormat', this.originalFormat);
-          formData.append('name', `wavelet_${resultClass.waveletType}_${resultClass.waveletLevel}`);
+          formData.append(
+            'name',
+            `wavelet_${resultClass.waveletType}_${resultClass.waveletLevel}`
+          );
           this.http
-          .post('/api/getImageCustom', formData)
-          .subscribe((data: any) => {
-            this.newWindowImage(data);
-          });
+            .post('/api/getImageCustom', formData)
+            .subscribe((data: any) => {
+              this.newWindowImage(data);
+            });
         });
-    
+
         newImageOpen1w.style.position = 'absolute';
         newImageOpen1w.style.top = `${parseInt(newBox.style.height) + 20}px`;
         newImageOpen1w.style.left = '60%';
-    
+
         newBox.appendChild(newImageOpen1w);
         break;
 
@@ -1226,25 +1286,28 @@ export class LetsCreateComponent {
         newBox.appendChild(span2a);
 
         const newImageOpen1a = document.createElement('button');
-        newImageOpen1a.classList.add("btn","btn-outline-success");
+        newImageOpen1a.classList.add('btn', 'btn-outline-success');
         newImageOpen1a.textContent = `IMAGE`;
         newImageOpen1a.id = `Image_${numBox}`;
         newImageOpen1a.disabled = true;
         newImageOpen1a.addEventListener('click', () => {
           const formData = new FormData();
           formData.append('originalFormat', this.originalFormat);
-          formData.append('name', `${resultClass.operationType}_${resultClass.operationNumber}`);
+          formData.append(
+            'name',
+            `${resultClass.operationType}_${resultClass.operationNumber}`
+          );
           this.http
-          .post('/api/getImageCustom', formData)
-          .subscribe((data: any) => {
-            this.newWindowImage(data);
-          });
+            .post('/api/getImageCustom', formData)
+            .subscribe((data: any) => {
+              this.newWindowImage(data);
+            });
         });
-    
+
         newImageOpen1a.style.position = 'absolute';
         newImageOpen1a.style.top = `${parseInt(newBox.style.height) + 20}px`;
         newImageOpen1a.style.left = '60%';
-    
+
         newBox.appendChild(newImageOpen1a);
         break;
 
@@ -1256,7 +1319,7 @@ export class LetsCreateComponent {
         newBox.appendChild(span1q);
 
         const newImageOpen1q = document.createElement('button');
-        newImageOpen1q.classList.add("btn","btn-outline-success");
+        newImageOpen1q.classList.add('btn', 'btn-outline-success');
         newImageOpen1q.textContent = `IMAGE`;
         newImageOpen1q.id = `Image_${numBox}`;
         newImageOpen1q.disabled = true;
@@ -1265,16 +1328,16 @@ export class LetsCreateComponent {
           formData.append('originalFormat', this.originalFormat);
           formData.append('name', `quantizer_${resultClass.q_step}`);
           this.http
-          .post('/api/getImageCustom', formData)
-          .subscribe((data: any) => {
-            this.newWindowImage(data);
-          });
+            .post('/api/getImageCustom', formData)
+            .subscribe((data: any) => {
+              this.newWindowImage(data);
+            });
         });
-    
+
         newImageOpen1q.style.position = 'absolute';
         newImageOpen1q.style.top = `${parseInt(newBox.style.height) + 20}px`;
         newImageOpen1q.style.left = '60%';
-    
+
         newBox.appendChild(newImageOpen1q);
         break;
 
