@@ -1,6 +1,6 @@
 {
     "/api/*": {
-      "target": "https://app-tfg-five.vercel.app/3000",
+      "target": "https://api-tfg.vercel.app/",
       "secure": true,
       "logLevel": "debug",
       "changeOrigin": true
